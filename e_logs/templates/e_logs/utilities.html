@@ -1,0 +1,57 @@
+{% extends 'e_logs/main.html' %}
+
+{% block content %}
+
+<div id="utilities" data-tab-content class="active">
+
+    <h4>MIS UTILITIES</h4>
+    <hr>
+    <br>
+
+    <div class="bulletin-form">
+        <div class="form-header">
+            <p>Bulletin Editor</p>
+        </div>
+        <form action="" method="POST" class="bulletin-form-container" >
+            {% csrf_token %}
+            <div class="bulletin-form-top">
+                <div class="form-group">
+                    <label for="author">
+                        Reported by:
+                    </label>
+                    <select name="author">
+                        <option value="Juan Dela Cruz">Juan Dela Cruz</option>
+                        <option value="Cardo Dalisay">Cardo Dalisay</option>
+                        <option value="Pedro Penduko">Cardo Dalisa</option>
+                        <option value="Vice Ganda">Cardo Dalisay</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="priority">
+                        Priority:
+                    </label>
+                    <select name="priority">
+                        <option value="High Importance">High Importance</option>
+                        <option value="For Your Info">For Your Info</option>
+                        <option value="For Follow-up">For Follow-up</option>
+                        <option value="For Feedback">For Feedback</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="details">
+                    Details:
+                </label>
+                <textarea rows="1" placeholder="Enter bulletin details..." name="details" id="details-input"></textarea>
+            </div>
+            <div class="bulletin-btn">
+                <button type="submit" name="bulletin-form" class="post-bulletin">POST BULLETIN</button>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+
+{% endblock content%}

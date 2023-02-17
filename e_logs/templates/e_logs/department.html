@@ -1,0 +1,231 @@
+
+{% extends 'e_logs/main.html' %}
+
+{% block content %}
+
+<div id="department" data-tab-content class="active">
+
+    <h4>DEPARTMENT</h4>
+    <hr>
+    <br>
+    <div class="department-form">
+        <div class="form-header">
+            <p>Department Service Report</p>
+        </div>
+        <form action="" method="POST" class="department-form-container">
+            {% csrf_token %}
+            <div class="dept-row">
+                <div class="client-info">
+                    <p class="client-info-title">
+                        Client Information
+                    </p>
+                    <div class="client-info-group">
+                        <label for="department">
+                            Department:
+                        </label>
+                        <select name="department">
+                            <option disabled hidden selected>Select department</option>
+                            <option value="MIS">MIS</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Production">Production</option>
+                        </select>
+                    </div>
+                    <div class="client-info-group">
+                        <label for="client">
+                            Client's Name:
+                        </label>
+                        <input type="text" name="client">
+                    </div>
+                </div>
+                <div class="author-info">
+                    <label for="system">Affected System:</label>
+                    <select name="system" id="system">
+                        <option disabled hidden selected>Select system</option>
+                        <option value="Television">Television</option>
+                        <option value="Wifi">Wifi</option>
+                        <option value="Computer">Computer</option>
+                    </select>
+                    <label for="attendee">Attended by:</label>
+                    <select name="attendee" id="attendee">
+                        <option disabled hidden selected>Select name</option>
+                        <option value="Television">Television</option>
+                        <option value="Wifi">Wifi</option>
+                        <option value="Computer">Computer</option>
+                    </select>
+                </div>
+                <div class="time-info">
+                    <label for="time_reported">Time Reported:</label>
+                    <input type="time" name="time_reported">
+                    <label for="time_resolved">Time Resolved:</label>
+                    <input type="time" name="time_resolved">
+                </div>
+            </div>
+            <div class="dept-row">
+                <div class="problem">
+                    <label for="problem">Problem:</label>
+                    <textarea name="problem" rows="2"></textarea>
+                </div>
+                <div class="status">
+                    <label for="status">Status:</label>
+                    <textarea name="status" rows="2"></textarea>
+                </div>
+            </div>
+            <div class="dept-row">
+                <div class="action">
+                    <label for="action">Action:</label>
+                    <textarea name="action" rows="2"></textarea>
+                </div>
+                <div class="recommendation">
+                    <label for="recommendation">Recommendation:</label>
+                    <textarea name="recommendation" rows="2"></textarea>
+                </div>
+            </div>
+            <div class="bottom-row">
+                <button type="submit" name="save_department">Save Report</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<style>
+
+.department-form-container {
+    border: 1px solid var(--stroke);
+    background-color: var(--lighter-bg);
+    margin-top: 0.5rem;
+    padding: 1rem;
+}
+
+/* FIRST ROW */
+
+.dept-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0.5rem 0;
+}
+
+.dept-row .client-info {
+    width: 43%;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    padding: 0.5rem;
+    border-radius: 0.3rem;
+}
+
+.dept-row .client-info-title {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    font-weight: 500;
+}
+
+.dept-row .client-info-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0.2rem 0;
+}
+
+.dept-row .client-info-group label, .author-info label, .time-info label {
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.dept-row .client-info-group input, .dept-row .client-info-group select{
+    height: 2rem;
+    width: 70%;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.7rem;
+    padding: 0.3rem 0.5rem;
+}
+
+.dept-row .author-info select, .time-info input {
+    height: 2rem;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.8rem;
+    width: 100%;
+    padding: 0.3rem 0.5rem;
+
+}
+
+
+.dept-row .author-info, .time-info{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 0.5rem;
+}
+
+.dept-row .author-info {
+    width: 35%;
+}
+
+.dept-row .time-info {
+    width: 20%;
+}
+
+/* SECOND ROW */
+
+.problem, .status, .action, .recommendation {
+    display: flex;
+    flex-direction: column;
+}
+
+.problem label, .status label, .action label, .recommendation label {
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.problem textarea, .status textarea, .action textarea, .recommendation textarea {
+    font-size: 0.8rem;
+    padding: 0.5rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.problem {
+    width: 47.5%;
+}
+
+.status {
+    width: 47.5%;
+}
+
+.action {
+    width: 47.5%;
+
+}
+.recommendation {
+    width: 47.5%;
+}
+
+.bottom-row { 
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+.bottom-row button {
+    border: none;
+    outline: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    border-radius: 0.2rem;
+    padding: 0.5rem 0.9rem;
+    background-color: var(--green);
+    color: var(--white);
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.1s ease-in;
+}
+.bottom-row button:hover {
+    scale: 0.95;
+    background-color: var(--dark-green);
+}
+
+</style>
+
+{% endblock content%}

@@ -1,0 +1,252 @@
+
+{% extends 'e_logs/main.html' %}
+
+{% block content %}
+
+<div id="bulletin" data-tab-content class="active"> 
+
+    <!-- APP SERVER BACKUP INFORMATION -->
+    <h4>BULLETIN</h4>
+    <hr>
+    <br>
+    <div class="app-server-content">
+        <p class="app-server-title">APP SERVER BACKUP FREE DISK SPACE</p>
+        <div class="app-server-container">
+            <div class="app-server-date d-flex">
+                <p>Date:</p>
+                <div></div>
+            </div>
+            <div class="app-server-tbm d-flex">
+                <p>TBM Opera Backup:</p>
+                <div></div>
+            </div>
+            <div class="app-server-bhtl d-flex">
+                <p>BHTL Opera Backup:</p>
+                <div></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- FILTER DATA CONTAINER -->
+
+    <div class="filter-container">
+        <form 
+            method="GET"
+            
+            class="search-container d-flex"
+        >
+            <input type="search" name="search" id="search" placeholder="Search database">
+            <button type="submit" name="query" class="d-flex"><i class='bx bx-search' ></i></button>
+        </form>
+        <form 
+            method="GET"
+            action=""
+            class="date-range-container d-flex"
+        >
+            <input type="date" name="start_date" id="from-date">
+            <p>To</p>
+            <input type="date" name="end_date" id="to-date">
+            <button type="submit" name="refresh" class="d-flex"><i class='bx bx-refresh' ></i></button>
+        </form>
+    </div>
+ 
+    <!-- BULLETIN BOARD TABLE -->
+
+    <div>
+        <div class="table-title">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+                <p>Bulletin Board</p>
+                <p class="record-length d-flex">{{ bulletin | length}}</p>
+            </div>
+            <button id="export-bulletin"> <i class='bx bxs-file-export'></i> Export to Excel</button>
+        </div>
+        <div class="table-container">
+            <table id="bulletin-data">
+                <thead>
+                    <tr>
+                    <th>Date</th>
+                    <th>Reported By</th>
+                    <th>Type</th>
+                    <th>Bulletin Details</th>
+                    <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for record in bulletin%}
+                    <tr>
+                    <td >{{record.date|date:"Y-m-d"}}</td>
+                    <td >{{record.author}}</td>
+                    <td >{{record.priority}}</td>
+                    <td >{{record.details  }}</td>
+                    <td >{{record.time}}</td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- MIS INCIDENT REPORT -->
+    <p class="incident-title">MIS Incident Report</p>
+
+    <div class="incident-report-container">
+
+        <!-- GUEST INCIDENT REPORT -->
+        <div class="guest-report-container">
+            <div class="table-title">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <p>Guest Assistance</p>
+                    <p class="record-length d-flex">{{guest | length}}</p>
+                </div>
+                <button id="export-guest"> <i class='bx bxs-file-export'></i> Export to Excel</button>
+            </div>
+            <div class="table-container">
+                <table id="guest-data">
+                    <thead>
+                        <tr>
+                        <th>Date</th>
+                        <th>Location</th>
+                        <th>Room</th>
+                        <th>Attended by</th>
+                        <th>System Affected</th>
+                        <th>Time Reported</th>
+                        <th>Time Resolved</th>
+                        <th>Problem</th>
+                        <th>Action</th>
+                        <th>Status</th>
+                        <th>Recommendation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%for record in guest%}
+                        <tr>
+                        <td >{{record.date|date:"Y-m-d"}}</td>
+                        <td >{{record.tower}}</td>
+                        <td >{{record.room}}</td>
+                        <td >{{record.attended_by}}</td>
+                        <td >{{record.affected_system}}</td>
+                        <td >{{record.time_reported}}</td>
+                        <td>{{record.time_resolved}}</td>
+                        <td>{{record.problem}}</td>
+                        <td>{{record.action}}</td>
+                        <td>{{record.status}}</td>
+                        <td>{{record.recommendation}}</td>
+                        </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="department-report-container">
+            <div class="table-title">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <p>Department Assistance</p>
+                    <p class="record-length d-flex">{{department | length}}</p>
+                </div>
+                <button id="export-guest"> <i class='bx bxs-file-export'></i> Export to Excel</button>
+            </div>
+            <div class="table-container">
+                <table id="department-data">
+                    <thead>
+                        <tr>
+                        <th>Date</th>
+                        <th>Department</th>
+                        <th>Client Name</th>
+                        <th>Attended by</th>
+                        <th>System Affected</th>
+                        <th>Time Reported</th>
+                        <th>Time Resolved</th>
+                        <th>Problem</th>
+                        <th>Action</th>
+                        <th>Status</th>
+                        <th>Recommendation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%for record in department%}
+                        <tr>
+                        <td >{{record.date|date:"Y-m-d"}}</td>
+                        <td >{{record.department}}</td>
+                        <td >{{record.client}}</td>
+                        <td >{{record.attended_by}}</td>
+                        <td >{{record.affected_system}}</td>
+                        <td >{{record.time_reported}}</td>
+                        <td>{{record.time_resolved}}</td>
+                        <td>{{record.problem}}</td>
+                        <td>{{record.action}}</td>
+                        <td>{{record.status}}</td>
+                        <td>{{record.recommendation}}</td>
+                        </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+
+    .incident-report-container {
+        width: 100%; 
+        height: auto;
+        border: 1px solid var(--stroke);
+        padding: 1rem;
+        margin-bottom: 3rem;
+    }
+
+    .incident-title {
+        font-size: 0.9rem;
+        font-weight: 500;
+        margin: 1rem 0;
+    }
+
+    .guest-report-container, .department-report-container {
+        width: 100%;
+        height: 50%;
+    }
+
+    .department-report-container {
+        margin-top: 1rem;
+    }
+
+    #bulletin {
+        background-color: #fff;
+    }
+
+    .record-length {
+        width: 1.8rem;
+        height: 1.8rem;
+        background-color: rgb(77, 74, 74);
+        color: white;
+        margin-left: 1rem;
+        font-size: 0.9rem;
+        border-radius: 50%;
+       
+    }
+
+</style>
+
+<script>
+    
+    // EXPORT BULLETIN TABLE TO EXCEL
+
+    const export_button = document.getElementById('export-bulletin');
+    const from_date = document.getElementById('from-date').value
+    const to_date = document.getElementById('to-date').value
+
+    export_button.addEventListener('click', () =>  {
+        let dtype = 'xlsx'
+        var data = document.getElementById('bulletin-data');
+        var file = XLSX.utils.table_to_book(data, {sheet: "sheet1"});
+        XLSX.write(file, { bookType: dtype, bookSST: true, type: 'base64' });
+        XLSX.writeFile(file, `bulletin-table.` + dtype);
+
+    });
+
+
+    
+
+</script>
+
+{% endblock content %}

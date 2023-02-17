@@ -1,0 +1,314 @@
+{% extends 'e_logs/main.html' %}
+
+{% block content %}
+
+
+<div id="task" data-tab-content class="active">
+    
+    <h4>TASKS CHECKLIST</h4>
+    <hr>
+    <br>
+
+    <div class="page">
+    
+    <!-- Navigation for Morning Shift Task Checklist and Evening Shift Task Checklist -->
+    <div class="task-tabs">
+        <div class="task-tab active-task" data-link-task="#morning">Morning Shift</div>
+        <div class="task-tab" data-link-task="#evening">Evening Shift</div>
+    </div>
+
+    <!-- Task Contents -->
+    <div class="task-contents">
+
+
+        <!-- Morning Task Checklist Tab -->
+        <div class="active-task-content" data-link-content id="morning">
+
+            <!-- Retrieve data from the backend - Filter by date -->
+            <div class="retrieve">
+                <form action="" method="GET" class="retrieve-form">
+                    <input type="date" name="morning_shift_date">
+                    <button type="submit">Retrieve AM data</button>
+                </form>
+                <div class="task-table-container">
+                    <form 
+                        action=""
+                        method="GET"
+                    >
+                        <!-- Morning Task Checklist Table -->
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Tasks</th>
+                                    <th>Done</th>
+                                    <th>Time</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody class="task-body">
+                                {% for task in tasks %}
+                                <tr>
+                                    <td style="width: 40%;" name="task-title">{{task.title}}</td>
+                                    <td style="width: 8%;"><input type="checkbox" name="task-done"></td>
+                                    <td style="width: 12%;"><input type="time" name="task-time"></td>
+                                    <td style="width: 40%;"><input type="text"  name="task-remark"></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                        <!-- Submit Group -->
+                        <div class="task-form-submit">
+                            <div class="task-form-group">
+                                <label for="task-attendee">Checked by: </label>
+                                <select name="task-attendee">
+                                    <option disabled hidden selected>Select Name</option>
+                                </select>
+                            </div>
+                            <button type="submit" name="save-am-shift">Save AM shift</button>
+                        </div>
+                        
+    
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Evening Task Checklist Tab -->
+        <div class="evening" data-link-content id="evening">
+            <div class="retrieve">
+                <form action="" method="GET" class="retrieve-form">
+                    <input type="date" name="evening_shift_date">
+                    <button type="submit">Retrieve PM data</button>
+                </form>
+                <div class="task-table-container">
+                    <form action="">
+
+                        <!-- Evening Task Checklist Table -->
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Tasks</th>
+                                    <th>Done</th>
+                                    <th>Time</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody class="task-body">
+                                {% for task in tasks %}
+                                <tr>
+                                    <td style="width: 40%;">{{task.title}}</td>
+                                    <td style="width: 8%;"><input type="checkbox" value="{{task.done}}"></td>
+                                    <td style="width: 12%;"><input type="time" value={{task.time}}></td>
+                                    <td style="width: 40%;"><input type="text" value={{task.remarks}} ></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                        <!-- Submit Group -->
+                        <div class="task-form-submit">
+                            <div class="task-form-group">
+                                <label for="task-attendee">Checked by: </label>
+                                <select name="task-attendee">
+                                    <option disabled hidden selected>Select Name</option>
+                                </select>
+                            </div>
+                            <button type="submit">Save PM shift</button>
+                        </div>
+                        
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+
+<!-- STYLES -->
+
+<style>
+
+    .page {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    #task {
+        height: auto;
+       
+    }
+   
+    [data-link-content] {
+        display: none;
+    }
+
+    .active-task-content[data-link-content] {
+        display: block;
+    }
+
+    .task-tabs {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        top: 1px;
+        position: absolute;
+    }
+
+    .task-tab {
+        padding: 0.4rem 1rem;
+        height: 2.5rem;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.01s ease;
+        z-index: 1;
+    }
+
+    .active-task[data-link-task] {
+        border-top: 1px solid rgba(0, 0, 0, 0.5);
+        border-left: 1px solid rgba(0, 0, 0, 0.5);
+        border-right: 1px solid rgba(0, 0, 0, 0.5);
+        border-bottom: 3px solid white;
+        font-weight: 600;
+    }
+
+    .task-contents {
+        margin-bottom: 3rem;
+    }
+
+    .task-contents [data-link-content]{
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        transition: all 0.01s ease;
+        position: relative;
+        top: calc(2.5rem - 1px);
+        padding: 1rem;
+        margin-bottom: 5rem;
+    }
+
+    
+
+    .retrieve-form {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        height: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .retrieve-form input {
+        height: 2rem;
+        font-size: 0.8rem;
+        cursor: pointer;
+    }
+
+    .retrieve-form button, .task-form-submit button {
+        height: 2rem;
+        color: white;
+        background-color: #228C20;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-left: 0.5rem;
+        padding: 0 0.8rem;
+        font-family: 'Poppins', sans-serif;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        border-radius: 2px;
+        transition: all 0.1s ease;
+    }
+
+    .retrieve-form button:hover, .task-form-submit button:hover {
+        background-color: #115710;
+        scale: 0.95;
+    }
+
+    .task-body input {
+        height: 1.5rem;
+    }
+
+    .task-body input[type="time"] {
+        width: 90%;
+        font-size: 0.7rem;
+        padding: 0 3px;
+    }
+
+    .task-body input[type="text"] {
+        width: 90%;
+        font-size: 0.8rem;
+        border: none;
+        background: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+    }
+
+    .task-body input[type="checkbox"] {
+        height: 1.2rem;
+        width: 1.2rem;
+        cursor: pointer;
+    }
+
+    .task-body input[type="checkbox"]:checked {
+        background-color: green;
+    }
+
+    .task-form-submit {
+        width: 100%;
+        display: flex;
+        align-items: flex-end;
+        flex-direction: column;
+    }
+
+    .task-form-group {
+        margin: 1rem 0;
+        width: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .task-form-group label {
+        font-weight: 500;
+        font-size: 0.9rem;
+    }
+
+    .task-form-group select {
+        height: 1.8rem;
+        font-size: 0.8rem;
+        margin-left: 1rem;
+        width: 60%;
+    }
+
+</style>
+
+<script>
+
+    // TASK PAGE NAVIGATION - MORNING & EVENING
+
+    const taskTabs = document.querySelectorAll('[data-link-task')
+    const taskTabContents = document.querySelectorAll('[data-link-content')
+
+    taskTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const target = document.querySelector(tab.dataset.linkTask)
+            taskTabContents.forEach(tabContent => {
+                tabContent.classList.remove('active-task-content')
+            })
+
+            taskTabs.forEach(tabli => {
+                tabli.classList.remove('active-task')
+            })
+
+            tab.classList.add('active-task')
+            target.classList.add('active-task-content')
+        })
+    })
+</script>
+
+{% endblock content %}

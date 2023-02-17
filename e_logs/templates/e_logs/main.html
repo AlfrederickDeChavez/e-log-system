@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="icon" type="image/x-icon" href="{% static 'images/logo.png' %}">
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+    <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+    <title>MIS E-LOG SYSTEM</title>
+    
+</head>
+<body>
+
+    <!-- Header --> 
+    <header class="flex-l">
+        <a href="{% url 'home' %}">
+        <div class="logo"></div>
+        </a>
+        <a href="{% url 'home' %}">
+        <h3 class="title"><span>BELLEVUE MIS</span> LOG MANAGEMENT SYSTEM</h3>
+        </a>
+    </header>
+
+    
+
+    <!-- Content -->
+    <div class="container">
+        <div class="side-bar">  
+            <ul>
+               
+                <a href="{% url 'bulletin' %}">
+                    <li data-tab-target="#bulletin" class="active-bulletin">
+                        <i class='bx bxs-pin' ></i>
+                        <p>Bulletin</p>
+                    </li>
+                </a>
+
+                <a href="{% url 'task' %}">
+                    <li data-tab-target="#task" class="active-task">
+                        <i class='bx bx-list-ul' ></i>
+                        <p>Daily Task</p>
+                    </li>
+                </a>
+
+                <a href="{% url 'room' %}">
+                    <li data-tab-target="#room" class="active-room">
+                        <i class='bx bxs-cube'></i>
+                        <p>Room Service</p>
+                    </li>
+                </a>
+
+                <a href="{% url 'department' %}">
+                    <li data-tab-target="#department" class="active-department">
+                        <i class='bx bxs-buildings'></i>
+                        <p>Department</p>
+                    </li>
+                </a>
+
+                <a href="{% url 'utilities' %}">
+                    <li data-tab-target="#utilities" class="active-utilities">
+                        <i class='bx bxs-cog'></i>
+                        <p>MIS Utilities</p>
+                    </li>
+                </a>
+                
+            </ul>
+        </div>
+        <div class="content">
+            <div class="date-time">
+                <p>TODAY: </p>
+                <div class="d-flex">
+                    <i class='bx bx-calendar-event'></i>
+                    <p id="today"></p>
+                </div>
+                <div class="d-flex">
+                    <i class='bx bx-time'></i>
+                    <p id="time"></p>
+                </div>
+            </div>
+            <div class="tab-content">
+
+
+                {% block content %}
+
+                {% endblock content %}
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- <script src="{% static 'js/script.js' %}"></script> -->
+
+    <script>
+        // DISPLAY CURRENT DATE AND TIME
+
+        function currentTime() {
+            let date = new Date();
+            let hh = date.getHours();
+            let mm = date.getMinutes();
+            let ss = date.getSeconds();
+            let session = "AM";
+
+            if(hh === 0){
+                hh = 12;
+            }  
+            if(hh > 12){
+                hh = hh - 12;
+                session = "PM";
+            }
+
+            hh = (hh < 10) ? "0" + hh : hh;
+            mm = (mm < 10) ? "0" + mm : mm;
+            ss = (ss < 10) ? "0" + ss : ss;
+                
+            let time = hh + ":" + mm + ":" + ss + " " + session;
+
+            document.getElementById("time").innerText = time; 
+            document.getElementById("today").innerText = '16/02/2023';
+
+            let t = setTimeout(function(){ currentTime() }, 1000);
+        }
+
+        currentTime();
+    </script>
+</body>
+</html>
