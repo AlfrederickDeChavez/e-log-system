@@ -5,7 +5,7 @@
 
 <div id="task" data-tab-content class="active">
     
-    <h4>TASKS CHECKLIST</h4>
+    <h4>TASKS CHECKLIST</h4> 
     <hr>
     <br>
 
@@ -46,7 +46,7 @@
                                 </tr>
                             </thead>
                             <tbody class="task-body">
-                                {% for task in tasks %}
+                                {% for task in morning_tasks %}
                                 <tr>
                                     <td style="width: 40%;" name="task-title">{{task.title}}</td>
                                     <td style="width: 8%;"><input type="checkbox" name="task-done"></td>
@@ -63,6 +63,9 @@
                                 <label for="task-attendee">Checked by: </label>
                                 <select name="task-attendee">
                                     <option disabled hidden selected>Select Name</option>
+                                    <option value="Vasco Lewis">Vasco Lewis</option>
+                                    <option value="Falcon Cook">Falcon Cook</option>
+                                    <option value="Ocean Fox">Ocean Fox</option>
                                 </select>
                             </div>
                             <button type="submit" name="save-am-shift">Save AM shift</button>
@@ -96,7 +99,7 @@
                                 </tr>
                             </thead>
                             <tbody class="task-body">
-                                {% for task in tasks %}
+                                {% for task in evening_tasks %}
                                 <tr>
                                     <td style="width: 40%;">{{task.title}}</td>
                                     <td style="width: 8%;"><input type="checkbox" value="{{task.done}}"></td>
@@ -113,6 +116,9 @@
                                 <label for="task-attendee">Checked by: </label>
                                 <select name="task-attendee">
                                     <option disabled hidden selected>Select Name</option>
+                                    <option value="Vasco Lewis">Vasco Lewis</option>
+                                    <option value="Falcon Cook">Falcon Cook</option>
+                                    <option value="Ocean Fox">Ocean Fox</option>
                                 </select>
                             </div>
                             <button type="submit">Save PM shift</button>

@@ -43,6 +43,7 @@
             action=""
             class="date-range-container d-flex"
         >
+            <p>From</p>
             <input type="date" name="start_date" id="from-date">
             <p>To</p>
             <input type="date" name="end_date" id="to-date">
@@ -72,6 +73,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% if bulletin %}
                     {%for record in bulletin%}
                     <tr>
                     <td >{{record.date|date:"Y-m-d"}}</td>
@@ -81,6 +83,11 @@
                     <td >{{record.time}}</td>
                     </tr>
                     {%endfor%}
+                    {% else %}
+                    <tr >
+                        <td colspan="5" style="padding: 4px 0; font-weight: 500;">NO RESULTS FOUND.</td>
+                    </tr>
+                    {% endif %}
                 </tbody>
             </table>
         </div>
@@ -118,7 +125,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {%for record in guest%}
+
+                        {% if guest %}
+                        {% for record in guest %}
                         <tr>
                         <td >{{record.date|date:"Y-m-d"}}</td>
                         <td >{{record.tower}}</td>
@@ -132,7 +141,12 @@
                         <td>{{record.status}}</td>
                         <td>{{record.recommendation}}</td>
                         </tr>
-                        {%endfor%}
+                        {% endfor %}
+                        {% else %}
+                        <tr >
+                        <td colspan="11" style="padding: 4px 0; font-weight: 500;">NO RESULTS FOUND.</td>
+                        </tr>
+                        {% endif %}
                     </tbody>
                 </table>
             </div>
@@ -143,7 +157,7 @@
                     <p>Department Assistance</p>
                     <p class="record-length d-flex">{{department | length}}</p>
                 </div>
-                <button id="export-guest"> <i class='bx bxs-file-export'></i> Export to Excel</button>
+                <button id="export-department"> <i class='bx bxs-file-export'></i> Export to Excel</button>
             </div>
             <div class="table-container">
                 <table id="department-data">
@@ -163,21 +177,27 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% if department %}
                         {%for record in department%}
                         <tr>
-                        <td >{{record.date|date:"Y-m-d"}}</td>
-                        <td >{{record.department}}</td>
-                        <td >{{record.client}}</td>
-                        <td >{{record.attended_by}}</td>
-                        <td >{{record.affected_system}}</td>
-                        <td >{{record.time_reported}}</td>
-                        <td>{{record.time_resolved}}</td>
-                        <td>{{record.problem}}</td>
-                        <td>{{record.action}}</td>
-                        <td>{{record.status}}</td>
-                        <td>{{record.recommendation}}</td>
+                            <td >{{record.date|date:"Y-m-d"}}</td>
+                            <td >{{record.department}}</td>
+                            <td >{{record.client}}</td>
+                            <td >{{record.attended_by}}</td>
+                            <td >{{record.affected_system}}</td>
+                            <td >{{record.time_reported}}</td>
+                            <td >{{record.time_resolved}}</td>
+                            <td >{{record.problem}}</td>
+                            <td >{{record.action}}</td>
+                            <td >{{record.status}}</td>
+                            <td >{{record.recommendation}}</td>
                         </tr>
                         {%endfor%}
+                        {% else %}
+                        <tr >
+                            <td colspan="11" style="padding: 4px 0; font-weight: 500;">NO RESULTS FOUND.</td>
+                        </tr>
+                        {% endif %}
                     </tbody>
                 </table>
             </div>
@@ -215,14 +235,14 @@
     }
 
     .record-length {
-        width: 1.8rem;
+        width: auto;
         height: 1.8rem;
         background-color: rgb(77, 74, 74);
         color: white;
+        padding: 1rem;
         margin-left: 1rem;
         font-size: 0.9rem;
-        border-radius: 50%;
-       
+        border-radius: 3px;
     }
 
 </style>
@@ -241,6 +261,30 @@
         var file = XLSX.utils.table_to_book(data, {sheet: "sheet1"});
         XLSX.write(file, { bookType: dtype, bookSST: true, type: 'base64' });
         XLSX.writeFile(file, `bulletin-table.` + dtype);
+
+    });
+
+    // EXPORT GUEST INCIDENT REPORT
+
+    const export_guest = document.getElementById('export-guest');
+    export_guest.addEventListener('click', () =>  {
+        let dtype = 'xlsx'
+        var data = document.getElementById('guest-data');
+        var file = XLSX.utils.table_to_book(data, {sheet: "sheet1"});
+        XLSX.write(file, { bookType: dtype, bookSST: true, type: 'base64' });
+        XLSX.writeFile(file, `guest-table.` + dtype);
+
+    });
+
+    // EXPORT DEPARTMENT INCIDENT REPORT
+
+    const export_department = document.getElementById('export-department');
+    export_department.addEventListener('click', () =>  {
+        let dtype = 'xlsx'
+        var data = document.getElementById('guest-data');
+        var file = XLSX.utils.table_to_book(data, {sheet: "sheet1"});
+        XLSX.write(file, { bookType: dtype, bookSST: true, type: 'base64' });
+        XLSX.writeFile(file, `department-table.` + dtype);
 
     });
 

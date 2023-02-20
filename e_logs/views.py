@@ -3,15 +3,12 @@ from django.http import HttpResponse
 from .models import Bulletin, Guest, Department
 from django.db.models import Q
 
-from .tasks import tasks
+from .tasks import *
 
 
 def bulletin(request):
 
-    department_data = Department.objects.all().order_by('-date')
-    guest = Guest.objects.all().order_by('-date')
-
-
+    
     # FILTERING TABLE RECORDS BASED ON SEARCH VALUES
 
     if request.method == "GET" and 'query' in request.GET:
@@ -21,6 +18,29 @@ def bulletin(request):
             Q(priority__icontains=q) |
             Q(details__icontains=q)
         ).order_by('-date')
+
+        guest = Guest.objects.filter(
+            Q(tower__icontains=q) |
+            Q(room__icontains=q) |
+            Q(affected_system__icontains=q) |
+            Q(attended_by__icontains=q) |
+            Q(problem__icontains=q) |
+            Q(action__icontains=q) |
+            Q(recommendation__icontains=q) |
+            Q(status__icontains=q) 
+        ).order_by('-date')
+
+        department = Department.objects.filter(
+            Q(department__icontains=q) |
+            Q(client__icontains=q) |
+            Q(affected_system__icontains=q) |
+            Q(attended_by__icontains=q) |
+            Q(problem__icontains=q) |
+            Q(action__icontains=q) |
+            Q(recommendation__icontains=q) |
+            Q(status__icontains=q) 
+        ).order_by('-date')
+
 
 
     # FILTERING TABLE RECORDS BASED ON DATE RANGE
@@ -33,25 +53,36 @@ def bulletin(request):
             Q(date__gte=start_date, date__lte=end_date) 
         ).order_by('-date')
 
+        guest = Guest.objects.filter(
+            Q(date__gte=start_date, date__lte=end_date) 
+        ).order_by('-date')
+
+        department = Department.objects.filter(
+            Q(date__gte=start_date, date__lte=end_date) 
+        ).order_by('-date')
+
     # NO FILTER OR GET METHOD -- DEFAULT VALUE
         
     else:
         bulletin = Bulletin.objects.all().order_by('-date')
+        department = Department.objects.all().order_by('-date')
+        guest = Guest.objects.all().order_by('-date')
 
-    context = {'bulletin': bulletin, 'guest': guest, 'department': department_data}
+    context = {'bulletin': bulletin, 'guest': guest, 'department': department}
 
     return render(request, 'e_logs/bulletin.html', context)
 
 
 def task(request): 
 
+    #RETRIEVE AM SHIFT RECORDS
     if request.method == "GET" and "save-am-shift" in request.GET:
         print(request.GET)
 
-    context = {'tasks': tasks}
+
+    context = {'morning_tasks': morning_tasks, 'evening_tasks': evening_tasks}
 
     return render(request, 'e_logs/task.html', context)
-
 
 def room_service(request):
 
@@ -70,7 +101,7 @@ def room_service(request):
         status = request.POST.get("status")
         action = request.POST.get("action")
         recommendation = request.POST.get("recommendation")
-
+ 
         room = Guest.objects.create(
             tower=tower,
             room=room,

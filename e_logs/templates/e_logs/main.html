@@ -98,6 +98,7 @@
     <!-- <script src="{% static 'js/script.js' %}"></script> -->
 
     <script>
+        
         // DISPLAY CURRENT DATE AND TIME
 
         function currentTime() {
@@ -122,12 +123,17 @@
             let time = hh + ":" + mm + ":" + ss + " " + session;
 
             document.getElementById("time").innerText = time; 
-            document.getElementById("today").innerText = '16/02/2023';
-
             let t = setTimeout(function(){ currentTime() }, 1000);
         }
 
         currentTime();
+
+        // CURRENT DATE 
+        let today = new Date()
+        let day = `${today.getDate() < 10 ? "0" : ""}${today.getDate()}`
+        let month = `${today.getMonth() < 10 ? "0" : ""}${today.getMonth() + 1}`
+        let year = today.getFullYear()
+        document.getElementById("today").innerText = `${day}/${month}/${year}`;
     </script>
 </body>
 </html>

@@ -13,7 +13,7 @@
     --dark-gold: #9b7b32;
 
 }
-
+ 
 * {
     margin: 0;
     padding: 0;
@@ -21,7 +21,6 @@
 }
 
 body {
-    position: relative;
     font-size: 16px;
     font-family: 'Poppins', san-serif;
     min-height: 100vh;
@@ -55,8 +54,7 @@ header {
     justify-content: flex-start;
     box-shadow: 0 4px 15px rgba(0, 0,0, 0.25);
     padding: 15px 0;
-    position: sticky;
-    top: 0;
+  
 }
 
 
@@ -275,7 +273,6 @@ header a h3{
 }
 
 .table-container {
-    width: auto;
     height: 15rem;
     overflow: scroll;
     position: relative;
@@ -328,7 +325,7 @@ table {
 
 thead {
     background-color: var(--gold);
-    border: 1px solid var(--stroke);
+    border: 3px solid var(--stroke);
     padding: 0.4rem;
     position: sticky;
     top: 0;
@@ -382,13 +379,12 @@ tbody tr td {
     border: 1px solid var(--stroke);
     background-color: var(--lighter-bg);
     margin-top: 0.5rem;
-    padding: 1rem 3rem;
+    padding: 1rem;
 }
  
 .bulletin-form-top {
     display: flex;
     margin-bottom: 1.5rem;
-
 }
 
 .bulletin-form, .room-form {

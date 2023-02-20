@@ -23,26 +23,32 @@
                             Tower
                         </label>
                         <select name="tower">
-                            <option value="Main">Main</option>
-                            <option value="Tower">Tower</option>
+                            <option disable hidden selected>Select location</option>
+                            <option value="TBM MW">TBM MW</option>
+                            <option value="TBM TW">TBM TW</option>
+                            <option value="BHOTEL">BHOTEL</option>
                         </select>
                     </div>
                     <div class="client-info-group">
                         <label for="room">
                             Room
                         </label>
-                        <input type="text" name="room">
+                        <input type="number" name="room" placeholder="#">
                     </div>
                 </div>
                 <div class="author-info">
                     <label for="system">Affected System:</label>
                     <select name="system" id="system">
-                        <option value="Television">Television</option>
-                        <option value="Wifi">Wifi</option>
-                        <option value="Computer">Computer</option>
+                        <option disable hidden selected>Select system</option>
+                        <option value="Internet">Internet</option>
+                        <option value="Cable">Cable</option>
+                        <option value="TV/DVD Player">TV/DVD Player</option>
+                        <option value="Telephone">Telephone</option>
+                        <option value="Vingcard">Vingcard</option>
                     </select>
                     <label for="attendee">Attended by:</label>
                     <select name="attendee" id="system">
+                        <option disable hidden selected>Select name</option>
                         <option value="Juan Dela Cruz">Juan Dela Cruz</option>
                         <option value="Daniel">Daniel</option>
                         <option value="Lebron James">Lebron James</option>
