@@ -28,6 +28,14 @@
                             <option value="MIS">MIS</option>
                             <option value="Finance">Finance</option>
                             <option value="Production">Production</option>
+                            <option value="Sales and Marketing">Sales and Marketing</option>
+                            <option value="Front Office">Front Office</option>
+                            <option value="Executive Office">Executive Office</option>
+                            <option value="Phoenix Court">Phoenix Court</option>
+                            <option value="Housekeeping">Housekeeping</option>
+                            <option value="Reservation">Reservation</option>
+                            <option value="Security">Security</option>
+                            <option value="Executive Chef/Kitchen">Executive Chef/Kitchen</option>
                         </select>
                     </div>
                     <div class="client-info-group">
@@ -50,9 +58,10 @@
                     <label for="attendee">Attended by:</label>
                     <select name="attendee" id="attendee">
                         <option disabled hidden selected>Select name</option>
-                        <option value="Television">Television</option>
-                        <option value="Wifi">Wifi</option>
-                        <option value="Computer">Computer</option>
+                        <option value="Jeff">Jeff</option>
+                        <option value="Mark">Mark</option>
+                        <option value="Fernand">Fernand</option>
+                        <option value="Roy">Roy</option>
                     </select>
                 </div>
                 <div class="time-info">
@@ -149,6 +158,11 @@
     width: 100%;
     padding: 0.3rem 0.5rem;
 
+}
+
+select > option {
+    padding: 4px 0;
+    cursor: pointer;
 }
 
 

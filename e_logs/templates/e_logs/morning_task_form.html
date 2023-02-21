@@ -1,0 +1,9 @@
+<tbody class="task-body">
+    {% for task in morning_tasks %}
+    <tr>
+        <td style="width: 40%;" name="task-title">{{task.title}}</td>
+        <td style="width: 12%;">{{morning_form.t_lits}}</td>
+        <td style="width: 40%;">{{morning_form.r_lits}}</td>
+    </tr>
+    {% endfor %}
+</tbody> 

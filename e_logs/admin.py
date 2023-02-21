@@ -5,3 +5,5 @@ from . import models
 admin.site.register(models.Bulletin)
 admin.site.register(models.Guest)
 admin.site.register(models.Department)
+admin.site.register(models.EveningTask)
+admin.site.register(models.MorningTask)

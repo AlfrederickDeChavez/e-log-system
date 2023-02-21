@@ -10,131 +10,117 @@
     <br>
 
     <div class="page">
-    
-    <!-- Navigation for Morning Shift Task Checklist and Evening Shift Task Checklist -->
-    <div class="task-tabs">
-        <div class="task-tab active-task" data-link-task="#morning">Morning Shift</div>
-        <div class="task-tab" data-link-task="#evening">Evening Shift</div>
-    </div>
 
-    <!-- Task Contents -->
-    <div class="task-contents">
-
-
-        <!-- Morning Task Checklist Tab -->
-        <div class="active-task-content" data-link-content id="morning">
-
-            <!-- Retrieve data from the backend - Filter by date -->
-            <div class="retrieve">
-                <form action="" method="GET" class="retrieve-form">
-                    <input type="date" name="morning_shift_date">
-                    <button type="submit">Retrieve AM data</button>
-                </form>
-                <div class="task-table-container">
-                    <form 
-                        action=""
-                        method="GET"
-                    >
-                        <!-- Morning Task Checklist Table -->
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Tasks</th>
-                                    <th>Done</th>
-                                    <th>Time</th>
-                                    <th>Remarks</th>
-                                </tr>
-                            </thead>
-                            <tbody class="task-body">
-                                {% for task in morning_tasks %}
-                                <tr>
-                                    <td style="width: 40%;" name="task-title">{{task.title}}</td>
-                                    <td style="width: 8%;"><input type="checkbox" name="task-done"></td>
-                                    <td style="width: 12%;"><input type="time" name="task-time"></td>
-                                    <td style="width: 40%;"><input type="text"  name="task-remark"></td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-
-                        <!-- Submit Group -->
-                        <div class="task-form-submit">
-                            <div class="task-form-group">
-                                <label for="task-attendee">Checked by: </label>
-                                <select name="task-attendee">
-                                    <option disabled hidden selected>Select Name</option>
-                                    <option value="Vasco Lewis">Vasco Lewis</option>
-                                    <option value="Falcon Cook">Falcon Cook</option>
-                                    <option value="Ocean Fox">Ocean Fox</option>
-                                </select>
-                            </div>
-                            <button type="submit" name="save-am-shift">Save AM shift</button>
-                        </div>
-                        
-    
-                    </form>
-                </div>
-            </div>
+        <!-- Navigation for Morning Shift Task Checklist and Evening Shift Task Checklist -->
+        <div class="task-tabs">
+            <div class="task-tab active-task" data-link-task="#morning">Morning Shift</div>
+            <div class="task-tab" data-link-task="#evening">Evening Shift</div>
         </div>
 
+        <!-- Task Contents -->
+        <div class="task-contents">
 
-        <!-- Evening Task Checklist Tab -->
-        <div class="evening" data-link-content id="evening">
-            <div class="retrieve">
-                <form action="" method="GET" class="retrieve-form">
-                    <input type="date" name="evening_shift_date">
-                    <button type="submit">Retrieve PM data</button>
-                </form>
-                <div class="task-table-container">
-                    <form action="">
 
-                        <!-- Evening Task Checklist Table -->
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Tasks</th>
-                                    <th>Done</th>
-                                    <th>Time</th>
-                                    <th>Remarks</th>
-                                </tr>
-                            </thead>
-                            <tbody class="task-body">
-                                {% for task in evening_tasks %}
-                                <tr>
-                                    <td style="width: 40%;">{{task.title}}</td>
-                                    <td style="width: 8%;"><input type="checkbox" value="{{task.done}}"></td>
-                                    <td style="width: 12%;"><input type="time" value={{task.time}}></td>
-                                    <td style="width: 40%;"><input type="text" value={{task.remarks}} ></td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+            <!-- Morning Task Checklist Tab -->
+            <div class="active-task-content" data-link-content id="morning">
 
-                        <!-- Submit Group -->
-                        <div class="task-form-submit">
-                            <div class="task-form-group">
-                                <label for="task-attendee">Checked by: </label>
-                                <select name="task-attendee">
-                                    <option disabled hidden selected>Select Name</option>
-                                    <option value="Vasco Lewis">Vasco Lewis</option>
-                                    <option value="Falcon Cook">Falcon Cook</option>
-                                    <option value="Ocean Fox">Ocean Fox</option>
-                                </select>
-                            </div>
-                            <button type="submit">Save PM shift</button>
-                        </div>
-                        
-                        
+                <div class="retrieve">
+                    <form action="" method="GET" class="retrieve-form">
+                        <input type="date" name="morning_shift_date">
+                        <button type="submit" name="retrieve-am">Retrieve AM data</button>
                     </form>
+                    <div class="task-table-container">
+                        <form 
+                            action=""
+                            method="POST"
+                        >
+
+                            {% csrf_token%}
+
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Tasks</th>
+                                        <th>Time</th>
+                                        <th>Remarks</th>
+                                    </tr>
+                                </thead>
+
+                                {% include 'e_logs/morning_task_form.html' %}
+                                
+                            </table>
+
+                            <div class="task-form-submit">
+                                <div class="task-form-group">
+                                    <label for="task-attendee">Checked by: </label>
+                                    <select name="checked_by">
+                                        <option disabled hidden selected>Select Name</option>
+                                        <option value="Jeff">Jeff</option>
+                                        <option value="Mark">Mark</option>
+                                        <option value="Fernand">Fernand</option>
+                                        <option value="Roy">Roy</option>
+                                    </select>
+                                </div>
+                                <button type="submit" name="save-am-shift">Save AM shift</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Evening Task Checklist Tab -->
+            <div class="evening" data-link-content id="evening">
+                <div class="retrieve">
+                    <form action="" method="GET" class="retrieve-form">
+                        <input type="date" name="evening_shift_date">
+                        <button type="submit" name="retrieve-pm">Retrieve PM data</button>
+                    </form>
+                    <div class="task-table-container">
+                        <form action=""
+                            method="POST"
+                        >
+                            {% csrf_token %}
+
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Tasks</th>
+                                        <th>Time</th>
+                                        <th>Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="task-body">
+                                    {% for task in evening_tasks %}
+                                    <tr>
+                                        <td style="width: 40%;">{{task.title}}</td>
+                                        <td style="width: 12%;"><input type="time" name={{task.time}}></td>
+                                        <td style="width: 40%;"><input type="text" name={{task.remarks}}></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+
+                            <div class="task-form-submit">
+                                <div class="task-form-group">
+                                    <label for="task-attendee">Checked by: </label>
+                                    <select name="checked_by">
+                                        <option disabled hidden selected>Select Name</option>
+                                        <option value="Jeff">Jeff</option>
+                                        <option value="Mark">Mark</option>
+                                        <option value="Fernand">Fernand</option>
+                                        <option value="Roy">Roy</option>
+                                    </select>
+                                </div>
+                                <button type="submit" name="save-pm-shift">Save PM shift</button>
+                            </div>  
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-</div>
-
-
-
 
 <!-- STYLES -->
 
@@ -197,7 +183,11 @@
         margin-bottom: 5rem;
     }
 
-    
+    .task-body input[type="text"]:focus {
+        border: none;
+        outline: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+    }
 
     .retrieve-form {
         width: 100%;
@@ -247,11 +237,12 @@
     }
 
     .task-body input[type="text"] {
-        width: 90%;
+        width: 95%;
         font-size: 0.8rem;
         border: none;
         background: none;
         border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        padding: 0;
     }
 
     .task-body input[type="checkbox"] {
@@ -291,6 +282,10 @@
         width: 60%;
     }
 
+    thead {
+        position: relative !important;
+    }
+
 </style>
 
 <script>
@@ -315,6 +310,7 @@
             target.classList.add('active-task-content')
         })
     })
+
 </script>
 
 {% endblock content %}

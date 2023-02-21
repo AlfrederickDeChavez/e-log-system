@@ -1,14 +1,13 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Bulletin, Guest, Department
+from .models import Bulletin, Guest, Department, EveningTask, MorningTask
 from django.db.models import Q
-
+from .forms import MorningTaskForm, EveningTaskForm
 from .tasks import *
 
 
 def bulletin(request):
 
-    
     # FILTERING TABLE RECORDS BASED ON SEARCH VALUES
 
     if request.method == "GET" and 'query' in request.GET:
@@ -75,18 +74,61 @@ def bulletin(request):
 
 def task(request): 
 
-    #RETRIEVE AM SHIFT RECORDS
-    if request.method == "GET" and "save-am-shift" in request.GET:
-        print(request.GET)
+    morning_form = MorningTaskForm()
+    evening_form = EveningTaskForm()
 
+    #SAVE AM SHIFT RECORDS
 
-    context = {'morning_tasks': morning_tasks, 'evening_tasks': evening_tasks}
+    if request.method == "POST" and "save-am-shift" in request.POST:
+
+        form = MorningTaskForm(request.POST)
+        if form.is_valid():
+            form.save()
+            print('Form Saved')
+        else: 
+            print(form.errors)
+
+        return redirect('task')
+    
+
+    # RETRIEVE AM SHIFT RECORDS
+    if request.method == "GET" and "retrieve-am" in request.GET:
+        task = MorningTask.objects.filter(
+            Q(date=request.GET.get('morning_shift_date'))
+        )[0]
+
+        morning_form = MorningTaskForm(instance=task)
+
+    # SAVE EVENING SHIFT RECORDS
+    if request.method == "POST" and "save-pm-shift" in request.POST:
+
+        form = EveningTaskForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            print('Form saved')
+        else:
+            print('Failed to add am records')
+            print(form.errors)
+        
+        return redirect('task')
+
+    if request.method == "GET" and 'retrieve-pm-shift' in request.GET:
+        task = EveningTask.objects.filter(
+            Q(date=request.GET.get('evening_shift_date'))
+        )[0]
+
+        evening_form = EveningTaskForm(instance=task)
+
+    context = {
+        'morning_tasks': morning_tasks, 
+        'evening_tasks': evening_tasks, 
+        'morning_form': morning_form
+    }
 
     return render(request, 'e_logs/task.html', context)
 
 def room_service(request):
-
-    # ROOM INPUT
 
     # POST ROOM INCIDENT REPORT 
 
@@ -114,7 +156,6 @@ def room_service(request):
             action=action,
             recommendation=recommendation
         )
-
 
         return redirect('bulletin')
 
@@ -160,8 +201,6 @@ def department_service(request):
 
 def utilities(request):
 
-    # BULLETIN INPUT 
-
     # POST BULLETIN RECORDS
 
     if request.method == 'POST' and 'bulletin-form' in request.POST:
@@ -175,45 +214,5 @@ def utilities(request):
 
     return render(request, 'e_logs/utilities.html')
     
-
-
-
-###### ORIGINAL VIEW -- MODIFIED
-
-
-# def home(request):
-
-#     # FILTER THE RECORDS - VIA SEARCH OR DATE RANGE
-
-#     q = request.GET.get('search') if request.GET.get('search') != None else ''
-    
-
-#     if request.method == "GET" and 'query' in request.GET:
-#         bulletin = Bulletin.objects.filter(
-#             Q(author__icontains=q) |
-#             Q(priority__icontains=q) |
-#             Q(details__icontains=q)
-#         ).order_by('-date')
-        
-#     elif request.method == "GET" and 'refresh' in request.GET:
-
-#         start_date = request.GET.get('start_date')
-#         end_date = request.GET.get('end_date')
-#         bulletin = Bulletin.objects.filter(
-#             Q(date__gte=start_date, date__lte=end_date) 
-#         ).order_by('-date')
-        
-#     else:
-#         bulletin = Bulletin.objects.all().order_by('-date')
-
-
-#     context = {'bulletin': bulletin, 'guest': guest, 'department': department_data, 'tasks': tasks}
-
-#     return render(request, 'e_logs/main.html', context)
-
-
-
-
-
 
 
