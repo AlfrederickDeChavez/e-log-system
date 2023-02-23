@@ -52,16 +52,15 @@
 
                             <div class="task-form-submit">
                                 <div class="task-form-group">
-                                    <label for="task-attendee">Checked by: </label>
-                                    <select name="checked_by">
-                                        <option disabled hidden selected>Select Name</option>
-                                        <option value="Jeff">Jeff</option>
-                                        <option value="Mark">Mark</option>
-                                        <option value="Fernand">Fernand</option>
-                                        <option value="Roy">Roy</option>
-                                    </select>
+                                    <label for="checked_by">Checked by: </label>
+                                    {{morning_form.checked_by}}
                                 </div>
-                                <button type="submit" name="save-am-shift">Save AM shift</button>
+
+                                {% if show_morning_update %}
+                                    <button type="submit" name="update-morning">Update Record</button>
+                                {% else %}
+                                    <button type="submit" name="save-am-shift">Save AM Shift</button>
+                                {% endif %}
                             </div>
                         </form>
                     </div>
@@ -90,29 +89,21 @@
                                         <th>Remarks</th>
                                     </tr>
                                 </thead>
-                                <tbody class="task-body">
-                                    {% for task in evening_tasks %}
-                                    <tr>
-                                        <td style="width: 40%;">{{task.title}}</td>
-                                        <td style="width: 12%;"><input type="time" name={{task.time}}></td>
-                                        <td style="width: 40%;"><input type="text" name={{task.remarks}}></td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
+
+                                {% include 'e_logs/evening_task_form.html' %}
+                               
                             </table>
 
                             <div class="task-form-submit">
                                 <div class="task-form-group">
                                     <label for="task-attendee">Checked by: </label>
-                                    <select name="checked_by">
-                                        <option disabled hidden selected>Select Name</option>
-                                        <option value="Jeff">Jeff</option>
-                                        <option value="Mark">Mark</option>
-                                        <option value="Fernand">Fernand</option>
-                                        <option value="Roy">Roy</option>
-                                    </select>
+                                    {{ evening_form.checked_by}}
                                 </div>
-                                <button type="submit" name="save-pm-shift">Save PM shift</button>
+                                {% if show_evening_update %}
+                                    <button type="submit" name="update-evening">Update Record</button>
+                                {% else %}
+                                    <button type="submit" name="save-pm-shift">Save PM shift</button>
+                                {% endif %}
                             </div>  
                         </form>
                     </div>
@@ -236,7 +227,7 @@
         padding: 0 3px;
     }
 
-    .task-body input[type="text"] {
+    input[type="text"] {
         width: 95%;
         font-size: 0.8rem;
         border: none;
@@ -284,6 +275,10 @@
 
     thead {
         position: relative !important;
+    }
+
+    .tac {
+        text-align: center;
     }
 
 </style>

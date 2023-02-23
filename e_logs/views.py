@@ -76,6 +76,8 @@ def task(request):
 
     morning_form = MorningTaskForm()
     evening_form = EveningTaskForm()
+    update_morning_data = False
+    update_evening_data = False
 
     #SAVE AM SHIFT RECORDS
 
@@ -96,8 +98,28 @@ def task(request):
         task = MorningTask.objects.filter(
             Q(date=request.GET.get('morning_shift_date'))
         )[0]
-
         morning_form = MorningTaskForm(instance=task)
+        update_morning_data = True
+
+
+    # UPDATE MORNING RECORDS 
+    if request.method == "POST" and "update-morning" in request.POST:
+        date = request.get_full_path().split('?')[1].split('&')[0].split('=')[1]
+        task = MorningTask.objects.filter(
+            Q(date=date)
+        )[0]
+
+        form = MorningTaskForm(request.POST, instance=task)
+
+        if form.is_valid():
+            form.save()
+        else:
+            print(form.errors)
+
+        # return redirect('task')
+        print(task)
+        print(date)
+        
 
     # SAVE EVENING SHIFT RECORDS
     if request.method == "POST" and "save-pm-shift" in request.POST:
@@ -113,17 +135,41 @@ def task(request):
         
         return redirect('task')
 
-    if request.method == "GET" and 'retrieve-pm-shift' in request.GET:
+    
+    # RETRIEVE EVENING RECORDS
+    if request.method == "GET" and 'retrieve-pm' in request.GET:
         task = EveningTask.objects.filter(
             Q(date=request.GET.get('evening_shift_date'))
         )[0]
 
         evening_form = EveningTaskForm(instance=task)
+        update_evening_data = True
+
+
+    # UPDATE EVENING RECORDS 
+    if request.method == "POST" and "update-evening" in request.POST:
+        date = request.get_full_path().split('?')[1].split('&')[0].split('=')[1]
+        task = EveningTask.objects.filter(
+            Q(date=date)
+        )[0]
+
+        form = EveningTaskForm(request.POST, instance=task)
+
+        if form.is_valid():
+            form.save()
+            print('Form Save')
+        else:
+            print(form.errors)
+
+        return redirect('task')
 
     context = {
         'morning_tasks': morning_tasks, 
         'evening_tasks': evening_tasks, 
-        'morning_form': morning_form
+        'morning_form': morning_form,
+        'evening_form': evening_form,
+        'show_morning_update': update_morning_data,
+        'show_evening_update': update_evening_data
     }
 
     return render(request, 'e_logs/task.html', context)

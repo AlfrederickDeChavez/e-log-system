@@ -1,9 +1,133 @@
+
+
 <tbody class="task-body">
-    {% for task in morning_tasks %}
     <tr>
-        <td style="width: 40%;" name="task-title">{{task.title}}</td>
-        <td style="width: 12%;">{{morning_form.t_lits}}</td>
+        <td style="width: 40%;" name="task-title">Login Time in Schedule</td>
+        {% if show_morning_update %}
+            <td style="width: 12%;">{{morning_form.t_lits}}</td>
+        {% else %}
+            <td style="width: 12%;"><input type="time" step="1" name="t_lits"></td>
+        {% endif %}
         <td style="width: 40%;">{{morning_form.r_lits}}</td>
     </tr>
-    {% endfor %}
+
+    <tr>
+        <td style="width: 40%;" name="task-title">Check Interfaces Server Status</td>
+        {% if show_morning_update %}
+            <td style="width: 12%;">{{morning_form.t_ciss}}</td>
+        {% else %}
+            <td style="width: 12%;"><input type="time" step="1" name="t_ciss"></td>
+        {% endif %}
+        <td style="width: 40%;">{{morning_form.r_ciss}}</td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%;" name="task-title">Check All Server Status</td>
+        {% if show_morning_update %}
+            <td style="width: 12%;">{{morning_form.t_cass}}</td>
+        {% else %}
+            <td style="width: 12%;"><input type="time" step="1" name="t_cass"></td>
+        {% endif %}
+        <td style="width: 40%;">{{morning_form.r_cass}}</td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%;" name="task-title">Check Event Board Update</td>
+        {% if show_morning_update %}
+            <td style="width: 12%;">{{morning_form.t_cebu}}</td>
+        {% else %}
+            <td style="width: 12%;"><input type="time" step="1" name="t_cebu"></td>
+        {% endif %}
+        <td style="width: 40%;">{{morning_form.r_cebu}}</td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%;" name="task-title">Backup Opera on App Servers</td>
+        {% if show_morning_update %}
+            <td style="width: 12%;">{{morning_form.t_boas}}</td>
+        {% else %}
+            <td style="width: 12%;"><input type="time" step="1" name="t_boas"></td>
+        {% endif %}
+        <td style="width: 40%;">{{morning_form.r_boas}}</td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%;" name="task-title">Check Wifi Requirements From Guests Events</td>
+        {% if show_morning_update %}
+            <td style="width: 12%;">{{morning_form.t_cwrge}}</td>
+        {% else %}
+            <td style="width: 12%;"><input type="time" step="1" name="t_cwrge"></td>
+        {% endif %}
+        <td style="width: 40%;">{{morning_form.r_cwrge}}</td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%;" name="task-title">Update Tower Ballroom Event Board</td>
+        {% if show_morning_update %}
+            <td style="width: 12%;">{{morning_form.t_utbeb}}</td>
+        {% else %}
+            <td style="width: 12%;"><input type="time" step="1" name="t_utbeb"></td>
+        {% endif %}
+        <td style="width: 40%;">{{morning_form.r_utbeb}}</td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%;" name="task-title">Antlab Users and Login Count in Bandwidth Usage</td>
+        {% if show_morning_update %}
+            <td style="width: 12%;">{{morning_form.t_alicbu}}</td>
+        {% else %}
+            <td style="width: 12%;"><input type="time" step="1" name="t_alicbu"></td>
+        {% endif %}
+        <td style="width: 40%;">{{morning_form.r_alicbu}}</td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%;" name="task-title">Check Email for Updates</td>
+        {% if show_morning_update %}
+            <td style="width: 12%;">{{morning_form.t_ceu}}</td>
+        {% else %}
+            <td style="width: 12%;"><input type="time" step="1" name="t_ceu"></td>
+        {% endif %}
+        <td style="width: 40%;">{{morning_form.r_ceu}}</td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%;" name="task-title">Check DM's Log</td>
+        {% if show_morning_update %}
+            <td style="width: 12%;">{{morning_form.t_cdl}}</td>
+        {% else %}
+            <td style="width: 12%;"><input type="time" step="1" name="t_cdl"></td>
+        {% endif %}
+        <td style="width: 40%;">{{morning_form.r_cdl}}</td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%;" name="task-title">Check VOIP Test for IDD Calls</td>
+        {% if show_morning_update %}
+            <td style="width: 12%;">{{morning_form.t_cvti}}</td>
+        {% else %}
+            <td style="width: 12%;"><input type="time" step="1" name="t_cvti"></td>
+        {% endif %}
+        <td style="width: 40%;">{{morning_form.r_cvti}}</td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%;" name="task-title">Check Philips PMS Connection</td>
+        {% if show_morning_update %}
+            <td style="width: 12%;">{{morning_form.t_cppc}}</td>
+        {% else %}
+            <td style="width: 12%;"><input type="time" step="1" name="t_cppc"></td>
+        {% endif %}
+        <td style="width: 40%;">{{morning_form.r_cppc}}</td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%;" name="task-title">Check Cable Reception on Guest TV</td>
+        {% if show_morning_update %}
+            <td style="width: 12%;">{{morning_form.t_ccrgt}}</td>
+        {% else %}
+            <td style="width: 12%;"><input type="time" step="1" name="t_ccrgt"></td>
+        {% endif %}
+        <td style="width: 40%;">{{morning_form.r_ccrgt}}</td>
+    </tr>
 </tbody> 

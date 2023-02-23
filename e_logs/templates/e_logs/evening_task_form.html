@@ -1,0 +1,104 @@
+<tbody class="task-body">
+    <tr>
+        <td style="width: 40%;">Disk Size of Opera Backup Drive D:</td>
+        {% if show_evening_update %}
+            <td style="width: 12%;">{{evening_form.t_dsob}}</td>
+        {% else %}
+            <td style="width: 12%;"><input type="time" step="1" name="t_dsob"></td>
+        {% endif %}
+        <td style="width: 40%;">{{evening_form.r_dsob}}</td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%;">Check Email for Updates</td>
+        {% if show_evening_update %}
+            <td style="width: 12%;">{{evening_form.t_ceu}}</td>
+        {% else %}
+            <td style="width: 12%;"><input type="time" step="1" name="t_ceu"></td>
+        {% endif %}
+        <td style="width: 40%;">{{evening_form.r_ceu}}</td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%;">Check All Server Status</td>
+        {% if show_evening_update %}
+            <td style="width: 12%;">{{evening_form.t_cass}}</td>
+        {% else %}
+            <td style="width: 12%;"><input type="time" step="1" name="t_cass"></td>
+        {% endif %}
+        <td style="width: 40%;">{{evening_form.r_cass}}</td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%;">Update Event Board Updates</td>
+
+        {% if show_evening_update %}
+            <td style="width: 12%;">{{evening_form.t_uebu}}</td>
+        {% else %}
+            <td style="width: 12%;"><input type="time" step="1" name="t_uebu"></td>
+        {% endif %}
+
+        <td style="width: 40%;">{{evening_form.r_uebu}}</td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%;">Antlabs and Logged In Count with Bandwidth Usage</td>
+        {% if show_evening_update %}
+            <td style="width: 12%;">{{evening_form.t_alicbu}}</td>
+        {% else %}
+            <td style="width: 12%;"><input type="time" step="1" name="t_alicbu"></td>
+        {% endif %}
+        <td style="width: 40%;">{{evening_form.r_alicbu}}</td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%;">Check Interface Server Status</td>
+        {% if show_evening_update %}
+            <td style="width: 12%;">{{evening_form.t_ciss}}</td>
+        {% else %}
+            <td style="width: 12%;"><input type="time" step="1" name="t_ciss"></td>
+        {% endif %}
+        <td style="width: 40%;">{{evening_form.r_ciss}}</td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%;">Check PMS Server Status</td>
+        {% if show_evening_update %}
+            <td style="width: 12%;">{{evening_form.t_cpss}}</td>
+        {% else %}
+            <td style="width: 12%;"><input type="time" step="1" name="t_cpss"></td>
+        {% endif %}
+        <td style="width: 40%;">{{evening_form.r_cpss}}</td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%;">Check Cable Reception on Guest TV</td>
+        {% if show_evening_update %}
+            <td style="width: 12%;">{{evening_form.t_ccrgt}}</td>
+        {% else %}
+            <td style="width: 12%;"><input type="time" step="1" name="t_ccrgt"></td>
+        {% endif %}
+        <td style="width: 40%;">{{evening_form.r_ccrgt}}</td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%;">Check VOIP Test for IDD</td>
+        {% if show_evening_update %}
+            <td style="width: 12%;">{{evening_form.t_cvti}}</td>
+        {% else %}
+            <td style="width: 12%;"><input type="time" step="1" name="t_cvti"></td>
+        {% endif %}
+        <td style="width: 40%;">{{evening_form.r_cvti}}</td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%;">Log Time Out Schedule</td>
+        {% if show_evening_update %}
+            <td style="width: 12%;">{{evening_form.t_ltos}}</td>
+        {% else %}
+            <td style="width: 12%;"><input type="time" step="1" name="t_ltos"></td>
+        {% endif %}
+        <td style="width: 40%;">{{evening_form.r_ltos}}</td>
+    </tr>
+
+</tbody>
