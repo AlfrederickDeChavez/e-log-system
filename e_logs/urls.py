@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import bulletin, room_service, department_service, utilities, task
+from .views import bulletin, room_service, department_service, utilities, task, not_found
 
 
 urlpatterns = [
@@ -8,5 +8,6 @@ urlpatterns = [
     path('tasks/', task, name='task'),
     path('room-service/', room_service, name='room'),
     path('department-service/', department_service, name='department'),
-    path('mis-utilities/', utilities, name='utilities')
+    path('mis-utilities/', utilities, name='utilities'),
+    path('404-record-not-found/', not_found, name='not_found')
 ]

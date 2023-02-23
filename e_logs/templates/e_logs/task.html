@@ -25,7 +25,11 @@
             <div class="active-task-content" data-link-content id="morning">
 
                 <div class="retrieve">
+                   
                     <form action="" method="GET" class="retrieve-form">
+                        {%if show_morning_update%}
+                            <h5 style="font-size: 0.9rem; font-weight: 600; color: rgba(0, 0, 0, 0.7); margin-right: 5rem;">{{task.date}} - {{task.checked_by}}</h5>
+                        {%endif%}
                         <input type="date" name="morning_shift_date">
                         <button type="submit" name="retrieve-am">Retrieve AM data</button>
                     </form>
@@ -187,6 +191,7 @@
         justify-content: flex-end;
         height: 2rem;
         margin-bottom: 1rem;
+
     }
 
     .retrieve-form input {

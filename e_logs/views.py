@@ -78,6 +78,7 @@ def task(request):
     evening_form = EveningTaskForm()
     update_morning_data = False
     update_evening_data = False
+    retrieved_task = None
 
     #SAVE AM SHIFT RECORDS
 
@@ -95,11 +96,16 @@ def task(request):
 
     # RETRIEVE AM SHIFT RECORDS
     if request.method == "GET" and "retrieve-am" in request.GET:
-        task = MorningTask.objects.filter(
-            Q(date=request.GET.get('morning_shift_date'))
-        )[0]
-        morning_form = MorningTaskForm(instance=task)
-        update_morning_data = True
+        
+        try:
+            task = MorningTask.objects.filter(
+                Q(date=request.GET.get('morning_shift_date'))
+            )[0]
+            morning_form = MorningTaskForm(instance=task)
+            update_morning_data = True
+            retrieved_task = task
+        except:
+            return redirect('not_found')
 
 
     # UPDATE MORNING RECORDS 
@@ -138,12 +144,15 @@ def task(request):
     
     # RETRIEVE EVENING RECORDS
     if request.method == "GET" and 'retrieve-pm' in request.GET:
-        task = EveningTask.objects.filter(
-            Q(date=request.GET.get('evening_shift_date'))
-        )[0]
+        try:
+            task = EveningTask.objects.filter(
+                Q(date=request.GET.get('evening_shift_date'))
+            )[0]
 
-        evening_form = EveningTaskForm(instance=task)
-        update_evening_data = True
+            evening_form = EveningTaskForm(instance=task)
+            update_evening_data = True
+        except:
+            return redirect('not_found')
 
 
     # UPDATE EVENING RECORDS 
@@ -169,7 +178,8 @@ def task(request):
         'morning_form': morning_form,
         'evening_form': evening_form,
         'show_morning_update': update_morning_data,
-        'show_evening_update': update_evening_data
+        'show_evening_update': update_evening_data,
+        'task': retrieved_task
     }
 
     return render(request, 'e_logs/task.html', context)
@@ -261,4 +271,5 @@ def utilities(request):
     return render(request, 'e_logs/utilities.html')
     
 
-
+def not_found(request):
+    return render(request, 'e_logs/not_found.html')
