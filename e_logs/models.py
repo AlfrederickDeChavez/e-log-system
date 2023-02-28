@@ -12,17 +12,18 @@ class Bulletin(models.Model):
         return self.details
 
 class Guest(models.Model):
-    tower = models.CharField(max_length=200)
-    room = models.CharField(max_length=100)
-    affected_system = models.CharField(max_length=255)
-    attended_by = models.CharField(max_length=200)
-    date = models.DateField(auto_now_add=True)
-    time_reported = models.TimeField()
-    time_resolved = models.TimeField()
-    problem = models.TextField()
-    action = models.TextField()
-    status = models.CharField(max_length=200)
-    recommendation = models.TextField()
+    tower = models.CharField(max_length=200,null=True, blank=True)
+    room = models.CharField(max_length=100, null=True, blank=True)
+    affected_system = models.CharField(max_length=255, null=True, blank=True)
+    attended_by = models.CharField(max_length=200, null=True, blank=True)
+    date = models.DateField(null=True, blank=True)
+    time_reported = models.CharField(max_length=200, null=True, blank=True)
+    time_resolved = models.CharField(max_length=200, null=True, blank=True)
+    problem = models.TextField(null=True, blank=True)
+    action = models.TextField(null=True, blank=True)
+    status = models.CharField(max_length=200, null=True, blank=True)
+    recommendation = models.TextField(null=True, blank=True)
+    time = models.CharField(max_length=200, null=True, blank=True)
 
     def __str__(self):
         return self.tower + ' - ' + self.room + ' - ' + self.problem[0:20]

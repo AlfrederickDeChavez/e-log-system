@@ -87,12 +87,10 @@ def task(request):
         form = MorningTaskForm(request.POST)
         if form.is_valid():
             form.save()
-            print('Form Saved')
         else: 
             print(form.errors)
 
         return redirect('task')
-    
 
     # RETRIEVE AM SHIFT RECORDS
     if request.method == "GET" and "retrieve-am" in request.GET:
@@ -122,10 +120,7 @@ def task(request):
         else:
             print(form.errors)
 
-        # return redirect('task')
-        print(task)
-        print(date)
-        
+        return redirect('task')
 
     # SAVE EVENING SHIFT RECORDS
     if request.method == "POST" and "save-pm-shift" in request.POST:
@@ -134,9 +129,7 @@ def task(request):
 
         if form.is_valid():
             form.save()
-            print('Form saved')
         else:
-            print('Failed to add am records')
             print(form.errors)
         
         return redirect('task')
@@ -151,6 +144,7 @@ def task(request):
 
             evening_form = EveningTaskForm(instance=task)
             update_evening_data = True
+            retrieved_task = task
         except:
             return redirect('not_found')
 
@@ -189,6 +183,7 @@ def room_service(request):
     # POST ROOM INCIDENT REPORT 
 
     if request.method == "POST" and "save_room" in request.POST: 
+        
         tower = request.POST.get("tower")
         room = request.POST.get("room")
         attendee = request.POST.get("attendee")
@@ -248,8 +243,6 @@ def department_service(request):
             action=action,
             recommendation=recommendation
         )
-
-        print(request.POST)
 
         return redirect('bulletin')
 

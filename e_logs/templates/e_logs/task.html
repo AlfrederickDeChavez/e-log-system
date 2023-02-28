@@ -76,6 +76,9 @@
             <div class="evening" data-link-content id="evening">
                 <div class="retrieve">
                     <form action="" method="GET" class="retrieve-form">
+                        {%if show_evening_update%}
+                            <h5 style="font-size: 0.9rem; font-weight: 600; color: rgba(0, 0, 0, 0.7); margin-right: 5rem;">{{task.date}} - {{task.checked_by}}</h5>
+                        {%endif%}
                         <input type="date" name="evening_shift_date">
                         <button type="submit" name="retrieve-pm">Retrieve PM data</button>
                     </form>

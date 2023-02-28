@@ -14,15 +14,15 @@
         <div class="app-server-container">
             <div class="app-server-date d-flex">
                 <p>Date:</p>
-                <div></div>
+                <div class="d-flex">28/02/2023</div>
             </div>
             <div class="app-server-tbm d-flex">
                 <p>TBM Opera Backup:</p>
-                <div></div>
+                <div class="d-flex">65GB</div>
             </div>
             <div class="app-server-bhtl d-flex">
                 <p>BHTL Opera Backup:</p>
-                <div></div>
+                <div class="d-flex">65GB</div>
             </div>
         </div>
     </div>
@@ -74,12 +74,12 @@
                 </thead>
                 <tbody>
                     {% if bulletin %}
-                    {%for record in bulletin%}
+                    {%for record in bulletin %}
                     <tr>
-                    <td >{{record.date|date:"Y-m-d"}}</td>
+                    <td >{{record.date | date:"Y-m-d"}}</td>
                     <td >{{record.author}}</td>
                     <td >{{record.priority}}</td>
-                    <td >{{record.details  }}</td>
+                    <td >{{record.details}}</td>
                     <td >{{record.time}}</td>
                     </tr>
                     {%endfor%}
@@ -129,7 +129,7 @@
                         {% if guest %}
                         {% for record in guest %}
                         <tr>
-                        <td >{{record.date|date:"Y-m-d"}}</td>
+                        <td >{{record.date |date:"Y-m-d"}}</td>
                         <td >{{record.tower}}</td>
                         <td >{{record.room}}</td>
                         <td >{{record.attended_by}}</td>
