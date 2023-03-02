@@ -59,6 +59,7 @@
                 <p>Bulletin Board</p>
                 <p class="record-length d-flex">{{ bulletin | length}}</p>
             </div>
+            <!-- <i class='bx bx-fullscreen'></i> -->
             <button id="export-bulletin"> <i class='bx bxs-file-export'></i> Export to Excel</button>
         </div>
         <div class="table-container">
@@ -85,7 +86,7 @@
                     {%endfor%}
                     {% else %}
                     <tr >
-                        <td colspan="5" style="padding: 4px 0; font-weight: 500;">NO RESULTS FOUND.</td>
+                        <td colspan="5" style="padding: 4px 0; font-weight: 500; height: 11rem;">NO RECORDS.</td>
                     </tr>
                     {% endif %}
                 </tbody>
@@ -134,7 +135,7 @@
                         <td >{{record.room}}</td>
                         <td >{{record.attended_by}}</td>
                         <td >{{record.affected_system}}</td>
-                        <td >{{record.time_reported}}</td>
+                        <td >{{record.time_reported }}</td>
                         <td>{{record.time_resolved}}</td>
                         <td>{{record.problem}}</td>
                         <td>{{record.action}}</td>
@@ -144,7 +145,7 @@
                         {% endfor %}
                         {% else %}
                         <tr >
-                        <td colspan="11" style="padding: 4px 0; font-weight: 500;">NO RESULTS FOUND.</td>
+                        <td colspan="11" style="padding: 4px 0; font-weight: 500;">NO RECORDS.</td>
                         </tr>
                         {% endif %}
                     </tbody>
@@ -195,7 +196,7 @@
                         {%endfor%}
                         {% else %}
                         <tr >
-                            <td colspan="11" style="padding: 4px 0; font-weight: 500;">NO RESULTS FOUND.</td>
+                            <td colspan="11" style="padding: 4px 0; font-weight: 500;">NO RECORDS.</td>
                         </tr>
                         {% endif %}
                     </tbody>

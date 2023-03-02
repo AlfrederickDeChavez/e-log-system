@@ -4,7 +4,10 @@ from .models import Bulletin, Guest, Department, EveningTask, MorningTask
 from django.db.models import Q
 from .forms import MorningTaskForm, EveningTaskForm
 from .tasks import *
-
+from datetime import date
+import time
+from datetime import datetime
+from .functions import convert_time, add_eight_hours
 
 def bulletin(request):
 
@@ -63,10 +66,9 @@ def bulletin(request):
     # NO FILTER OR GET METHOD -- DEFAULT VALUE
         
     else:
-        bulletin = Bulletin.objects.all().order_by('-date')
+        bulletin = Bulletin.objects.all().order_by('-date')[:500]
         department = Department.objects.all().order_by('-date')
         guest = Guest.objects.all().order_by('-date')
-
     context = {'bulletin': bulletin, 'guest': guest, 'department': department}
 
     return render(request, 'e_logs/bulletin.html', context)
@@ -91,6 +93,7 @@ def task(request):
             print(form.errors)
 
         return redirect('task')
+        
 
     # RETRIEVE AM SHIFT RECORDS
     if request.method == "GET" and "retrieve-am" in request.GET:
@@ -188,8 +191,8 @@ def room_service(request):
         room = request.POST.get("room")
         attendee = request.POST.get("attendee")
         affected_system = request.POST.get("system")
-        time_reported = request.POST.get("time_reported")
-        time_resolved = request.POST.get("time_resolved")
+        time_reported = convert_time(request.POST.get("time_reported"))
+        time_resolved = convert_time(request.POST.get("time_resolved"))
         problem = request.POST.get("problem")
         status = request.POST.get("status")
         action = request.POST.get("action")
@@ -205,14 +208,15 @@ def room_service(request):
             problem=problem,
             status=status,
             action=action,
-            recommendation=recommendation
+            recommendation=recommendation,
+            date=date.today()
         )
 
         return redirect('bulletin')
 
-    context = {'guest': ''}
+    # context = {'guest': ''}
 
-    return render(request, 'e_logs/room_service.html', context)
+    return render(request, 'e_logs/room_service.html')
 
 def department_service(request):
 
@@ -253,16 +257,18 @@ def utilities(request):
     # POST BULLETIN RECORDS
 
     if request.method == 'POST' and 'bulletin-form' in request.POST:
+        
         bulletin = Bulletin.objects.create(
             author=request.POST.get('author'),
             priority=request.POST.get('priority'),
-            details=request.POST.get('details')
+            details=request.POST.get('details'),
+            date=date.today(),
+            time=add_eight_hours(time.strftime("%H:%M:%S", time.localtime()))
         )
 
         return redirect('bulletin')
 
     return render(request, 'e_logs/utilities.html')
     
-
 def not_found(request):
     return render(request, 'e_logs/not_found.html')

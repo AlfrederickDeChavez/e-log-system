@@ -11,7 +11,7 @@
         <div class="form-header">
             <p>Room Service Report</p>
         </div>
-        <form action="" method="POST" class="room-form-container">
+        <form action="" method="POST" class="room-form-container" id="room-form">
             {% csrf_token %}
             <div class="row">
                 <div class="client-info">
@@ -58,9 +58,9 @@
                 </div>
                 <div class="time-info">
                     <label for="time_reported">Time Reported:</label>
-                    <input type="time" name="time_reported">
+                    <input type="time" name="time_reported" id="time_reported">
                     <label for="attendee">Time Resolved:</label>
-                    <input type="time" name="time_resolved">
+                    <input type="time" name="time_resolved" id="time_resolved">
                 </div>
             </div>
             <div class="row">
@@ -232,8 +232,6 @@
 .active-room {
     background-color: #201F1F;
 }
-
-
 
 
 </style>

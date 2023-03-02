@@ -272,7 +272,7 @@ header a h3{
 }
 
 .table-container {
-    height: 15rem;
+    max-height: 25rem;
     overflow: scroll;
     position: relative;
 }
