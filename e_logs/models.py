@@ -46,8 +46,8 @@ class Department(models.Model):
         return self.department + ' - ' + self.problem[0:20]
 
 class MorningTask(models.Model):
-    date = models.DateField(auto_now_add=True)
-    time = models.TimeField(auto_now_add=True)
+    date = models.DateField()
+    time = models.TimeField()
     checked_by = models.CharField(max_length=200)
     t_lits = models.TimeField(null=True, blank=True)
     r_lits = models.CharField(max_length=500, null=True, blank=True)
@@ -81,8 +81,8 @@ class MorningTask(models.Model):
 
 
 class EveningTask(models.Model):
-    date = models.DateField(auto_now_add=True)
-    time = models.TimeField(auto_now_add=True)
+    date = models.DateField()
+    time = models.TimeField()
     checked_by = models.CharField(max_length=200)
     t_dsob = models.TimeField(null=True, blank=True)
     r_dsob = models.CharField(max_length=500, null=True, blank=True)

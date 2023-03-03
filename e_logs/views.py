@@ -6,8 +6,12 @@ from .forms import MorningTaskForm, EveningTaskForm
 from .tasks import *
 from datetime import date
 import time
+import pandas as pd
 from datetime import datetime
-from .functions import convert_time, add_eight_hours
+from .functions import convert_time, add_eight_hours, convert_str_to_time, convert_task_time
+
+
+df = pd.read_csv('e_logs\dataset\e_logs_morning_task.csv')
 
 def bulletin(request):
 
@@ -91,9 +95,7 @@ def task(request):
             form.save()
         else: 
             print(form.errors)
-
         return redirect('task')
-        
 
     # RETRIEVE AM SHIFT RECORDS
     if request.method == "GET" and "retrieve-am" in request.GET:
@@ -263,7 +265,7 @@ def utilities(request):
             priority=request.POST.get('priority'),
             details=request.POST.get('details'),
             date=date.today(),
-            time=add_eight_hours(time.strftime("%H:%M:%S", time.localtime()))
+            time=time.strftime("%H:%M:%S", time.localtime())
         )
 
         return redirect('bulletin')
