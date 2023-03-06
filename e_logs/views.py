@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Bulletin, Guest, Department, EveningTask, MorningTask
+from .models import Bulletin, Guest, Department, EveningTask, MorningTask, Asset
 from django.db.models import Q
 from .forms import MorningTaskForm, EveningTaskForm
 from .tasks import *
@@ -17,62 +17,67 @@ def bulletin(request):
 
     # FILTERING TABLE RECORDS BASED ON SEARCH VALUES
 
-    if request.method == "GET" and 'query' in request.GET:
-        q = request.GET.get('search') if request.GET.get('search') != None else ''
-        bulletin = Bulletin.objects.filter(
-            Q(author__icontains=q) |
-            Q(priority__icontains=q) |
-            Q(details__icontains=q)
-        ).order_by('-date')
+    # if request.method == "GET" and 'query' in request.GET:
+    #     q = request.GET.get('search') if request.GET.get('search') != None else ''
+    #     bulletin = Bulletin.objects.filter(
+    #         Q(author__icontains=q) |
+    #         Q(priority__icontains=q) |
+    #         Q(details__icontains=q)
+    #     ).order_by('-date')
 
-        guest = Guest.objects.filter(
-            Q(tower__icontains=q) |
-            Q(room__icontains=q) |
-            Q(affected_system__icontains=q) |
-            Q(attended_by__icontains=q) |
-            Q(problem__icontains=q) |
-            Q(action__icontains=q) |
-            Q(recommendation__icontains=q) |
-            Q(status__icontains=q) 
-        ).order_by('-date')
+    #     guest = Guest.objects.filter(
+    #         Q(tower__icontains=q) |
+    #         Q(room__icontains=q) |
+    #         Q(affected_system__icontains=q) |
+    #         Q(attended_by__icontains=q) |
+    #         Q(problem__icontains=q) |
+    #         Q(action__icontains=q) |
+    #         Q(recommendation__icontains=q) |
+    #         Q(status__icontains=q) 
+    #     ).order_by('-date')
 
-        department = Department.objects.filter(
-            Q(department__icontains=q) |
-            Q(client__icontains=q) |
-            Q(affected_system__icontains=q) |
-            Q(attended_by__icontains=q) |
-            Q(problem__icontains=q) |
-            Q(action__icontains=q) |
-            Q(recommendation__icontains=q) |
-            Q(status__icontains=q) 
-        ).order_by('-date')
+    #     department = Department.objects.filter(
+    #         Q(department__icontains=q) |
+    #         Q(client__icontains=q) |
+    #         Q(affected_system__icontains=q) |
+    #         Q(attended_by__icontains=q) |
+    #         Q(problem__icontains=q) |
+    #         Q(action__icontains=q) |
+    #         Q(recommendation__icontains=q) |
+    #         Q(status__icontains=q) 
+    #     ).order_by('-date')
 
 
 
     # FILTERING TABLE RECORDS BASED ON DATE RANGE
         
-    elif request.method == "GET" and 'refresh' in request.GET:
+    # elif request.method == "GET" and 'refresh' in request.GET:
 
-        start_date = request.GET.get('start_date')
-        end_date = request.GET.get('end_date')
-        bulletin = Bulletin.objects.filter(
-            Q(date__gte=start_date, date__lte=end_date) 
-        ).order_by('-date')
+    #     start_date = request.GET.get('start_date')
+    #     end_date = request.GET.get('end_date')
+    #     bulletin = Bulletin.objects.filter(
+    #         Q(date__gte=start_date, date__lte=end_date) 
+    #     ).order_by('-date')
 
-        guest = Guest.objects.filter(
-            Q(date__gte=start_date, date__lte=end_date) 
-        ).order_by('-date')
+    #     guest = Guest.objects.filter(
+    #         Q(date__gte=start_date, date__lte=end_date) 
+    #     ).order_by('-date')
 
-        department = Department.objects.filter(
-            Q(date__gte=start_date, date__lte=end_date) 
-        ).order_by('-date')
+    #     department = Department.objects.filter(
+    #         Q(date__gte=start_date, date__lte=end_date) 
+    #     ).order_by('-date')
+
+        # datetime.strptime(end_date, '%Y-%m-%d') - datetime.strptime(start_date, '%Y-%m-%d')
+
+        
 
     # NO FILTER OR GET METHOD -- DEFAULT VALUE
         
-    else:
-        bulletin = Bulletin.objects.all().order_by('-date')[:500]
-        department = Department.objects.all().order_by('-date')
-        guest = Guest.objects.all().order_by('-date')
+    # else:
+    bulletin = Bulletin.objects.all().order_by('-date')
+    department = Department.objects.all().order_by('-date')
+    guest = Guest.objects.all().order_by('-date')
+    
     context = {'bulletin': bulletin, 'guest': guest, 'department': department}
 
     return render(request, 'e_logs/bulletin.html', context)
@@ -271,6 +276,19 @@ def utilities(request):
         return redirect('bulletin')
 
     return render(request, 'e_logs/utilities.html')
-    
+
+def assets(request):
+    asset = Asset.objects.all()
+    alerted = Asset.objects.filter(isAlerted=True)
+
+    context = {'assets': asset,'alerted': alerted}
+
+    return render(request, 'e_logs/assets.html', context)
+
+
+def asset_details(request, pk):
+    asset = Asset.objects.get(id=pk)
+    return HttpResponse(f'This is the {asset} details')
+     
 def not_found(request):
     return render(request, 'e_logs/not_found.html')

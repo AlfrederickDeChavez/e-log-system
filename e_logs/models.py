@@ -107,3 +107,16 @@ class EveningTask(models.Model):
 
     def __str__(self):
         return 'Evening Shift' + ' - ' + str(self.date) + ' - ' + self.checked_by
+
+
+class Asset(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.TextField()
+    supplier = models.CharField(max_length=200)
+    purchase_date = models.DateField()
+    expiration = models.DateField()
+    isAlerted = models.BooleanField()
+
+
+    def __str__(self):
+        return self.name

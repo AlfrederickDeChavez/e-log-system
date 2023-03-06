@@ -1,0 +1,155 @@
+{% extends 'e_logs/main.html' %}
+
+{% block content %}
+
+<div id="room" data-tab-content class="active">
+    <h4>ASSETS</h4>
+    <hr>
+    <br>
+    <div class="asset-content">
+
+        <!-- <div class="asset-tabs">
+            <div class="asset-tab">All</div>
+            <div class="asset-tab">To Expire</div>
+        </div> -->
+
+        <div class="asset-container" id="all">
+        
+            <!-- TABLE -->
+            <div class="asset-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Asset</th>
+                            <th>Supplier</th>
+                            <th>Purchase Date</th>
+                            <th>Expiration Date</th>
+                            <th>Alarm Date</th>
+                            <th>Status</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for asset in assets %}
+                        <tr>
+                            <td>{{asset.name}}</td>
+                            <td>{{asset.supplier}}</td>
+                            <td>{{asset.purchase_date}}</td>
+                            <td>{{asset.expiration}}</td>
+                            <td></td>
+                            {% if asset.isAlerted %}
+                                <td>
+                                    <div class="alarm">
+                                        <i class='bx bxs-bell'></i>
+                                        ALARMED
+                                    </div>
+                                </td>
+                            {% else %}
+                                <td>
+                                    <div class="not-alarm">
+                                        <i class='bx bxs-bell'></i>
+                                        NO ALARM
+                                    </div>
+                                </td>
+                            {% endif %}
+                            <td><a href="{% url 'asset_details' asset.id %}"><i class='bx bxs-edit'></i> Edit</a></td>
+                            <td>
+                                <form action="">
+                                    <button type="submit">
+                                        <i class='bx bxs-trash'></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="expire-container" id="expire">
+            
+        </div>
+    </div>
+</div>
+
+<style>
+    .asset-content {
+        position: relative;
+        width: 100%;
+        height: auto;
+    }
+    .asset-container {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .alert-container {
+        width: 34%;
+    }
+
+    .alarm, .not-alarm {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #FFFFFF;
+        padding: 3px;
+        font-weight: 500;
+        border-radius: 3px;
+    }
+
+    .alarm {
+        background-color: rgb(161, 25, 25);
+    }
+
+    .not-alarm {
+        background-color: rgb(19, 128, 28);
+    }
+
+    .alarm i , .not-alarm i {
+        margin-right: 0.5rem;
+    }
+
+    .asset-tabs {
+        display: flex;
+        position: absolute;
+        z-index: 10;
+    }
+
+    .asset-table {
+        position: relative;
+    }
+
+
+</style>
+
+
+<script>
+
+    // PAGE NAVIGATION 
+
+    const assetTabs = document.querySelectorAll('[data-link-alarm')
+    const assetTabContents = document.querySelectorAll('[data-link-content')
+
+    assetTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const target = document.querySelector(tab.dataset.linkTask)
+            assetTabContents.forEach(tabContent => {
+                tabContent.classList.remove('active-alarm-content')
+            })
+
+            assetTabs.forEach(tabli => {
+                tabli.classList.remove('active-alarm')
+            })
+
+            tab.classList.add('active-alarm')
+            target.classList.add('active-alarm-content')
+        })
+    })
+
+</script>
+
+{% endblock content %}
