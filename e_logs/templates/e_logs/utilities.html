@@ -58,14 +58,76 @@
     </div> -->
 </div>
 
-<!-- <style>
-    .pending-task-container {
-        width: 100%;
-        height: 50vh;
-        margin: 1rem 0;
-        border: 1px solid rgba(0,0,0,0.5);
-    }
-</style> -->
+<style>
+    /* UTILITTIES STYLES */
+
+.bulletin-form-container {
+    background-color: #FFFFFF;
+    margin-top: 0.5rem;
+    padding: 1rem;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+    border: 0.5px solid rgba(0, 0, 0, 0.3);
+}
+ 
+.bulletin-form-top {
+    display: flex;
+    margin-bottom: 1.5rem;
+}
+
+.bulletin-form, .room-form {
+    width: 100%;
+}
+
+.bulletin-form label {
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.bulletin-btn {
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+.bulletin-form-top .form-group:first-of-type {
+    margin-right: 10rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+select {
+    width: 15rem;
+}
+
+#details-input, select, input {
+    padding: 0.4rem 1rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.post-bulletin {
+    border: none;
+    outline: none;
+    background-color: var(--green);
+    padding: 0.5rem 1rem;
+    color: var(--white);
+    border-radius: 0.2rem;
+    font-weight: 600;
+    float: right;
+    margin-top: 1rem;
+    font-family: 'Poppins';
+    cursor: pointer;
+    transition: all 0.1s ease-in;
+}
+
+.post-bulletin:hover {
+    scale: 0.95;
+    background-color: var(--dark-green);
+}
+
+</style>
 
 
 {% endblock content%}

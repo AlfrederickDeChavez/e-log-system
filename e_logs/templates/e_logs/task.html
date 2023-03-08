@@ -168,11 +168,10 @@
     }
 
     .active-task[data-link-task] {
-        border-top: 1px solid rgba(0, 0, 0, 0.5);
-        border-left: 1px solid rgba(0, 0, 0, 0.5);
-        border-right: 1px solid rgba(0, 0, 0, 0.5);
+        background-color: #FFFFFF;
         border-bottom: 3px solid white;
         font-weight: 600;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
     }
 
     .task-contents {
@@ -180,12 +179,13 @@
     }
 
     .task-contents [data-link-content]{
-        border: 1px solid rgba(0, 0, 0, 0.5);
+        background-color: #FFFFFF;
         transition: all 0.01s ease;
         position: relative;
         top: calc(2.5rem - 1px);
         padding: 1rem;
         margin-bottom: 5rem;
+        box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
     }
 
     .task-body input[type="text"]:focus {
@@ -208,6 +208,7 @@
         height: 2rem;
         font-size: 0.8rem;
         cursor: pointer;
+        padding: 0 10px;
     }
 
     .retrieve-form button, .task-form-submit button {

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+
+{% load static %}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <link rel="icon" type="image/x-icon" href="{% static 'images/logo.png' %}">
+        <!-- <link rel="stylesheet" href="{% static 'styles/asset_form.css' %}"> -->
+        <title>Renewal Schedule</title>
+    </head>
+<body>
+    <div class="page-title">
+        <img src="{% static 'images/logo.png' %}" alt="">
+        <p>Management Information System</p>
+    </div>
+    <div class="form-container">
+        <p><i class='bx bxs-folder-plus'></i>  {{title}}</p>
+        <hr>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="form-control">
+                <label for="">Name:</label>
+                {{form.name}}
+            </div>
+            <div class="form-control">
+                <label for="">Description:</label>
+                {{form.description}}
+            </div>
+            <div class="form-control">
+                <label for="">Supplier:</label>
+                {{form.supplier}}
+            </div>
+            <div class="form-control">
+                <label for="">Purchase Date:</label>
+                {{form.purchase_date}}
+            </div>
+            <div class="form-control">
+                <label for="">Expiration Date:</label>
+                {{form.expiration}}
+            </div>
+            <div class="form-action">
+                <a href="{% url 'assets' %}">Cancel</a>
+                <button type="submit">Save</button>
+            </div>
+        </form>
+    </div>
+</body>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+    background-color: rgb(206, 195, 195);
+    padding-top: 2rem;
+}
+
+.page-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.page-title img {
+    width: 50px;
+    margin-bottom: 0.5rem;
+}
+
+.page-title h4 {
+    font-size: 1.1rem;
+    color: rgba(0, 0, 0, 0.8);
+    text-transform: uppercase;
+    margin: 1rem 0;
+}
+
+.form-container {
+    width: 50%;
+    height: auto;
+    background-color: #FFFFFF;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+}
+
+.form-container p {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.form-control {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    margin: 0.5rem 0;
+}
+
+.form-control label {
+    flex: 1;
+    text-align: right;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.form-control input , .form-control textarea{
+    flex: 3;
+    padding: 2px 5px;
+    font-size: 0.8rem;
+}
+
+.form-control input:focus , .form-control textarea:focus{
+    outline: 1px solid #C1A055;
+    border: 1px solid #C1A055;
+}
+
+.form-control textarea {
+    max-height: 4rem;
+}
+
+.form-control input[type='date'] {
+    flex: 3;
+    padding: 3px 6px;
+    font-size: 0.8rem;
+    width: 40%;
+    background-color: #bfb9b9;
+    border: none;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+.form-action {
+    float: right;
+    display: flex;
+    align-items: center;
+}
+
+.form-action a {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 5px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 1rem;
+    border: 1px solid rgb(77, 73, 73);
+    text-decoration: none;
+    color: rgb(63, 66, 66);
+}
+
+.form-action button {
+    float: right;
+    border: none;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    background-color: #C1A055;
+    padding: 5px 20px;
+    border-radius: 3px;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+form {
+    margin-top: 1rem;
+}
+</style>
+</html> 

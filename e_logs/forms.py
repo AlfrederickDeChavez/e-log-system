@@ -1,11 +1,10 @@
 from django import forms
-from .models import Bulletin, MorningTask, EveningTask
+from .models import Bulletin, MorningTask, EveningTask, Asset
 
 class BulletinForm(forms.ModelForm):
     class Meta:
         model = Bulletin
         fields = ("__all__")
-
 
 class MorningTaskForm(forms.ModelForm):
 
@@ -68,4 +67,12 @@ class EveningTaskForm(forms.ModelForm):
             't_ltos': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
         }
 
+class AssetForm(forms.ModelForm):
+    class Meta:
+        model = Asset
+        fields = ['name', 'description', 'supplier', 'purchase_date', 'expiration']
+        widgets = {
+        'purchase_date': forms.DateInput(attrs={'type': 'date'}),
+        'expiration': forms.DateInput(attrs={'type': 'date'}),
+        }
         

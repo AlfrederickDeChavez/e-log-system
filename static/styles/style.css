@@ -25,7 +25,7 @@ body {
     font-family: 'Poppins', san-serif;
     min-height: 100vh;
     width: 100%;
-    background-color: red;
+    background-color: rgb(231, 219, 219);
 }
 
 ul {
@@ -56,7 +56,7 @@ header {
     justify-content: flex-start;
     box-shadow: 0 4px 15px rgba(0, 0,0, 0.25);
     padding: 15px 0;
-  
+    background-color: #FFFFFF;
 }
 
 
@@ -123,17 +123,21 @@ header a h3{
     width: 16.5rem;
     height: auto;
     background-color: var(--dark);
-    padding-top: 3rem;
 
 }
 
 .side-bar ul li {
     display: flex;
     align-items: center;
-    padding: 0.7rem 0.7rem 0.7rem 1.3rem;
+    padding: 0.5rem;
     background-color: var(--dark);
     cursor: pointer;
     transition: all 0.05s ease;
+    border-bottom: 0.5px solid rgba(0, 0,0, 0.30);
+}
+
+.side-bar ul:first-child {
+    border-top: 0.5px solid rgba(0, 0,0, 0.30);
 }
 
 
@@ -144,12 +148,27 @@ header a h3{
 .side-bar ul li i {
     color: var(--white);
     margin: 0 1rem;
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 
 .side-bar ul li p {
     color: var(--white);
-    font-size: 1.1rem;
+    font-size: 0.9rem;
+}
+
+.renewal {
+    margin-right: 2rem;
+}
+
+.side-bar ul li span {
+    padding: 2px 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background-color: #161616;
+    border-radius: 2px;
+    font-size: 0.8rem;
 }
 
 /* MAIN CONTENT */
@@ -158,19 +177,6 @@ header a h3{
 .content {
     width: calc(100% - 16.5rem);
 }
-/* 
-[data-tab-content] {
-    display: none;
-}
-
-.active[data-tab-content] {
-    display: block;
-} */
-
-/* .active-tab[data-tab-target] {
-    background-color: var(--darker);
-} */
-
 
 #utilities, #bulletin, #room, #department, #task, #asset{
     width: 100%;
@@ -234,6 +240,7 @@ header a h3{
     border: 1px solid var(--stroke);
     font-size: 0.7rem;
     font-family: 'Poppins';
+    padding-left: 1rem;
 }
 
 
@@ -248,7 +255,7 @@ header a h3{
     border: 1px solid var(--stroke);
     font-family: 'Poppins';
     font-size: 0.7rem;
-
+    padding: 0 1rem;
 }
 
 .date-range-container button, .search-container button {
@@ -357,14 +364,6 @@ tbody tr td {
     font-size: 0.8rem;
 }
 
-
-
-/* ROOM SERVICE STYLES */
-
-
-
-/* UTILITTIES STYLES */
-
 .form-header {
     width: 100%;
     padding: 0.2rem 1.5rem;
@@ -374,69 +373,4 @@ tbody tr td {
 .form-header p {
     font-weight: 500;
     font-size: 0.9rem;
-}
-
-.bulletin-form-container {
-    border: 1px solid var(--stroke);
-    background-color: var(--lighter-bg);
-    margin-top: 0.5rem;
-    padding: 1rem;
-}
- 
-.bulletin-form-top {
-    display: flex;
-    margin-bottom: 1.5rem;
-}
-
-.bulletin-form, .room-form {
-    width: 100%;
-}
-
-.bulletin-form label {
-    font-weight: 500;
-    font-size: 0.9rem;
-}
-
-.bulletin-btn {
-    display: flex;
-    justify-content: flex-end;
-}
-
-
-.bulletin-form-top .form-group:first-of-type {
-    margin-right: 10rem;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-}
-
-select {
-    width: 15rem;
-}
-
-#details-input, select, input {
-    padding: 0.4rem 1rem;
-    font-family: 'Poppins', sans-serif;
-}
-
-.post-bulletin {
-    border: none;
-    outline: none;
-    background-color: var(--green);
-    padding: 0.5rem 1rem;
-    color: var(--white);
-    border-radius: 0.2rem;
-    font-weight: 600;
-    float: right;
-    margin-top: 1rem;
-    font-family: 'Poppins';
-    cursor: pointer;
-    transition: all 0.1s ease-in;
-}
-
-.post-bulletin:hover {
-    scale: 0.95;
-    background-color: var(--dark-green);
 }

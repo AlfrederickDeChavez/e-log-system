@@ -110,13 +110,13 @@ class EveningTask(models.Model):
 
 
 class Asset(models.Model):
+    
     name = models.CharField(max_length=200)
     description = models.TextField()
     supplier = models.CharField(max_length=200)
     purchase_date = models.DateField()
     expiration = models.DateField()
-    isAlerted = models.BooleanField()
-
+    status = models.CharField(max_length=50)
 
     def __str__(self):
         return self.name

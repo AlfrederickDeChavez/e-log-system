@@ -1,5 +1,5 @@
 import time
-from datetime import datetime
+from datetime import datetime, date
 
 
 # Convert 24-hour time format to 12-hour format
@@ -42,7 +42,20 @@ def convert_task_time(time):
       return hour + ":" + time_split[1] + ":" + time_split[2].strip()[:-2].strip()
 
     else:
-      return "00:00:00"
+      return "00:00:00" 
+
+def asset_status(expiration):
+    datetime_object = datetime.strptime(str(expiration), "%Y-%m-%d")
+    expiration = datetime_object.date()
+    if (expiration - date.today()).days < 30:
+      return 'danger'
+    elif (expiration - date.today()).days < 60:
+      return 'warning'
+    elif (expiration - date.today()).days < 90:
+      return 'initial'
+    else:
+      return 'fresh'
+
 
 
 # Iterate on a dataframe to change the string object (mm/dd/yy) to date object

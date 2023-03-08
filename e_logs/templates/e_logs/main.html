@@ -70,7 +70,17 @@
                 <a href="{% url 'assets' %}">
                     <li data-tab-target="#utilities" class="active-utilities">
                         <i class='bx bxs-notification' ></i>
-                        <p>Renewal Schedule</p>
+                        <p class="renewal">Renewal Schedule</p>
+                        {% if warnings %}
+                            <span>{{warnings | length}}</span>
+                        {% endif %}
+                    </li>
+                </a>
+
+                <a href="http://127.0.0.1:8000/admin">
+                    <li data-tab-target="#utilities" class="active-utilities">
+                        <i class='bx bxs-user-rectangle'></i>
+                        <p>Admin</p>
                     </li>
                 </a>
                 

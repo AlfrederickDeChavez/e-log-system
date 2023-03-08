@@ -3,15 +3,13 @@
 {% block content %}
 
 <div id="room" data-tab-content class="active">
-    <h4>ASSETS</h4>
+    <h4>RENEWAL SCHEDULE</h4>
     <hr>
     <br>
     <div class="asset-content">
-
-        <!-- <div class="asset-tabs">
-            <div class="asset-tab">All</div>
-            <div class="asset-tab">To Expire</div>
-        </div> -->
+        <div class="add-asset-container">
+            <a href="{% url 'create-asset' %}">+ Add New Asset</a>
+        </div>
 
         <div class="asset-container" id="all">
         
@@ -24,10 +22,9 @@
                             <th>Supplier</th>
                             <th>Purchase Date</th>
                             <th>Expiration Date</th>
-                            <th>Alarm Date</th>
+                            <!-- <th>Description</th> -->
                             <th>Status</th>
-                            <th></th>
-                            <th></th>
+                            <th colspan="2">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -38,29 +35,42 @@
                             <td>{{asset.supplier}}</td>
                             <td>{{asset.purchase_date}}</td>
                             <td>{{asset.expiration}}</td>
-                            <td></td>
-                            {% if asset.isAlerted %}
+                            <!-- <td>{{asset.description}}</td> -->
+                            {% if asset.status == 'initial' %}
                                 <td>
-                                    <div class="alarm">
-                                        <i class='bx bxs-bell'></i>
-                                        ALARMED
+                                    <div class="isThree status">
+                                        <!-- <i class='bx bxs-bell'></i> -->
+                                        LAST 3 M
                                     </div>
                                 </td>
-                            {% else %}
+                            {% elif asset.status == 'fresh' %}
                                 <td>
-                                    <div class="not-alarm">
-                                        <i class='bx bxs-bell'></i>
-                                        NO ALARM
+                                    <div class="isFresh status">
+                                        <!-- <i class='bx bxs-bell'></i> -->
+                                        FRESH
+                                    </div>
+                                </td>
+                            {% elif asset.status == 'warning' %}
+                                <td>
+                                    <div class="isTwo status">
+                                        <!-- <i class='bx bxs-bell'></i> -->
+                                        LAST 2 M
+                                    </div>
+                                </td>
+                            {% elif asset.status == 'danger' %}
+                                <td>
+                                    <div class="isOne status">
+                                        <!-- <i class='bx bxs-bell'></i> -->
+                                        LAST 1 M
                                     </div>
                                 </td>
                             {% endif %}
-                            <td><a href="{% url 'asset_details' asset.id %}"><i class='bx bxs-edit'></i> Edit</a></td>
+
                             <td>
-                                <form action="">
-                                    <button type="submit">
-                                        <i class='bx bxs-trash'></i>
-                                    </button>
-                                </form>
+                                <a href="{% url 'update-asset' asset.id %}" class="action edit"><i class='bx bxs-edit' style="margin-right: 5px;"></i> Edit</a>
+                            </td>
+                            <td>    
+                                <a href="{% url 'delete-asset' asset.id %}" class="action delete"><i class='bx bxs-trash' style="margin-right: 5px;"></i> Delete</a>
                             </td>
                         </tr>
                         {% endfor %}
@@ -76,6 +86,34 @@
 </div>
 
 <style>
+
+    .action {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #FFFFFF;
+        padding: 3px 7px;
+        font-weight: 500;
+        border-radius: 3px;
+        transition: all 0.2s ease;
+    }
+
+    .edit {
+        background-color: rgb(13, 96, 132);
+    }
+
+    .delete {
+        background-color: rgb(166, 31, 31);
+    }
+
+    .delete:hover {
+        background-color: rgb(126, 18, 18);
+    }
+
+    .edit:hover {
+        background-color: rgb(10, 59, 132);
+    }
+
     .asset-content {
         position: relative;
         width: 100%;
@@ -84,14 +122,14 @@
     .asset-container {
         position: relative;
         width: 100%;
-        overflow: hidden;
+        overflow: scroll;
     }
 
     .alert-container {
         width: 34%;
     }
 
-    .alarm, .not-alarm {
+    .status {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -101,26 +139,47 @@
         border-radius: 3px;
     }
 
-    .alarm {
+    .isOne {
         background-color: rgb(161, 25, 25);
     }
 
-    .not-alarm {
+    .isFresh {
         background-color: rgb(19, 128, 28);
     }
 
-    .alarm i , .not-alarm i {
+    .isTwo {
+        background-color: rgb(215, 84, 13);
+    }
+
+    .isThree {
+        background-color: rgb(191, 206, 27);
+    }
+
+    .status i{
         margin-right: 0.5rem;
     }
 
-    .asset-tabs {
-        display: flex;
-        position: absolute;
-        z-index: 10;
-    }
 
     .asset-table {
         position: relative;
+    }
+
+    .add-asset-container {
+        width: 100%;
+    }
+
+    .add-asset-container a {
+        padding: 0.4rem 1rem;
+        background-color: rgb(19, 18, 18);
+        color: white;
+        font-family: 'Poppins', sans-serif;
+        text-transform: uppercase;
+        border-radius: 3px;
+        margin-bottom: 0.5rem;
+        cursor: pointer;
+        float: right;
+        font-weight: 500;
+        font-size: 0.9rem;
     }
 
 

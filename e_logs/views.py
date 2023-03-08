@@ -2,18 +2,29 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Bulletin, Guest, Department, EveningTask, MorningTask, Asset
 from django.db.models import Q
-from .forms import MorningTaskForm, EveningTaskForm
+from .forms import MorningTaskForm, EveningTaskForm, AssetForm
 from .tasks import *
 from datetime import date
 import time
 import pandas as pd
 from datetime import datetime
-from .functions import convert_time, add_eight_hours, convert_str_to_time, convert_task_time
+from .functions import convert_time, add_eight_hours, convert_str_to_time, convert_task_time, asset_status
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
-
-df = pd.read_csv('e_logs\dataset\e_logs_morning_task.csv')
-
+@login_required(login_url='login')
 def bulletin(request):
+
+    asset = Asset.objects.all()
+    for a in asset:
+        a.status = asset_status(a.expiration)
+        a.save()
+
+    warnings = Asset.objects.filter(
+        Q(status="initial") |
+        Q(status="warning") |
+        Q(status="danger") 
+    )
 
     # FILTERING TABLE RECORDS BASED ON SEARCH VALUES
 
@@ -74,15 +85,15 @@ def bulletin(request):
     # NO FILTER OR GET METHOD -- DEFAULT VALUE
         
     # else:
-    bulletin = Bulletin.objects.all().order_by('-date')
-    department = Department.objects.all().order_by('-date')
+    bulletin = Bulletin.objects.all().order_by('-date')[:50]
+    department = Department.objects.all().order_by('-date')[:50]
     guest = Guest.objects.all().order_by('-date')
     
-    context = {'bulletin': bulletin, 'guest': guest, 'department': department}
+    context = {'bulletin': bulletin, 'guest': guest, 'department': department, 'warnings': warnings}
 
     return render(request, 'e_logs/bulletin.html', context)
 
-
+@login_required(login_url='login')
 def task(request): 
 
     morning_form = MorningTaskForm()
@@ -90,6 +101,11 @@ def task(request):
     update_morning_data = False
     update_evening_data = False
     retrieved_task = None
+    warnings = Asset.objects.filter(
+        Q(status="initial") |
+        Q(status="warning") |
+        Q(status="danger") 
+    )
 
     #SAVE AM SHIFT RECORDS
 
@@ -183,15 +199,21 @@ def task(request):
         'evening_form': evening_form,
         'show_morning_update': update_morning_data,
         'show_evening_update': update_evening_data,
-        'task': retrieved_task
+        'task': retrieved_task,
+        'warnings': warnings
     }
 
     return render(request, 'e_logs/task.html', context)
 
+@login_required(login_url='login')
 def room_service(request):
+    warnings = Asset.objects.filter(
+        Q(status="initial") |
+        Q(status="warning") |
+        Q(status="danger") 
+    )
 
     # POST ROOM INCIDENT REPORT 
-
     if request.method == "POST" and "save_room" in request.POST: 
         
         tower = request.POST.get("tower")
@@ -221,13 +243,17 @@ def room_service(request):
 
         return redirect('bulletin')
 
-    # context = {'guest': ''}
+    context = {'warnings': warnings}
 
-    return render(request, 'e_logs/room_service.html')
+    return render(request, 'e_logs/room_service.html', context)
 
+@login_required(login_url='login')
 def department_service(request):
-
-    # DEPARTMENT INPUT
+    warnings = Asset.objects.filter(
+        Q(status="initial") |
+        Q(status="warning") |
+        Q(status="danger") 
+    )
 
     # POST DEPARTMENT INCIDENT REPORT
     if request.method == 'POST' and 'save_department' in request.POST:
@@ -257,9 +283,18 @@ def department_service(request):
 
         return redirect('bulletin')
 
-    return render(request, 'e_logs/department.html')
+    context = {'warnings': warnings}
 
+    return render(request, 'e_logs/department.html', context)
+
+
+@login_required(login_url='login')
 def utilities(request):
+    warnings = Asset.objects.filter(
+        Q(status="initial") |
+        Q(status="warning") |
+        Q(status="danger") 
+    )
 
     # POST BULLETIN RECORDS
 
@@ -275,20 +310,112 @@ def utilities(request):
 
         return redirect('bulletin')
 
-    return render(request, 'e_logs/utilities.html')
+    context = {'warnings': warnings}
 
+    return render(request, 'e_logs/utilities.html', context)
+
+
+@login_required(login_url='login')
 def assets(request):
     asset = Asset.objects.all()
-    alerted = Asset.objects.filter(isAlerted=True)
+    for a in asset:
+        a.status = asset_status(a.expiration)
+        a.save()
 
-    context = {'assets': asset,'alerted': alerted}
+    warnings = Asset.objects.filter(
+        Q(status="initial") |
+        Q(status="warning") |
+        Q(status="danger") 
+    )
+
+    context = {
+        'assets': asset,
+        'warnings': warnings, 
+    }
 
     return render(request, 'e_logs/assets.html', context)
 
+@login_required(login_url='login')
+def create_asset(request):
+    title = "Add New Asset"
+    form = AssetForm()
 
+    if request.method == "POST":
+    
+        purchase_date = request.POST.get('purchase_date')  
+        expiration = request.POST.get('expiration')   
+         
+        Asset.objects.create(
+            name=request.POST.get('name'),
+            description=request.POST.get('description'),
+            supplier=request.POST.get('supplier'),
+            purchase_date=purchase_date,
+            expiration=expiration,
+            status=asset_status(expiration)
+        )
+        return redirect('assets')
+
+    context = {
+        'form': form,
+        'title': title,
+    }
+    return render(request, 'e_logs/asset_form.html', context)
+
+@login_required(login_url='login')
+def update_asset(request, pk):
+    asset = Asset.objects.get(id=pk)
+    form = AssetForm(instance=asset)
+    title = 'Update Asset'
+
+    if request.method == "POST":
+        form = AssetForm(request.POST, instance=asset)
+        if form.is_valid():
+            form.save()
+            return redirect('assets')
+        else:
+            print(form.errors)
+
+    context = {
+        'asset': asset,
+        'form' : form,
+        'title': title
+    }
+    
+    return render(request, 'e_logs/asset_form.html', context)
+
+@login_required(login_url='login')
+def delete_asset(request, pk):
+    asset = Asset.objects.get(id=pk)
+
+    if request.method == "POST":
+        asset.delete()
+        return redirect('assets')
+
+    context = {
+        'asset': asset
+    }
+    return render(request, 'e_logs/delete_asset.html', context)
+
+
+@login_required(login_url='login')
 def asset_details(request, pk):
     asset = Asset.objects.get(id=pk)
     return HttpResponse(f'This is the {asset} details')
-     
+
+def login_view(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else: 
+            print(user)
+    return render(request, 'e_logs/login.html')
+
+@login_required(login_url='login')
 def not_found(request):
     return render(request, 'e_logs/not_found.html')

@@ -66,21 +66,21 @@
             <div class="row">
                 <div class="problem">
                     <label for="problem">Problem:</label>
-                    <textarea name="problem" rows="2"></textarea>
+                    <textarea name="problem" rows="2" placeholder="Type something..."></textarea>
                 </div>
                 <div class="status">
                     <label for="status">Status:</label>
-                    <textarea name="status" rows="2"></textarea>
+                    <textarea name="status" rows="2" placeholder="Type something..."></textarea>
                 </div>
             </div>
             <div class="row">
                 <div class="action">
                     <label for="action">Action:</label>
-                    <textarea name="action" rows="2"></textarea>
+                    <textarea name="action" rows="2" placeholder="Type something..."></textarea>
                 </div>
                 <div class="recommendation">
                     <label for="recommendation">Recommendation:</label>
-                    <textarea name="recommendation" rows="2"></textarea>
+                    <textarea name="recommendation" rows="2" placeholder="Type something..."></textarea>
                 </div>
             </div>
             <div class="bottom-row">
@@ -88,16 +88,18 @@
             </div>
 
         </form>
+
     </div>
 </div>
 
 <style>
 
 .room-form-container {
-    border: 1px solid var(--stroke);
-    background-color: var(--lighter-bg);
+    background-color: #FFFFFF;
     margin-top: 0.5rem;
     padding: 1rem;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+    border: 0.5px solid rgba(0, 0, 0, 0.3);
 }
 
 /* FIRST ROW */
@@ -111,9 +113,10 @@
 
 .row .client-info {
     width: 40%;
-    border: 1px solid rgba(0, 0, 0, 0.3);
+    /* border: 1px solid rgba(0, 0, 0, 0.3); */
     padding: 0.5rem;
     border-radius: 0.3rem;
+    background-color: rgba(171, 166, 166, 0.3);
 }
 
 .client-info-title {
@@ -141,6 +144,10 @@
     font-family: 'Poppins', sans-serif;
     font-size: 0.8rem;
     padding: 0.3rem 0.5rem;
+    background-color: #cac5c5;
+    border: none;
+    outline: none;
+
 }
 
 .author-info select, .time-info input {
@@ -149,7 +156,10 @@
     font-size: 0.8rem;
     width: 100%;
     padding: 0.3rem 0.5rem;
-
+    background-color: #cac5c5;
+    border: none;
+    outline: none;
+    border-radius: 3px;
 }
 
 
