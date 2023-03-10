@@ -12,6 +12,7 @@
         
     </head>
 <body>
+    <!-- {{messages}} -->
     <div class="page-title">
         <img src="{% static 'images/logo.png' %}" alt="">
         <p><span>Bellevue Mis</span> Log Management System</p>
@@ -22,8 +23,8 @@
         </div>
         <form action=""method="POST">
             {% csrf_token %}
-            <input type="text" placeholder="Username" name="username">
-            <input type="password" placeholder="Password" name="password">
+            <input type="text" placeholder="Username" name="username" autocomplete="off">
+            <input type="password" placeholder="Password" name="password" autocomplete="off">
             <!-- <a href="/"><p>Forgot password?</p></a> -->
             <button type="submit">Sign in</button>
         </form>

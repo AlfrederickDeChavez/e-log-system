@@ -120,3 +120,19 @@ class Asset(models.Model):
 
     def __str__(self):
         return self.name
+
+class Audit(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.TextField()
+    supplier = models.CharField(max_length=200)
+    purchase_date = models.DateField()
+    expiration = models.DateField()
+    
+    action = models.CharField(max_length=200)
+    author = models.CharField(max_length=200, null=True, blank=True)
+    modified_date = models.DateField(auto_now_add=True, null=True, blank=True)
+    modified_time = models.TimeField(auto_now_add=True, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.author} - {self.action} - {self.name}"
+

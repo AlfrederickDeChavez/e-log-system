@@ -1,94 +1,145 @@
+
+# Importing Django Modules
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from .models import Bulletin, Guest, Department, EveningTask, MorningTask, Asset
 from django.db.models import Q
-from .forms import MorningTaskForm, EveningTaskForm, AssetForm
-from .tasks import *
-from datetime import date
-import time
-import pandas as pd
-from datetime import datetime
-from .functions import convert_time, add_eight_hours, convert_str_to_time, convert_task_time, asset_status
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+
+#Importing Python Modules
+import time
+from datetime import datetime
+from datetime import date
+
+#Importing App Modules
+from .models import Bulletin, Guest, Department, EveningTask, MorningTask, Asset, Audit
+from .forms import MorningTaskForm, EveningTaskForm, AssetForm
+from .tasks import *
+from .functions import *
+
+
+def login_view(request):
+
+    """
+        Authenticating the users.
+    """
+
+    if request.user.is_authenticated:
+        return redirect('home')
+
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else: 
+            print('User does not exist.')
+
+        for a in Asset.objects.all()[5:]:
+            a.delete()
+
+        
+    return render(request, 'e_logs/login.html')
+
+def logout_view(request):
+
+    """
+        User log out.
+    """
+
+    logout(request)
+    return redirect('home')
 
 @login_required(login_url='login')
 def bulletin(request):
 
-    asset = Asset.objects.all()
+    """
+        This page is the home view of the application. It displays the bulletin information, the room incident reports and department 
+        incident reports.
+        It displays the app server backup free disk space for TBM Opera and BHTL Opera.
+        Each table can be exported as an excel file. 
+    """
+
+    
+    # Retrieving assets data from the database to update the status of each record based on expiration date.
+    asset = Asset.objects.all()[:100]
     for a in asset:
         a.status = asset_status(a.expiration)
         a.save()
 
+    #Retrieving all data that are within three months before expiration.
     warnings = Asset.objects.filter(
         Q(status="initial") |
         Q(status="warning") |
         Q(status="danger") 
     )
 
-    # FILTERING TABLE RECORDS BASED ON SEARCH VALUES
+    """
+        If user sends a GET request with 'query' on it. The following code is executed. 
+    """
 
-    # if request.method == "GET" and 'query' in request.GET:
-    #     q = request.GET.get('search') if request.GET.get('search') != None else ''
-    #     bulletin = Bulletin.objects.filter(
-    #         Q(author__icontains=q) |
-    #         Q(priority__icontains=q) |
-    #         Q(details__icontains=q)
-    #     ).order_by('-date')
+    if request.method == "GET" and 'query' in request.GET:
+        q = request.GET.get('search') if request.GET.get('search') != None else ''
+        bulletin = Bulletin.objects.filter(
+            Q(author__icontains=q) |
+            Q(priority__icontains=q) |
+            Q(details__icontains=q)
+        ).order_by('-date')[:50]
 
-    #     guest = Guest.objects.filter(
-    #         Q(tower__icontains=q) |
-    #         Q(room__icontains=q) |
-    #         Q(affected_system__icontains=q) |
-    #         Q(attended_by__icontains=q) |
-    #         Q(problem__icontains=q) |
-    #         Q(action__icontains=q) |
-    #         Q(recommendation__icontains=q) |
-    #         Q(status__icontains=q) 
-    #     ).order_by('-date')
+        guest = Guest.objects.filter(
+            Q(tower__icontains=q) |
+            Q(room__icontains=q) |
+            Q(affected_system__icontains=q) |
+            Q(attended_by__icontains=q) |
+            Q(problem__icontains=q) |
+            Q(action__icontains=q) |
+            Q(recommendation__icontains=q) |
+            Q(status__icontains=q) 
+        ).order_by('-date')[:50]
 
-    #     department = Department.objects.filter(
-    #         Q(department__icontains=q) |
-    #         Q(client__icontains=q) |
-    #         Q(affected_system__icontains=q) |
-    #         Q(attended_by__icontains=q) |
-    #         Q(problem__icontains=q) |
-    #         Q(action__icontains=q) |
-    #         Q(recommendation__icontains=q) |
-    #         Q(status__icontains=q) 
-    #     ).order_by('-date')
+        department = Department.objects.filter(
+            Q(department__icontains=q) |
+            Q(client__icontains=q) |
+            Q(affected_system__icontains=q) |
+            Q(attended_by__icontains=q) |
+            Q(problem__icontains=q) |
+            Q(action__icontains=q) |
+            Q(recommendation__icontains=q) |
+            Q(status__icontains=q) 
+        ).order_by('-date')
+       
+    elif request.method == "GET" and 'refresh' in request.GET:
 
+        try:
 
+            start_date = request.GET.get('start_date')
+            end_date = request.GET.get('end_date')
+            bulletin = Bulletin.objects.filter(
+                Q(date__gte=start_date, date__lte=end_date) 
+            ).order_by('-date')[:50]
 
-    # FILTERING TABLE RECORDS BASED ON DATE RANGE
+            guest = Guest.objects.filter(
+                Q(date__gte=start_date, date__lte=end_date) 
+            ).order_by('-date')[:50]
+
+            department = Department.objects.filter(
+                Q(date__gte=start_date, date__lte=end_date) 
+            ).order_by('-date')
+
+            datetime.strptime(end_date, '%Y-%m-%d') - datetime.strptime(start_date, '%Y-%m-%d')
+
+        except:
+            return redirect('not_found')
         
-    # elif request.method == "GET" and 'refresh' in request.GET:
-
-    #     start_date = request.GET.get('start_date')
-    #     end_date = request.GET.get('end_date')
-    #     bulletin = Bulletin.objects.filter(
-    #         Q(date__gte=start_date, date__lte=end_date) 
-    #     ).order_by('-date')
-
-    #     guest = Guest.objects.filter(
-    #         Q(date__gte=start_date, date__lte=end_date) 
-    #     ).order_by('-date')
-
-    #     department = Department.objects.filter(
-    #         Q(date__gte=start_date, date__lte=end_date) 
-    #     ).order_by('-date')
-
-        # datetime.strptime(end_date, '%Y-%m-%d') - datetime.strptime(start_date, '%Y-%m-%d')
-
+    else:
+        bulletin = Bulletin.objects.all().order_by('-date')[:50]
+        department = Department.objects.all().order_by('-date')[:50]
+        guest = Guest.objects.all().order_by('-date')[:50]
         
-
-    # NO FILTER OR GET METHOD -- DEFAULT VALUE
-        
-    # else:
-    bulletin = Bulletin.objects.all().order_by('-date')[:50]
-    department = Department.objects.all().order_by('-date')[:50]
-    guest = Guest.objects.all().order_by('-date')
-    
     context = {'bulletin': bulletin, 'guest': guest, 'department': department, 'warnings': warnings}
 
     return render(request, 'e_logs/bulletin.html', context)
@@ -96,8 +147,16 @@ def bulletin(request):
 @login_required(login_url='login')
 def task(request): 
 
+    """
+        The task view shows the checklist of task of the MIS personnel. User can navigate between morning shift and evening shift.
+        Past data can be retrieve using the data chosen. The displayed data can be updated.
+    """
+
+    #Initializing the forms
     morning_form = MorningTaskForm()
     evening_form = EveningTaskForm()
+
+    #Use for conditional rendering: components are rendered based on active tabs (morning / evening)
     update_morning_data = False
     update_evening_data = False
     retrieved_task = None
@@ -107,8 +166,7 @@ def task(request):
         Q(status="danger") 
     )
 
-    #SAVE AM SHIFT RECORDS
-
+    #Adding new record for the morning
     if request.method == "POST" and "save-am-shift" in request.POST:
 
         form = MorningTaskForm(request.POST)
@@ -118,7 +176,7 @@ def task(request):
             print(form.errors)
         return redirect('task')
 
-    # RETRIEVE AM SHIFT RECORDS
+    #Retrieving morning records based on date input. If no records were returned, users will be navigated to not found page.
     if request.method == "GET" and "retrieve-am" in request.GET:
         
         try:
@@ -132,7 +190,7 @@ def task(request):
             return redirect('not_found')
 
 
-    # UPDATE MORNING RECORDS 
+    # Updating task record for morning. 
     if request.method == "POST" and "update-morning" in request.POST:
         date = request.get_full_path().split('?')[1].split('&')[0].split('=')[1]
         task = MorningTask.objects.filter(
@@ -148,7 +206,7 @@ def task(request):
 
         return redirect('task')
 
-    # SAVE EVENING SHIFT RECORDS
+    # Adding new records for evening tasks
     if request.method == "POST" and "save-pm-shift" in request.POST:
 
         form = EveningTaskForm(request.POST)
@@ -161,7 +219,7 @@ def task(request):
         return redirect('task')
 
     
-    # RETRIEVE EVENING RECORDS
+    # Retrieving past records based on date input. If no records were returned, user navigated to not found page.
     if request.method == "GET" and 'retrieve-pm' in request.GET:
         try:
             task = EveningTask.objects.filter(
@@ -175,7 +233,7 @@ def task(request):
             return redirect('not_found')
 
 
-    # UPDATE EVENING RECORDS 
+    # Updates evening records. 
     if request.method == "POST" and "update-evening" in request.POST:
         date = request.get_full_path().split('?')[1].split('&')[0].split('=')[1]
         task = EveningTask.objects.filter(
@@ -207,6 +265,14 @@ def task(request):
 
 @login_required(login_url='login')
 def room_service(request):
+
+    """
+        Room service view is the page for adding new incident report. It includes a form that takes input from
+        the user and save it to the database.
+
+        After each assistance for the guest, this is where MIS personnel records the incident.
+    """
+
     warnings = Asset.objects.filter(
         Q(status="initial") |
         Q(status="warning") |
@@ -249,6 +315,12 @@ def room_service(request):
 
 @login_required(login_url='login')
 def department_service(request):
+
+    """ Department service view is the page for adding new incident report. It includes a form that takes input from
+        the user and save it to the database.
+
+        After each assistance for the a specific department, this is where MIS personnel records the incident. """
+
     warnings = Asset.objects.filter(
         Q(status="initial") |
         Q(status="warning") |
@@ -287,9 +359,13 @@ def department_service(request):
 
     return render(request, 'e_logs/department.html', context)
 
-
 @login_required(login_url='login')
 def utilities(request):
+
+    """
+        Utilities view is where the MIS personnel add records of bulletin.
+    """
+
     warnings = Asset.objects.filter(
         Q(status="initial") |
         Q(status="warning") |
@@ -314,10 +390,19 @@ def utilities(request):
 
     return render(request, 'e_logs/utilities.html', context)
 
-
 @login_required(login_url='login')
 def assets(request):
-    asset = Asset.objects.all()
+
+    """
+        Assets view displayed the assets of the MIS and indicator to identify when will the assets expire.
+
+        RED --> has a status == 'danger' which is 30 days before expiration
+        ORANGE --> has a status == 'warning' which is 60 days before expiration
+        YELLOW -- > has a status == 'initial' which is 90 days before expiration
+
+        User can update and delete records
+    """
+    asset = Asset.objects.all()[:100]
     for a in asset:
         a.status = asset_status(a.expiration)
         a.save()
@@ -326,7 +411,7 @@ def assets(request):
         Q(status="initial") |
         Q(status="warning") |
         Q(status="danger") 
-    )
+    ).order_by('expiration')
 
     context = {
         'assets': asset,
@@ -337,6 +422,11 @@ def assets(request):
 
 @login_required(login_url='login')
 def create_asset(request):
+
+    """
+        Create asset view is where the user (MIS) add new asset or equipment. 
+    """
+
     title = "Add New Asset"
     form = AssetForm()
 
@@ -344,15 +434,17 @@ def create_asset(request):
     
         purchase_date = request.POST.get('purchase_date')  
         expiration = request.POST.get('expiration')   
-         
-        Asset.objects.create(
-            name=request.POST.get('name'),
-            description=request.POST.get('description'),
-            supplier=request.POST.get('supplier'),
-            purchase_date=purchase_date,
-            expiration=expiration,
-            status=asset_status(expiration)
-        )
+        
+        for i in range(1000000):
+            Asset.objects.create(
+                name=request.POST.get('name'),
+                description=request.POST.get('description'),
+                supplier=request.POST.get('supplier'),
+                purchase_date=purchase_date,
+                expiration=expiration,
+                status=asset_status(expiration)
+            )
+
         return redirect('assets')
 
     context = {
@@ -363,6 +455,14 @@ def create_asset(request):
 
 @login_required(login_url='login')
 def update_asset(request, pk):
+
+    """
+        Update asset view is where the user can update the record upon selecting it from the assets page / table.
+        The same form for creating asset is displayed but the fields were already filled by the selected data.
+
+        Each updates is monitored. It is recorded on the database who and when the data was updated.
+    """
+
     asset = Asset.objects.get(id=pk)
     form = AssetForm(instance=asset)
     title = 'Update Asset'
@@ -370,6 +470,17 @@ def update_asset(request, pk):
     if request.method == "POST":
         form = AssetForm(request.POST, instance=asset)
         if form.is_valid():
+
+            Audit.objects.create(
+                name=asset.name,
+                description=asset.description,
+                supplier=asset.supplier,
+                purchase_date=asset.purchase_date,
+                expiration=asset.expiration,
+                action="Updated",
+                author=request.user
+            )
+
             form.save()
             return redirect('assets')
         else:
@@ -385,9 +496,24 @@ def update_asset(request, pk):
 
 @login_required(login_url='login')
 def delete_asset(request, pk):
+
+    """
+        Delete asset view renders a confirmation message for deleting the selected data.
+
+        The delete action is monitored. It is recorded in the database who deletes the data and when it is deleted.
+    """
     asset = Asset.objects.get(id=pk)
 
     if request.method == "POST":
+        Audit.objects.create(
+            name=asset.name,
+            description=asset.description,
+            supplier=asset.supplier,
+            purchase_date=asset.purchase_date,
+            expiration=asset.expiration,
+            action="Deleted",
+            author=request.user
+        )
         asset.delete()
         return redirect('assets')
 
@@ -396,26 +522,22 @@ def delete_asset(request, pk):
     }
     return render(request, 'e_logs/delete_asset.html', context)
 
-
 @login_required(login_url='login')
 def asset_details(request, pk):
+
+    """
+        Displays the details of each asset.
+    """
     asset = Asset.objects.get(id=pk)
-    return HttpResponse(f'This is the {asset} details')
-
-def login_view(request):
-    if request.method == "POST":
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-
-        user = authenticate(request, username=username, password=password)
-        
-        if user is not None:
-            login(request, user)
-            return redirect('home')
-        else: 
-            print(user)
-    return render(request, 'e_logs/login.html')
+    context = {
+        'asset': asset
+    }
+    return render(request, 'e_logs/asset_details.html', context)
 
 @login_required(login_url='login')
 def not_found(request):
+
+    """
+        Renders a not found page whenever the user retrieves an null object.
+    """
     return render(request, 'e_logs/not_found.html')

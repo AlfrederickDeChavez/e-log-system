@@ -36,9 +36,7 @@ class MorningTaskForm(forms.ModelForm):
             't_cppc': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
             't_ccrgt': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
         }
-
-    
-            
+        
 class EveningTaskForm(forms.ModelForm):
 
     AUTHORS = [

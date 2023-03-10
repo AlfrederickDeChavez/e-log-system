@@ -17,12 +17,19 @@
 
     <!-- Header --> 
     <header class="flex-l">
-        <a href="{% url 'home' %}">
-        <div class="logo"></div>
-        </a>
-        <a href="{% url 'home' %}">
-        <h3 class="title"><span>BELLEVUE MIS</span> LOG MANAGEMENT SYSTEM</h3>
-        </a>
+        <div class="company">
+            <a href="{% url 'home' %}">
+                <div class="logo"></div>
+            </a>
+            <a href="{% url 'home' %}">
+                <h3 class="title"><span>BELLEVUE MIS</span> LOG MANAGEMENT SYSTEM</h3>
+            </a>
+        </div>
+        <div class="user">
+            <p>{{request.user}}</p>
+            <a href="{% url 'logout' %}" ><i class='bx bx-log-out-circle'></i>  Logout</a>
+        </div>
+        
     </header>
 
     

@@ -1,34 +1,59 @@
 import time
 from datetime import datetime, date
 
-
-# Convert 24-hour time format to 12-hour format
 def convert_time(value):
+
+    """
+      Converts 24-hour time format to 12 hour format.
+
+      INPUT: '23:46'
+      OUTPUT: '11:46 PM
+      
+    """
+
     time_split = value.split(":")
     label =  "PM" if int(time_split[0]) >= 12 else "AM"
     hours = int(time_split[0]) % 12 or 12
 
     return str(hours) + ":" + str(time_split[1]) + " " + label
 
-
-# Convert string to time data object
 def convert_str_to_time(time):
+
+    """
+      Convert string data type time value to time datatype
+    """
+
     datetime_object = datetime.strptime(time, "%H:%M:%S")
     time = datetime_object.time()
     return time
 
 
-# Add 8 hours to Python Default Time which is 8 hours late
 def add_eight_hours(time):
+
+    """
+      Add eight hours to the input time.
+      *** Python time is sometimes late by 8 hours.
+
+      INPUT: '17:34:15'
+      OUTPUT: '01:34:15'
+
+    """
     time_split = time.split(":")
     hours = int(time_split[0]) % 24 if int(time_split[0]) + 8 >= 24 else int(time_split[0]) + 8
 
     return str(hours) + ":" + time_split[1] + ":" + time_split[2] 
-  # print(add_eight_hours(time.strftime("%H:%M:%S", time.localtime())))
 
 
-# Convert task time to 24-hour format
 def convert_task_time(time):
+    
+    """
+      Use for old data. 
+      Convert task data to 24-hour format.
+
+      INPUT: '3:36 PM'
+      OUTPUT: '15:36'
+    """
+
     if 'PM' in time:
       time_split = time.split(":")
       hour = "00" if (int(time_split[0]) + 12) == 24 else int(time_split[0]) + 12
@@ -45,18 +70,31 @@ def convert_task_time(time):
       return "00:00:00" 
 
 def asset_status(expiration):
+
+    """
+      Check the status of an asset to know if it is near expiration date.
+
+      INPUT: '2023-03-31' -- March 31, 2023
+      CURRENT DATE: '2023-03-09' -- March 09, 2023
+      OUTPUT: 'danger'
+
+      Asset is 22 days before expiration which is within 30 days. It is categorized as 'danger'.
+    """
+
     datetime_object = datetime.strptime(str(expiration), "%Y-%m-%d")
     expiration = datetime_object.date()
-    if (expiration - date.today()).days < 30:
+    if (expiration - date.today()).days <= 30:
       return 'danger'
-    elif (expiration - date.today()).days < 60:
+    elif (expiration - date.today()).days <= 60:
       return 'warning'
-    elif (expiration - date.today()).days < 90:
+    elif (expiration - date.today()).days <= 90:
       return 'initial'
     else:
       return 'fresh'
 
-
+def print_all_asset(asset):
+  for a in asset:
+    print(a)
 
 # Iterate on a dataframe to change the string object (mm/dd/yy) to date object
 # for index, row in df.iterrows():

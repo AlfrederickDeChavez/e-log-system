@@ -8,10 +8,19 @@
     <br>
     <div class="asset-content">
         <div class="add-asset-container">
+            <div class="asset-tabs">
+                <div class="all-asset active" data-link-tab="#all">
+                    <p>All</p>
+                </div>
+                <div class="all-warning" data-link-tab="#warnings">
+                    <p>Warnings</p>
+                    <p>{{warnings | length}}</p>
+                </div>
+            </div>
             <a href="{% url 'create-asset' %}">+ Add New Asset</a>
         </div>
 
-        <div class="asset-container" id="all">
+        <div class="asset-container active"  data-link-content id="all">
         
             <!-- TABLE -->
             <div class="asset-table">
@@ -31,7 +40,7 @@
 
                         {% for asset in assets %}
                         <tr>
-                            <td>{{asset.name}}</td>
+                            <td><a href="{% url 'asset-details' asset.id %}">{{asset.name}}</a></td>
                             <td>{{asset.supplier}}</td>
                             <td>{{asset.purchase_date}}</td>
                             <td>{{asset.expiration}}</td>
@@ -79,8 +88,70 @@
             </div>
         </div>
 
-        <div class="expire-container" id="expire">
-            
+        <div class="warning-container" data-link-content id="warnings">
+            <div class="warning-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Asset</th>
+                            <th>Supplier</th>
+                            <th>Purchase Date</th>
+                            <th>Expiration Date</th>
+                            <!-- <th>Description</th> -->
+                            <th>Status</th>
+                            <th colspan="2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for asset in warnings %}
+                        <tr>
+                            <td><a href="{% url 'asset-details' asset.id %}">{{asset.name}}</a></td>
+                            <td>{{asset.supplier}}</td>
+                            <td>{{asset.purchase_date}}</td>
+                            <td>{{asset.expiration}}</td>
+                            <!-- <td>{{asset.description}}</td> -->
+                            {% if asset.status == 'initial' %}
+                                <td>
+                                    <div class="isThree status">
+                                        <!-- <i class='bx bxs-bell'></i> -->
+                                        LAST 3 M
+                                    </div>
+                                </td>
+                            {% elif asset.status == 'fresh' %}
+                                <td>
+                                    <div class="isFresh status">
+                                        <!-- <i class='bx bxs-bell'></i> -->
+                                        FRESH
+                                    </div>
+                                </td>
+                            {% elif asset.status == 'warning' %}
+                                <td>
+                                    <div class="isTwo status">
+                                        <!-- <i class='bx bxs-bell'></i> -->
+                                        LAST 2 M
+                                    </div>
+                                </td>
+                            {% elif asset.status == 'danger' %}
+                                <td>
+                                    <div class="isOne status">
+                                        <!-- <i class='bx bxs-bell'></i> -->
+                                        LAST 1 M
+                                    </div>
+                                </td>
+                            {% endif %}
+
+                            <td>
+                                <a href="{% url 'update-asset' asset.id %}" class="action edit"><i class='bx bxs-edit' style="margin-right: 5px;"></i> Edit</a>
+                            </td>
+                            <td>    
+                                <a href="{% url 'delete-asset' asset.id %}" class="action delete"><i class='bx bxs-trash' style="margin-right: 5px;"></i> Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -119,10 +190,12 @@
         width: 100%;
         height: auto;
     }
-    .asset-container {
+    .asset-container, .warning-container {
         position: relative;
         width: 100%;
         overflow: scroll;
+        transition: all 0.2s ease-out;
+
     }
 
     .alert-container {
@@ -160,12 +233,16 @@
     }
 
 
-    .asset-table {
+    .asset-table , .warning-table{
         position: relative;
     }
 
     .add-asset-container {
         width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
     }
 
     .add-asset-container a {
@@ -175,12 +252,68 @@
         font-family: 'Poppins', sans-serif;
         text-transform: uppercase;
         border-radius: 3px;
-        margin-bottom: 0.5rem;
         cursor: pointer;
-        float: right;
         font-weight: 500;
         font-size: 0.9rem;
+        max-height: fit-content;
     }
+
+    .asset-tabs {
+        display: flex;
+    }
+
+    .all-asset {
+        padding: 5px 15px;
+        cursor: pointer;
+        transition: all 0.1s ease-out;
+    }
+
+    .all-warning {
+        display: flex;
+        padding: 5px 15px;
+        gap: 0.8rem;
+        cursor: pointer;
+        transition: all 0.1s ease-out;
+
+    }
+
+    .all-warning:hover, .all-asset:hover {
+        border-bottom: 3px solid rgb(49, 49, 49);
+        font-weight: 500;
+    }
+
+
+    .all-warning p:last-of-type {
+        display: flex;
+        align-items: center;justify-content: center;
+        background-color: rgb(49, 49, 49);
+        padding: 0 10px;
+        font-size: 0.7rem;
+        line-height: 0.8rem;
+        color: #FFFFFF;
+        border-radius: 10px;
+    }
+
+    [data-link-content] {
+        display: none;
+    }
+
+    .active[data-link-content] {
+        display: block;
+    }
+
+    .active[data-link-tab] {
+        border-bottom: 3px solid rgb(49, 49, 49);
+    }
+
+    .active[data-link-tab] p {
+        font-weight: 500;
+    }
+
+    
+
+
+
 
 
 </style>
@@ -190,22 +323,23 @@
 
     // PAGE NAVIGATION 
 
-    const assetTabs = document.querySelectorAll('[data-link-alarm')
-    const assetTabContents = document.querySelectorAll('[data-link-content')
+    const assetTabs = document.querySelectorAll('[data-link-tab]')
+    const assetTabContents = document.querySelectorAll('[data-link-content]')
 
     assetTabs.forEach(tab => {
         tab.addEventListener('click', () => {
-            const target = document.querySelector(tab.dataset.linkTask)
+            const target = document.querySelector(tab.dataset.linkTab)
+
             assetTabContents.forEach(tabContent => {
-                tabContent.classList.remove('active-alarm-content')
+                tabContent.classList.remove('active')
             })
 
-            assetTabs.forEach(tabli => {
-                tabli.classList.remove('active-alarm')
+            assetTabs.forEach(tab => {
+                tab.classList.remove('active')
             })
 
-            tab.classList.add('active-alarm')
-            target.classList.add('active-alarm-content')
+            tab.classList.add('active')
+            target.classList.add('active')
         })
     })
 

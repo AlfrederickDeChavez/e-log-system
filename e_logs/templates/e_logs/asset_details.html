@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+
+{% load static %}
+<html lang="en">
+    
+<head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <link rel="icon" type="image/x-icon" href="{% static 'images/logo.png' %}">
+        <title>Asset Detail</title>
+        
+    </head>
+
+<body>
+    <div class="page-title">
+        <img src="{% static 'images/logo.png' %}" alt="">
+        <p>Management Information System</p>
+    </div>
+    <div class="container">
+        <p><i class='bx bx-detail'></i>  Asset Details</p>
+
+        <div class="detail-box">
+            <h5>Name: </h5>
+            <p>{{asset.name}}</p>
+        </div>
+        <div class="detail-box">
+            <h5>Description: </h5>
+            <p>{{asset.description}}</p>
+        </div>
+
+        <div class="detail-box">
+            <h5>Supplier: </h5>
+            <p>{{asset.supplier}}</p>
+        </div>
+
+        <div class="detail-box">
+            <h5>Purchase Date: </h5>
+            <p>{{asset.purchase_date}}</p>
+        </div>
+
+        <div class="detail-box">
+            <h5>Expiration Date: </h5>
+            <p>{{asset.expiration}}</p>
+        </div>
+
+        
+    </div>
+
+    <a href="{% url 'assets' %}" class="go-back"><i class='bx bx-arrow-back' ></i>  Go Back</a>
+       
+    
+</body>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+    
+    * {
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+        box-sizing: border-box;
+    }
+    
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        min-height: 100vh;
+        background-color: rgb(206, 195, 195);
+        padding-top: 2rem;
+    }
+    
+    .page-title {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+    
+    .page-title img {
+        width: 50px;
+        margin-bottom: 0.5rem;
+    }
+
+    .container {
+        width: 50%;
+        padding: 1rem;
+    }
+
+    .container > p {
+        font-size: 1rem;
+        font-weight: 600;
+        font-size: 1.1rem;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    .detail-box {
+        display: flex;
+        width: 100%;
+        margin: 0.5rem 0;
+        gap: 1rem;
+    }
+
+    .detail-box h5 {
+        flex: 2;
+        text-align: right;
+        font-size: 0.9rem;
+    }
+
+    .detail-box p {
+        flex: 3;
+        flex-wrap: wrap;
+        font-size: 0.9rem;
+    }
+
+    .go-back {
+        color: gray;
+        background: none;
+        border: 1px solid gray;
+        padding: 4px 12px;
+        font-size: 0.9rem;
+        text-decoration: none;
+        align-self: center;
+    }
+
+   
+    
+
+</style>
+
+</html>

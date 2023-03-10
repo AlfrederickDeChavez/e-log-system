@@ -8,6 +8,7 @@ admin.site.register(models.Department)
 admin.site.register(models.EveningTask)
 admin.site.register(models.MorningTask)
 admin.site.register(models.Asset)
+admin.site.register(models.Audit)
 
 
 admin.site.site_header = "MIS Log System"
