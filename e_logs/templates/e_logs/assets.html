@@ -33,7 +33,7 @@
                             <th>Expiration Date</th>
                             <!-- <th>Description</th> -->
                             <th>Status</th>
-                            <th colspan="2">Actions</th>
+                            <th colspan="4">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -81,6 +81,12 @@
                             <td>    
                                 <a href="{% url 'delete-asset' asset.id %}" class="action delete"><i class='bx bxs-trash' style="margin-right: 5px;"></i> Delete</a>
                             </td>
+                            <td>
+                                <button class="asset-done" onclick="markAsDone('{{asset.id}}')">Done</button>
+                            </td>
+                            <td>
+                                <a href="{% url 'asset-remark' asset.id %}">Done</a>
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -99,7 +105,7 @@
                             <th>Expiration Date</th>
                             <!-- <th>Description</th> -->
                             <th>Status</th>
-                            <th colspan="2">Actions</th>
+                            <th colspan="3">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -147,6 +153,9 @@
                             <td>    
                                 <a href="{% url 'delete-asset' asset.id %}" class="action delete"><i class='bx bxs-trash' style="margin-right: 5px;"></i> Delete</a>
                             </td>
+                            <td>
+                                <button class="asset-done">Done</button>
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -154,9 +163,29 @@
             </div>
         </div>
     </div>
+
+    <div class="asset-dialog-container">
+        
+            <form action="" class="asset-dialog-box">
+                {% csrf_token %}
+                <div class="exit"><i class='bx bxs-x-square' id="close"></i></div>
+                <label for="remark">Remarks:</label>
+                <input type="text" name="remark">
+                <div class="action">
+                    <button type="submit">Save</button>
+                </div>
+            </form>
+        
+    </div>
 </div>
 
 <style>
+
+    * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
 
     .action {
         display: flex;
@@ -310,6 +339,98 @@
         font-weight: 500;
     }
 
+    .asset-done {
+        display: flex;
+        font-family: 'Poppins';
+        align-items: center;
+        justify-content: center;
+        color: #FFFFFF;
+        padding: 3px 10px;
+        font-weight: 500;
+        border-radius: 3px;
+        border: none;
+        outline: none;
+        background-color: rgb(28, 132, 40);
+        cursor: pointer;
+    }
+    
+
+    .asset-dialog-container.active {
+        display: flex;
+        align-items: flex-start; justify-content: center;
+        padding-top: 100px;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.6);
+        top: 0;
+        left: 0;
+    }
+
+    .asset-dialog-box {
+        display: none;
+    }
+
+
+    .asset-dialog-box.active {
+        display: flex;
+        flex-direction: column;
+        min-width: 40%;
+        width: auto;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 70px rgba(0, 0, 0, 0.1);
+        padding: 1rem;
+
+    }
+
+    .asset-dialog-box .action {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding: 0;
+    }
+
+    .asset-dialog-box label {
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    .asset-dialog-box input {
+        padding: 3px 15px;
+        font-family: 'Poppins';
+        font-size: 0.8rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .asset-dialog-box .action button {
+        display: flex;
+        font-family: 'Poppins';
+        align-items: center;
+        justify-content: center;
+        color: #FFFFFF;
+        padding: 3px 10px;
+        font-weight: 500;
+        border-radius: 3px;
+        border: none;
+        outline: none;
+        background-color: rgb(28, 132, 40);
+        cursor: pointer;
+    }
+
+    .exit {
+        display: flex;
+        justify-content: flex-end;
+        padding: 0;
+    }
+
+    .exit i {
+        color: rgba(0, 0, 0, 0.6);
+        font-size: 1.4rem;
+        cursor: pointer;
+    }
+
+
     
 
 
@@ -341,6 +462,34 @@
             tab.classList.add('active')
             target.classList.add('active')
         })
+    })
+
+    // Done
+
+    const assetContainer = document.querySelector('.asset-dialog-container')
+    const dialogBox = document.querySelector('.asset-dialog-box')
+    
+
+    const markAsDone = (id) => {
+        
+        const remarkForm = document.getElementById('remark-form')
+        assetContainer.classList.add('active')
+        dialogBox.classList.add('active')
+        console.log(id)
+
+       
+        const asset_id = document.createElement('input')
+        asset_id.setAttribute('name', 'id')
+        asset_id.value = id
+
+        remarkForm.append(asset_id)
+    
+    }
+
+
+    document.getElementById('close').addEventListener('click', () => {
+        assetContainer.classList.remove('active')
+        dialogBox.classList.remove('active')
     })
 
 </script>

@@ -13,6 +13,7 @@ urlpatterns = [
     path('create-asset/', create_asset, name="create-asset"),
     path('update-asset/<str:pk>', update_asset, name="update-asset"),
     path('delete-asset/<str:pk>', delete_asset, name="delete-asset"),
+    path('asset-remarks/<str:pk>', asset_remark, name='asset-remark'),
     path('login/', login_view, name="login"),
     path('logout/', logout_view, name="logout"),
     path('404-record-not-found/', not_found, name='not_found')

@@ -66,9 +66,21 @@ class EveningTaskForm(forms.ModelForm):
         }
 
 class AssetForm(forms.ModelForm):
+
+    SCHEDULE = [
+        ('', 'Select schedule'),
+        ('Daily', 'Daily'),
+        ('Weekly', 'Weekly'),
+        ('Monthly', 'Monthly'),
+        ('Yearly', 'Yearly'),
+        ('No Recurring', 'No Recurring')
+    ]
+
+    schedule = forms.ChoiceField(choices=SCHEDULE)
+
     class Meta:
         model = Asset
-        fields = ['name', 'description', 'supplier', 'purchase_date', 'expiration']
+        fields = ['name', 'description', 'supplier', 'purchase_date', 'expiration', 'schedule']
         widgets = {
         'purchase_date': forms.DateInput(attrs={'type': 'date'}),
         'expiration': forms.DateInput(attrs={'type': 'date'}),

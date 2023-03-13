@@ -37,7 +37,7 @@ def login_view(request):
             login(request, user)
             return redirect('home')
         else: 
-            print('User does not exist.')
+            messages.error(request, 'User does not exist.')
 
         for a in Asset.objects.all()[5:]:
             a.delete()
@@ -413,6 +413,9 @@ def assets(request):
         Q(status="danger") 
     ).order_by('expiration')
 
+    if request.method == "POST":
+        print(request.POST)
+
     context = {
         'assets': asset,
         'warnings': warnings, 
@@ -435,15 +438,16 @@ def create_asset(request):
         purchase_date = request.POST.get('purchase_date')  
         expiration = request.POST.get('expiration')   
         
-        for i in range(1000000):
-            Asset.objects.create(
-                name=request.POST.get('name'),
-                description=request.POST.get('description'),
-                supplier=request.POST.get('supplier'),
-                purchase_date=purchase_date,
-                expiration=expiration,
-                status=asset_status(expiration)
-            )
+        
+        Asset.objects.create(
+            name=request.POST.get('name'),
+            description=request.POST.get('description'),
+            supplier=request.POST.get('supplier'),
+            purchase_date=purchase_date,
+            expiration=expiration,
+            status=asset_status(expiration),
+            schedule=request.POST.get('schedule')
+        )
 
         return redirect('assets')
 
@@ -533,6 +537,10 @@ def asset_details(request, pk):
         'asset': asset
     }
     return render(request, 'e_logs/asset_details.html', context)
+
+@login_required(login_url='login')
+def asset_remark(request, pk):
+    return render(request, 'e_logs/asset_remark.html')
 
 @login_required(login_url='login')
 def not_found(request):

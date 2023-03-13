@@ -116,6 +116,7 @@ class Asset(models.Model):
     supplier = models.CharField(max_length=200)
     purchase_date = models.DateField()
     expiration = models.DateField()
+    schedule = models.CharField(max_length=150, null=True, blank=True)
     status = models.CharField(max_length=50)
 
     def __str__(self):
@@ -126,6 +127,7 @@ class Audit(models.Model):
     description = models.TextField()
     supplier = models.CharField(max_length=200)
     purchase_date = models.DateField()
+    schedule = models.CharField(max_length=150, null=True, blank=True)
     expiration = models.DateField()
     
     action = models.CharField(max_length=200)

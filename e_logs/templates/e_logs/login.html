@@ -7,12 +7,19 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <link rel="stylesheet" href="{% static 'styles/fonts.css' %}">
         <link rel="icon" type="image/x-icon" href="{% static 'images/logo.png' %}">
         <title>Login</title>
         
     </head>
 <body>
-    <!-- {{messages}} -->
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
     <div class="page-title">
         <img src="{% static 'images/logo.png' %}" alt="">
         <p><span>Bellevue Mis</span> Log Management System</p>
@@ -32,7 +39,7 @@
 </body>
 
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+    /* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap'); */
 
 * {
     margin: 0;
@@ -182,6 +189,17 @@ form button:hover {
     background-color: var(--dark-gold);
 }
 
+.message {
+    width: 70%;
+    margin: 0.5rem;
+    display: flex; justify-content: center; align-items: center;
+    border-radius: 3px;
+    color: rgb(137, 16, 16);
+    border: 1px rgb(137, 16, 16) solid;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
 
 </style>
 
