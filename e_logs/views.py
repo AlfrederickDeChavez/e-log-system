@@ -10,6 +10,7 @@ from django.contrib import messages
 import time
 from datetime import datetime
 from datetime import date
+import datetime
 
 #Importing App Modules
 from .models import Bulletin, Guest, Department, EveningTask, MorningTask, Asset, Audit
@@ -65,18 +66,19 @@ def bulletin(request):
     """
 
     
-    # Retrieving assets data from the database to update the status of each record based on expiration date.
-    asset = Asset.objects.all()[:100]
+    asset = Asset.objects.all()
     for a in asset:
         a.status = asset_status(a.expiration)
         a.save()
+        track_asset(a)
 
-    #Retrieving all data that are within three months before expiration.
+
     warnings = Asset.objects.filter(
         Q(status="initial") |
-        Q(status="warning") |
-        Q(status="danger") 
-    )
+        Q(status="warning") | 
+        Q(status="danger") | 
+        Q(current_tracking_date=date.today())
+    ).order_by('expiration')
 
     """
         If user sends a GET request with 'query' on it. The following code is executed. 
@@ -140,7 +142,13 @@ def bulletin(request):
         department = Department.objects.all().order_by('-date')[:50]
         guest = Guest.objects.all().order_by('-date')[:50]
         
-    context = {'bulletin': bulletin, 'guest': guest, 'department': department, 'warnings': warnings}
+    context = {
+        'bulletin': bulletin, 
+        'guest': guest, 
+        'department': department, 
+        'warnings': warnings,
+        'yesterday': date.today() - timedelta(days=1)
+    }
 
     return render(request, 'e_logs/bulletin.html', context)
 
@@ -151,6 +159,12 @@ def task(request):
         The task view shows the checklist of task of the MIS personnel. User can navigate between morning shift and evening shift.
         Past data can be retrieve using the data chosen. The displayed data can be updated.
     """
+    warnings = Asset.objects.filter(
+        Q(status="initial") |
+        Q(status="warning") | 
+        Q(status="danger") | 
+        Q(current_tracking_date=date.today())
+    ).order_by('expiration')
 
     #Initializing the forms
     morning_form = MorningTaskForm()
@@ -160,11 +174,6 @@ def task(request):
     update_morning_data = False
     update_evening_data = False
     retrieved_task = None
-    warnings = Asset.objects.filter(
-        Q(status="initial") |
-        Q(status="warning") |
-        Q(status="danger") 
-    )
 
     #Adding new record for the morning
     if request.method == "POST" and "save-am-shift" in request.POST:
@@ -192,9 +201,9 @@ def task(request):
 
     # Updating task record for morning. 
     if request.method == "POST" and "update-morning" in request.POST:
-        date = request.get_full_path().split('?')[1].split('&')[0].split('=')[1]
+        date_filter = request.get_full_path().split('?')[1].split('&')[0].split('=')[1]
         task = MorningTask.objects.filter(
-            Q(date=date)
+            Q(date=date_filter)
         )[0]
 
         form = MorningTaskForm(request.POST, instance=task)
@@ -235,9 +244,9 @@ def task(request):
 
     # Updates evening records. 
     if request.method == "POST" and "update-evening" in request.POST:
-        date = request.get_full_path().split('?')[1].split('&')[0].split('=')[1]
+        date_filter = request.get_full_path().split('?')[1].split('&')[0].split('=')[1]
         task = EveningTask.objects.filter(
-            Q(date=date)
+            Q(date=date_filter)
         )[0]
 
         form = EveningTaskForm(request.POST, instance=task)
@@ -275,9 +284,10 @@ def room_service(request):
 
     warnings = Asset.objects.filter(
         Q(status="initial") |
-        Q(status="warning") |
-        Q(status="danger") 
-    )
+        Q(status="warning") | 
+        Q(status="danger") | 
+        Q(current_tracking_date=date.today())
+    ).order_by('expiration')
 
     # POST ROOM INCIDENT REPORT 
     if request.method == "POST" and "save_room" in request.POST: 
@@ -323,9 +333,10 @@ def department_service(request):
 
     warnings = Asset.objects.filter(
         Q(status="initial") |
-        Q(status="warning") |
-        Q(status="danger") 
-    )
+        Q(status="warning") | 
+        Q(status="danger") | 
+        Q(current_tracking_date=date.today())
+    ).order_by('expiration')
 
     # POST DEPARTMENT INCIDENT REPORT
     if request.method == 'POST' and 'save_department' in request.POST:
@@ -368,9 +379,10 @@ def utilities(request):
 
     warnings = Asset.objects.filter(
         Q(status="initial") |
-        Q(status="warning") |
-        Q(status="danger") 
-    )
+        Q(status="warning") | 
+        Q(status="danger") | 
+        Q(current_tracking_date=date.today())
+    ).order_by('expiration')
 
     # POST BULLETIN RECORDS
 
@@ -402,19 +414,19 @@ def assets(request):
 
         User can update and delete records
     """
-    asset = Asset.objects.all()[:100]
+    
+    asset = Asset.objects.all()
     for a in asset:
         a.status = asset_status(a.expiration)
         a.save()
+        track_asset(a)
 
     warnings = Asset.objects.filter(
         Q(status="initial") |
-        Q(status="warning") |
-        Q(status="danger") 
+        Q(status="warning") | 
+        Q(status="danger") | 
+        Q(current_tracking_date=date.today())
     ).order_by('expiration')
-
-    if request.method == "POST":
-        print(request.POST)
 
     context = {
         'assets': asset,
@@ -434,19 +446,19 @@ def create_asset(request):
     form = AssetForm()
 
     if request.method == "POST":
+
+        expiration = request.POST.get('expiration')
     
-        purchase_date = request.POST.get('purchase_date')  
-        expiration = request.POST.get('expiration')   
-        
-        
         Asset.objects.create(
             name=request.POST.get('name'),
             description=request.POST.get('description'),
             supplier=request.POST.get('supplier'),
-            purchase_date=purchase_date,
+            purchase_date=request.POST.get('purchase_date'),
             expiration=expiration,
             status=asset_status(expiration),
-            schedule=request.POST.get('schedule')
+            schedule=request.POST.get('schedule'),
+            current_tracking_date=date.today(),
+            next_tracking_date=recur_asset(request.POST.get('schedule'))
         )
 
         return redirect('assets')

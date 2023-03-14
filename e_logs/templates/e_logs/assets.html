@@ -33,6 +33,9 @@
                             <th>Expiration Date</th>
                             <!-- <th>Description</th> -->
                             <th>Status</th>
+                            <th>Schedule</th>
+                            <th>Renewal</th>
+                            <th>Next Track Date</th>
                             <th colspan="4">Actions</th>
                         </tr>
                     </thead>
@@ -75,6 +78,10 @@
                                 </td>
                             {% endif %}
 
+                            <td>{{asset.schedule}}</td>
+                            <td>{{asset.current_tracking_date}}</td>
+                            <td>{{asset.next_tracking_date}}</td>
+
                             <td>
                                 <a href="{% url 'update-asset' asset.id %}" class="action edit"><i class='bx bxs-edit' style="margin-right: 5px;"></i> Edit</a>
                             </td>
@@ -82,7 +89,7 @@
                                 <a href="{% url 'delete-asset' asset.id %}" class="action delete"><i class='bx bxs-trash' style="margin-right: 5px;"></i> Delete</a>
                             </td>
                             <td>
-                                <button class="asset-done" onclick="markAsDone('{{asset.id}}')">Done</button>
+                                <button class="asset-done" onclick="markAsDone()">Done</button>
                             </td>
                             <td>
                                 <a href="{% url 'asset-remark' asset.id %}">Done</a>
@@ -166,7 +173,7 @@
 
     <div class="asset-dialog-container">
         
-            <form action="" class="asset-dialog-box">
+            <form action="" class="asset-dialog-box" method="POST">
                 {% csrf_token %}
                 <div class="exit"><i class='bx bxs-x-square' id="close"></i></div>
                 <label for="remark">Remarks:</label>
@@ -470,20 +477,11 @@
     const dialogBox = document.querySelector('.asset-dialog-box')
     
 
-    const markAsDone = (id) => {
+    const markAsDone = () => {
         
-        const remarkForm = document.getElementById('remark-form')
         assetContainer.classList.add('active')
         dialogBox.classList.add('active')
-        console.log(id)
-
-       
-        const asset_id = document.createElement('input')
-        asset_id.setAttribute('name', 'id')
-        asset_id.value = id
-
-        remarkForm.append(asset_id)
-    
+        
     }
 
 

@@ -119,6 +119,9 @@ class Asset(models.Model):
     schedule = models.CharField(max_length=150, null=True, blank=True)
     status = models.CharField(max_length=50)
 
+    current_tracking_date = models.DateField(null=True, blank=True)
+    next_tracking_date = models.DateField(null=True, blank=True)
+
     def __str__(self):
         return self.name
 

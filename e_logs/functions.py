@@ -1,5 +1,5 @@
 import time
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 
 def convert_time(value):
 
@@ -83,6 +83,7 @@ def asset_status(expiration):
 
     datetime_object = datetime.strptime(str(expiration), "%Y-%m-%d")
     expiration = datetime_object.date()
+    
     if (expiration - date.today()).days <= 30:
       return 'danger'
     elif (expiration - date.today()).days <= 60:
@@ -95,6 +96,112 @@ def asset_status(expiration):
 def print_all_asset(asset):
   for a in asset:
     print(a)
+
+
+def is_leap(year):
+  if year % 4 == 0:
+    if year % 100 == 0:
+      if year % 400 == 0:
+        return True
+    return True
+  return False
+
+
+def recur_asset(schedule):
+  
+    """
+      This program returns a date to fill out the 'next_tracking_date' field of asset model.
+    
+      INPUT: Schedule --> 'Yearly', 'Monthly', 'Weekly', 'Daily'
+      OUTPUT: Date --> 2023-03-14
+    """
+
+    if schedule =="Yearly":
+      if is_leap(date.today().year): 
+        next_tracking_date = date.today() + timedelta(days=366)
+        return next_tracking_date
+      else:
+        next_tracking_date = date.today() + timedelta(days=365)
+        return next_tracking_date
+
+    elif schedule == "Monthly":
+      next_tracking_date = date.today() + timedelta(days=30)
+      return next_tracking_date
+
+    elif schedule == "Weekly":
+      next_tracking_date = date.today() + timedelta(days=7)
+      return next_tracking_date
+
+    elif schedule == "Daily":
+      next_tracking_date = date.today() + timedelta(days=1)
+      return next_tracking_date
+
+    else:
+      return date.today()
+
+
+# UPDATE
+def update_recur_asset(asset):
+
+  """
+    This program updates the asset model upon editing a specific record.
+  
+    INPUT: Schedule --> 'Yearly', 'Monthly', 'Weekly', 'Daily'
+    OUTPUT: Date --> 2023-03-14 // Does not returns a value
+  """
+
+  if asset.schedule == "Yearly": 
+    if is_leap(date.today().year): 
+      asset.next_tracking_date = date.today() + timedelta(days=367)
+      asset.save()
+    else:
+      asset.next_tracking_date = date.today() + timedelta(days=366)
+      asset.save()
+
+  elif asset.schedule == "Monthly":
+    if date.today().month == 1 or date.today().month == 3 or date.today().month == 5 or date.today().month == 7 or date.today().month == 8 or date.today().month == 10 or date.today().month == 12:
+      asset.next_tracking_date = date.today() + timedelta(days=31)
+      asset.save()
+    elif date.today().month == 2:
+      if is_leap(date.today().year): 
+        asset.next_tracking_date = date.today() + timedelta(days=29)
+        asset.save()
+      else:
+        asset.next_tracking_date = date.today() + timedelta(days=28)
+        asset.save()
+    else:
+      asset.next_tracking_date = date.today() + timedelta(days=30)
+      asset.save()
+
+  elif asset.schedule == "Weekly":
+    asset.next_tracking_date = date.today() + timedelta(days=7)
+    asset.save()
+
+  elif asset.schedule == "Daily":
+    asset.next_tracking_date = date.today() + timedelta(days=1)
+    asset.save()
+
+  else:
+    return date.today()
+
+
+
+def track_asset(asset):
+  """
+    This program is for updating the 'current_tracking_date' dynamically.
+
+    If the 'current_tracking_date' is equal to date today, then the 'next_tracking_date' is updated 
+    based on schedule. ('Yearly', 'Monthly', 'Weekly', 'Daily')
+
+    If the 'current_tracking_date' is NOT equal today, then set the 'current_tracking_date' equal to 'next_tracking_date'.
+
+  """
+  if asset.current_tracking_date == date.today():
+    update_recur_asset(asset)
+  else:
+    asset.current_tracking_date = asset.next_tracking_date
+    asset.save()
+
 
 # Iterate on a dataframe to change the string object (mm/dd/yy) to date object
 # for index, row in df.iterrows():
