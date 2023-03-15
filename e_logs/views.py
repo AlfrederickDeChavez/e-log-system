@@ -67,14 +67,14 @@ def bulletin(request):
 
     yesterday = date.today() - timedelta(days=1)
     try:
-        disk = EveningTask.objects.get(date=yesterday) if EveningTask.objects.get(date=yesterday) else ''
+        disk = EveningTask.objects.get(date=yesterday)
         opera = disk.r_dsob[:10]
     except:
         opera = ''
     
     asset = Asset.objects.all()
     for a in asset:
-        a.status = asset_status(a.expiration)
+        a.status = asset_status(a)
         a.save()
         track_asset(a)
 
@@ -424,7 +424,7 @@ def assets(request):
     
     asset = Asset.objects.all()
     for a in asset:
-        a.status = asset_status(a.expiration)
+        a.status = asset_status(a)
         a.save()
         track_asset(a)
 
@@ -469,7 +469,7 @@ def create_asset(request):
             supplier=request.POST.get('supplier'),
             purchase_date=request.POST.get('purchase_date'),
             expiration=expiration,
-            status=asset_status(expiration),
+            status='fresh',
             schedule=request.POST.get('schedule'),
             current_tracking_date=date.today(),
             next_tracking_date=recur_asset(request.POST.get('schedule'))
@@ -498,23 +498,53 @@ def update_asset(request, pk):
     title = 'Update Asset'
 
     if request.method == "POST":
-        form = AssetForm(request.POST, instance=asset)
-        if form.is_valid():
+        
+        if asset.schedule == request.POST.get('schedule'):
+            form = AssetForm(request.POST, instance=asset)
+            if form.is_valid():
 
-            Audit.objects.create(
-                name=asset.name,
-                description=asset.description,
-                supplier=asset.supplier,
-                purchase_date=asset.purchase_date,
-                expiration=asset.expiration,
-                action="Updated",
-                author=request.user
-            )
+                Audit.objects.create(
+                    name=asset.name,
+                    description=asset.description,
+                    supplier=asset.supplier,
+                    purchase_date=asset.purchase_date,
+                    expiration=asset.expiration,
+                    action="Updated",
+                    author=request.user
+                )
 
-            form.save()
+                form.save()
+                return redirect('assets')
+            else:
+                print(form.errors)
+
             return redirect('assets')
+
         else:
-            print(form.errors)
+            print(asset.schedule)
+            print(request.POST.get('schedule'))
+            form = AssetForm(request.POST, instance=asset)
+            if form.is_valid():
+
+                Audit.objects.create(
+                    name=asset.name,
+                    description=asset.description,
+                    supplier=asset.supplier,
+                    purchase_date=asset.purchase_date,
+                    expiration=asset.expiration,
+                    action="Updated",
+                    author=request.user
+                )
+
+                form.save()
+
+                asset.current_tracking_date = date.today()
+                asset.save()
+                return redirect('assets')
+            else:
+                print(form.errors)
+
+            return redirect('assets')
 
     context = {
         'asset': asset,

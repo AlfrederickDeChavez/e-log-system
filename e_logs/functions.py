@@ -69,7 +69,7 @@ def convert_task_time(time):
     else:
       return "00:00:00" 
 
-def asset_status(expiration):
+def asset_status(asset):
 
     """
       Check the status of an asset to know if it is near expiration date.
@@ -81,15 +81,44 @@ def asset_status(expiration):
       Asset is 22 days before expiration which is within 30 days. It is categorized as 'danger'.
     """
 
-    datetime_object = datetime.strptime(str(expiration), "%Y-%m-%d")
+    today = date.today()
+
+    datetime_object = datetime.strptime(str(asset.expiration), "%Y-%m-%d")
     expiration = datetime_object.date()
-    
-    if (expiration - date.today()).days <= 30:
+
+    if asset.schedule == 'Daily':
       return 'danger'
-    elif (expiration - date.today()).days <= 60:
-      return 'warning'
-    elif (expiration - date.today()).days <= 90:
-      return 'initial'
+
+    elif asset.schedule == 'Weekly':
+      if asset.current_tracking_date == today or (expiration - today).days <= 30 or (asset.next_tracking_date - today).days <= 1:
+        return 'danger'
+      elif (expiration - today).days <= 60 or (asset.next_tracking_date - today).days <= 2:
+        return 'warning'
+      elif (expiration - today).days <= 90 or (asset.next_tracking_date - today).days <= 3:
+        return 'initial'
+      else:
+        return 'fresh'
+
+    elif asset.schedule == 'Monthly':
+      if asset.current_tracking_date == today or (expiration - today).days <= 30 or (asset.next_tracking_date - today).days <= 7:
+        return 'danger'
+      elif (expiration - today).days <= 60 or (asset.next_tracking_date - today).days <= 14:
+        return 'warning'
+      elif (expiration - today).days <= 90 or (asset.next_tracking_date - today).days <= 21:
+        return 'initial'
+      else:
+        return 'fresh'
+
+    elif asset.schedule == 'Yearly':
+      if asset.current_tracking_date == today or (expiration - today).days <= 30 or (asset.next_tracking_date - today).days <= 30:
+        return 'danger'
+      elif (expiration - today).days <= 60 or (asset.next_tracking_date - today).days <= 60:
+        return 'warning'
+      elif (expiration - today).days <= 90 or (asset.next_tracking_date - today).days <= 90:
+        return 'initial'
+      else:
+        return 'fresh'
+
     else:
       return 'fresh'
 

@@ -52,28 +52,28 @@
                                 <td>
                                     <div class="isThree status">
                                         <!-- <i class='bx bxs-bell'></i> -->
-                                        LAST 3 M
+                                        --------
                                     </div>
                                 </td>
                             {% elif asset.status == 'fresh' %}
                                 <td>
                                     <div class="isFresh status">
                                         <!-- <i class='bx bxs-bell'></i> -->
-                                        FRESH
+                                        --------
                                     </div>
                                 </td>
                             {% elif asset.status == 'warning' %}
                                 <td>
                                     <div class="isTwo status">
                                         <!-- <i class='bx bxs-bell'></i> -->
-                                        LAST 2 M
+                                        --------
                                     </div>
                                 </td>
                             {% elif asset.status == 'danger' %}
                                 <td>
                                     <div class="isOne status">
                                         <!-- <i class='bx bxs-bell'></i> -->
-                                        LAST 1 M
+                                        ---------
                                     </div>
                                 </td>
                             {% endif %}
@@ -109,7 +109,7 @@
                             <th>Expiration Date</th>
                             <!-- <th>Description</th> -->
                             <th>Status</th>
-                            <th colspan="3">Actions</th>
+                            <th colspan="2">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -157,9 +157,9 @@
                             <td>    
                                 <a href="{% url 'delete-asset' asset.id %}" class="action delete"><i class='bx bxs-trash' style="margin-right: 5px;"></i> Delete</a>
                             </td>
-                            <td>
+                            <!-- <td>
                                 <button class="asset-done">Done</button>
-                            </td>
+                            </td> -->
                         </tr>
                         {% endfor %}
                     </tbody>
