@@ -119,6 +119,7 @@ class Asset(models.Model):
     schedule = models.CharField(max_length=150, null=True, blank=True)
     status = models.CharField(max_length=50)
 
+    remarks = models.CharField(max_length=300, null=True, blank=True)
     current_tracking_date = models.DateField(null=True, blank=True)
     next_tracking_date = models.DateField(null=True, blank=True)
 

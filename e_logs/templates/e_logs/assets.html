@@ -36,7 +36,7 @@
                             <th>Schedule</th>
                             <th>Renewal</th>
                             <th>Next Track Date</th>
-                            <th colspan="4">Actions</th>
+                            <th colspan="3">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -89,10 +89,7 @@
                                 <a href="{% url 'delete-asset' asset.id %}" class="action delete"><i class='bx bxs-trash' style="margin-right: 5px;"></i> Delete</a>
                             </td>
                             <td>
-                                <button class="asset-done" onclick="markAsDone()">Done</button>
-                            </td>
-                            <td>
-                                <a href="{% url 'asset-remark' asset.id %}">Done</a>
+                                <button class="asset-done" onclick="markAsDone(this)" id="{{asset.id}}">Done</button>
                             </td>
                         </tr>
                         {% endfor %}
@@ -173,11 +170,11 @@
 
     <div class="asset-dialog-container">
         
-            <form action="" class="asset-dialog-box" method="POST">
+            <form action="" class="asset-dialog-box" method="POST" id="remark-form">
                 {% csrf_token %}
                 <div class="exit"><i class='bx bxs-x-square' id="close"></i></div>
                 <label for="remark">Remarks:</label>
-                <input type="text" name="remark">
+                <input type="text" name="remark" autocomplete="off" placeholder="Add a remark...">
                 <div class="action">
                     <button type="submit">Save</button>
                 </div>
@@ -475,15 +472,32 @@
 
     const assetContainer = document.querySelector('.asset-dialog-container')
     const dialogBox = document.querySelector('.asset-dialog-box')
+    const remarkForm = document.getElementById('remark-form')
     
 
-    const markAsDone = () => {
+    const markAsDone = (self) => {
         
         assetContainer.classList.add('active')
         dialogBox.classList.add('active')
-        
+
+        remarkForm.addEventListener('submit', (e) => {
+            e.preventDefault()
+
+            const id = self.getAttribute('id')
+            const input_id = document.createElement('input')
+            input_id.setAttribute('name', 'id')
+            input_id.value = id
+            input_id.style.display = 'none'
+            remarkForm.appendChild(input_id)
+            
+            remarkForm.submit()
+
+    })
+
+
     }
 
+    
 
     document.getElementById('close').addEventListener('click', () => {
         assetContainer.classList.remove('active')

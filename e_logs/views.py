@@ -65,6 +65,12 @@ def bulletin(request):
         Each table can be exported as an excel file. 
     """
 
+    yesterday = date.today() - timedelta(days=1)
+    try:
+        disk = EveningTask.objects.get(date=yesterday) if EveningTask.objects.get(date=yesterday) else ''
+        opera = disk.r_dsob[:10]
+    except:
+        opera = ''
     
     asset = Asset.objects.all()
     for a in asset:
@@ -147,7 +153,8 @@ def bulletin(request):
         'guest': guest, 
         'department': department, 
         'warnings': warnings,
-        'yesterday': date.today() - timedelta(days=1)
+        'yesterday': yesterday,
+        'opera': opera
     }
 
     return render(request, 'e_logs/bulletin.html', context)
@@ -427,6 +434,13 @@ def assets(request):
         Q(status="danger") | 
         Q(current_tracking_date=date.today())
     ).order_by('expiration')
+
+    if request.method == "POST":
+        remark_asset = Asset.objects.get(id=request.POST.get('id'))
+        remark_asset.remarks = request.POST.get('remark')
+        remark_asset.save()
+
+        return redirect('assets')
 
     context = {
         'assets': asset,

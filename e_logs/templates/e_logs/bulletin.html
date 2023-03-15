@@ -18,11 +18,11 @@
             </div>
             <div class="app-server-tbm d-flex">
                 <p>TBM Opera Backup:</p>
-                <div class="d-flex" style="font-size: 0.8rem;">65GB</div>
+                <div class="d-flex" style="font-size: 0.8rem;">{{opera}}...</div>
             </div>
             <div class="app-server-bhtl d-flex">
                 <p>BHTL Opera Backup:</p>
-                <div class="d-flex" style="font-size: 0.8rem;">65GB</div>
+                <div class="d-flex" style="font-size: 0.8rem;">{{opera}}...</div>
             </div>
         </div>
     </div>
@@ -207,6 +207,98 @@
 </div>
 
 <style>
+
+.app-server-content {
+    margin-bottom: 1rem;
+}
+
+.app-server-title {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.app-server-container {
+    width: 100%;
+    height: 3rem;
+    background-color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    box-shadow: 0 0 20px rgba(0, 0,0, 0.30);
+}
+
+.app-server-date p, .app-server-tbm p , .app-server-bhtl p{
+    font-size: 0.9rem;
+    margin-right: 0.5rem;
+}
+
+.app-server-date div, .app-server-tbm div , .app-server-bhtl div {
+    width: 9rem;
+    height: 1.8rem;
+}
+
+.filter-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.search-container {
+    width: 50%;
+    height: 1rem;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#search {
+    height: 2rem;
+    width: 85%;
+    border: none;
+    outline: none;
+    background-color: var(--lighter-bg);
+    border: 1px solid var(--stroke);
+    font-size: 0.7rem;
+    font-family: 'Poppins';
+    padding-left: 1rem;
+}
+
+
+.date-range-container input {
+    background-color: var(--light-bg);
+    border: none;
+    outline: none;
+    margin: 0 0.8rem;
+    border-radius: 0.2rem;
+    height: 2rem; 
+    cursor: pointer;
+    border: 1px solid var(--stroke);
+    font-family: 'Poppins';
+    font-size: 0.7rem;
+    padding: 0 1rem;
+}
+
+.date-range-container button, .search-container button {
+    border: none;
+    outline: none;
+    width: 2.5rem;
+    height: 2rem;
+    background-color: var(--darker);
+    cursor: pointer;
+    border-radius: 0.1rem;
+    transition: all 0.2s ease-in;
+}
+
+.date-range-container button:hover, .search-container button:hover {
+    scale: 1.05;
+    /* background-color: var(--dark-gold); */
+}
+
+.date-range-container button i , .search-container button i{
+    color: var(--white);
+    font-weight: 500;
+    font-size: 1.5rem;
+}
     
    
     .incident-report-container {
