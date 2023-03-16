@@ -231,6 +231,12 @@ def track_asset(asset):
     asset.current_tracking_date = asset.next_tracking_date
     asset.save()
 
+def renew_asset(expiration):
+  if is_leap(date.today().year):
+    return expiration + timedelta(days=366)
+  else:
+    return expiration + timedelta(days=365)
+
 
 # Iterate on a dataframe to change the string object (mm/dd/yy) to date object
 # for index, row in df.iterrows():

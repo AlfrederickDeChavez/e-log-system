@@ -124,7 +124,7 @@ class Asset(models.Model):
     next_tracking_date = models.DateField(null=True, blank=True)
 
     def __str__(self):
-        return self.name
+        return self.name + " -- " + self.supplier
 
 class Audit(models.Model):
     name = models.CharField(max_length=200)
@@ -133,6 +133,10 @@ class Audit(models.Model):
     purchase_date = models.DateField()
     schedule = models.CharField(max_length=150, null=True, blank=True)
     expiration = models.DateField()
+
+    remarks = models.CharField(max_length=300, null=True, blank=True)
+    current_tracking_date = models.DateField(null=True, blank=True)
+    next_tracking_date = models.DateField(null=True, blank=True)
     
     action = models.CharField(max_length=200)
     author = models.CharField(max_length=200, null=True, blank=True)
@@ -142,3 +146,15 @@ class Audit(models.Model):
     def __str__(self):
         return f"{self.author} - {self.action} - {self.name}"
 
+
+class RenewedAsset(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.TextField()
+    supplier = models.CharField(max_length=200)
+    purchase_date = models.DateField()
+    expiration = models.DateField()
+    schedule = models.CharField(max_length=150, null=True, blank=True)
+    remarks = models.CharField(max_length=300, null=True, blank=True)
+
+    def __str__(self):
+        return self.name + " -- " + self.supplier

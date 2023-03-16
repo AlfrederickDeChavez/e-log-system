@@ -7,11 +7,12 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{% static 'styles/fonts.css' %}">
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <link rel="icon" type="image/x-icon" href="{% static 'images/logo.png' %}">
         <title>Asset Detail</title>
         
-    </head>
+    </head> 
 
 <body>
     <div class="page-title">
@@ -46,12 +47,12 @@
         </div>
 
         <div class="detail-box">
-            <h5>Schedule: </h5>
+            <h5>Tracking Schedule: </h5>
             <p>{{asset.schedule}}</p>
         </div>
 
         <div class="detail-box">
-            <h5>Renewal Date: </h5>
+            <h5>Tracking Date: </h5>
             <p>{{asset.current_tracking_date}}</p>
         </div>
 

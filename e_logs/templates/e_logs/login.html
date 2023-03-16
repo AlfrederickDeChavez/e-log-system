@@ -14,12 +14,6 @@
     </head>
 <body>
 
-    {% if messages %}
-        {% for message in messages %}
-            <div class="message">{{ message }}</div>
-        {% endfor %}
-    {% endif %}
-
     <div class="page-title">
         <img src="{% static 'images/logo.png' %}" alt="">
         <p><span>Bellevue Mis</span> Log Management System</p>
@@ -36,6 +30,12 @@
             <button type="submit">Sign in</button>
         </form>
     </div>
+
+    {% if messages %}
+    {% for message in messages %}
+        <div class="message">{{ message }}</div>
+    {% endfor %}
+{% endif %}
 </body>
 
 <style>
@@ -190,12 +190,13 @@ form button:hover {
 }
 
 .message {
-    width: 70%;
+    width: 35%;
     margin: 0.5rem;
     display: flex; justify-content: center; align-items: center;
     border-radius: 3px;
     color: rgb(137, 16, 16);
-    border: 1px rgb(137, 16, 16) solid;
+    border: 1px solid rgb(137, 16, 16);
+    background-color: rgb(202, 56, 56);
     padding: 0.5rem;
     margin-bottom: 1rem;
     transition: all 0.3s ease;

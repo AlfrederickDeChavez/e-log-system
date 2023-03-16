@@ -109,6 +109,8 @@
                             <th>Expiration Date</th>
                             <!-- <th>Description</th> -->
                             <th>Status</th>
+                            <th>Schedule</th>
+                            <th>Track Date</th>
                             <th colspan="2">Actions</th>
                         </tr>
                     </thead>
@@ -120,37 +122,33 @@
                             <td>{{asset.supplier}}</td>
                             <td>{{asset.purchase_date}}</td>
                             <td>{{asset.expiration}}</td>
-                            <!-- <td>{{asset.description}}</td> -->
                             {% if asset.status == 'initial' %}
                                 <td>
                                     <div class="isThree status">
-                                        <!-- <i class='bx bxs-bell'></i> -->
-                                        LAST 3 M
+                                        -----
                                     </div>
                                 </td>
                             {% elif asset.status == 'fresh' %}
                                 <td>
                                     <div class="isFresh status">
-                                        <!-- <i class='bx bxs-bell'></i> -->
-                                        FRESH
+                                        -----
                                     </div>
                                 </td>
                             {% elif asset.status == 'warning' %}
                                 <td>
                                     <div class="isTwo status">
-                                        <!-- <i class='bx bxs-bell'></i> -->
-                                        LAST 2 M
+                                        -----
                                     </div>
                                 </td>
                             {% elif asset.status == 'danger' %}
                                 <td>
                                     <div class="isOne status">
-                                        <!-- <i class='bx bxs-bell'></i> -->
-                                        LAST 1 M
+                                        -----
                                     </div>
                                 </td>
                             {% endif %}
-
+                            <td>{{asset.schedule}}</td>
+                            <td>{{asset.current_tracking_date}}</td>
                             <td>
                                 <a href="{% url 'update-asset' asset.id %}" class="action edit"><i class='bx bxs-edit' style="margin-right: 5px;"></i> Edit</a>
                             </td>
@@ -180,6 +178,43 @@
                 </div>
             </form>
         
+    </div>
+
+    <div class="done-assets-container">
+        <p class="done-assets-title">All Done Assets</p>
+        <div class="done-assets-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Asset</th>
+                        <th>Supplier</th>
+                        <th>Purchase Date</th>
+                        <th>Expiration</th>
+                        <th>Status</th>
+                        <th>Schedule</th>
+                        <th>Track Date</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for asset in renewed %}
+                    <tr>
+                        <td>{{asset.name}}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <a href="{% url 'print-asset' asset.id %}">Print</a>
+                        </td>
+                    </tr>
+                    
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -226,6 +261,7 @@
     .asset-container, .warning-container {
         position: relative;
         width: 100%;
+        max-height: 400px;
         overflow: scroll;
         transition: all 0.2s ease-out;
 
@@ -268,6 +304,7 @@
 
     .asset-table , .warning-table{
         position: relative;
+        
     }
 
     .add-asset-container {
@@ -434,6 +471,25 @@
         cursor: pointer;
     }
 
+    .done-assets-container {
+        position: relative;
+        overflow: scroll;
+        width: 100%;
+        max-height: 400px;
+        margin-top: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    .done-assets-title {
+        font-size: 0.9rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+
+    .done-assets-table {
+        position: relative;
+    }
+
 
     
 
@@ -504,6 +560,7 @@
         dialogBox.classList.remove('active')
     })
 
+    
 </script>
 
 {% endblock content %}

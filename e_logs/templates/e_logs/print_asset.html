@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+
+{% load static %}
+<html lang="en">
+    
+<head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{% static 'styles/fonts.css' %}">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <link rel="icon" type="image/x-icon" href="{% static 'images/logo.png' %}">
+        <title>Save Asset</title>
+        
+    </head> 
+
+<body>
+   
+    <div class="container">
+        <div class="page-title">
+            <img src="{% static 'images/logo.png' %}" alt="">
+            <p>Management Information System</p>
+        </div>
+
+        <p class="title">Renewal Schedule</p>
+        
+    </div>
+
+    <div class="actions">
+        <a href="{% url 'assets' %}" class="go-back"><i class='bx bx-arrow-back' ></i>  Go Back</a>
+        <button>Save as PDF</button>
+    </div>
+       
+    
+</body>
+
+<style>
+    
+    * {
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+        box-sizing: border-box;
+    }
+    
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        min-height: 100vh;
+        background-color: rgb(206, 195, 195);
+        padding-top: 2rem;
+    }
+    
+    .page-title {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+    
+    .page-title img {
+        width: 50px;
+        margin-bottom: 0.5rem;
+    }
+
+    .container {
+        width: 50%;
+        padding: 1rem;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0,0,0,0.4);
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .container .title {
+        text-align: center;
+        font-size: 1.3rem;
+        font-weight: 600;
+    }
+    
+
+</style>
+
+<script>
+
+    const printAsset = () => {
+        const page = document.querySelector('.container')
+        const wn = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+        wn.document.write(assetTable.innerHTML);
+        wn.document.close();
+        wn.focus();
+        wn.print();
+        wn.close();
+    }
+
+</script>
+</html>

@@ -13,7 +13,7 @@ from datetime import date
 import datetime
 
 #Importing App Modules
-from .models import Bulletin, Guest, Department, EveningTask, MorningTask, Asset, Audit
+from .models import Bulletin, Guest, Department, EveningTask, MorningTask, Asset, Audit, RenewedAsset
 from .forms import MorningTaskForm, EveningTaskForm, AssetForm
 from .tasks import *
 from .functions import *
@@ -435,8 +435,12 @@ def assets(request):
         Q(current_tracking_date=date.today())
     ).order_by('expiration')
 
+    renewed = RenewedAsset.objects.all()
+
     if request.method == "POST":
         remark_asset = Asset.objects.get(id=request.POST.get('id'))
+        remark_asset.expiration = renew_asset(remark_asset.expiration)
+        remark_asset.current_tracking_date = remark_asset.next_tracking_date
         remark_asset.remarks = request.POST.get('remark')
         remark_asset.save()
 
@@ -445,6 +449,7 @@ def assets(request):
     context = {
         'assets': asset,
         'warnings': warnings, 
+        'renewed': renewed
     }
 
     return render(request, 'e_logs/assets.html', context)
@@ -532,6 +537,7 @@ def update_asset(request, pk):
                     supplier=asset.supplier,
                     purchase_date=asset.purchase_date,
                     expiration=asset.expiration,
+                    schedule=asset.schedule,
                     action="Updated",
                     author=request.user
                 )
@@ -595,8 +601,8 @@ def asset_details(request, pk):
     return render(request, 'e_logs/asset_details.html', context)
 
 @login_required(login_url='login')
-def asset_remark(request, pk):
-    return render(request, 'e_logs/asset_remark.html')
+def print_asset(request, pk):
+    return render(request, 'e_logs/print_asset.html')
 
 @login_required(login_url='login')
 def not_found(request):

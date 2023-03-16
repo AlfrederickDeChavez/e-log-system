@@ -9,7 +9,7 @@ admin.site.register(models.EveningTask)
 admin.site.register(models.MorningTask)
 admin.site.register(models.Asset)
 admin.site.register(models.Audit)
-
+admin.site.register(models.RenewedAsset)
 
 admin.site.site_header = "MIS Log System"
 admin.site.site_title = "MIS Log System"
