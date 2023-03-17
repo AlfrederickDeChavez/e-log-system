@@ -1,5 +1,7 @@
 from django.urls import path
 from .views import *
+from django.contrib.auth import views as auth_views 
+
 
 urlpatterns = [
     path('', bulletin, name='home'),
@@ -14,7 +16,9 @@ urlpatterns = [
     path('update-asset/<str:pk>', update_asset, name="update-asset"),
     path('delete-asset/<str:pk>', delete_asset, name="delete-asset"),
     path('save-as-pdf/<str:pk>', print_asset, name='print-asset'),
-    path('login/', login_view, name="login"),
+    path('accounts/login/', login_view, name="login"),
     path('logout/', logout_view, name="logout"),
-    path('404-record-not-found/', not_found, name='not_found')
+    path('404-record-not-found/', not_found, name='not_found'),
+    # path("password-reset/", password_reset_request, name="password_reset")
+    path("password-reset/", auth_views.PasswordResetView.as_view(), name="password_reset")
 ]
