@@ -154,6 +154,7 @@ class RenewedAsset(models.Model):
     purchase_date = models.DateField()
     expiration = models.DateField()
     schedule = models.CharField(max_length=150, null=True, blank=True)
+    tracking_date = models.DateField(null=True, blank=True)
     remarks = models.CharField(max_length=300, null=True, blank=True)
 
     def __str__(self):

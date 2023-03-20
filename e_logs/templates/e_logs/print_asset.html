@@ -28,7 +28,7 @@
 
     <div class="actions">
         <a href="{% url 'assets' %}" class="go-back"><i class='bx bx-arrow-back' ></i>  Go Back</a>
-        <button>Save as PDF</button>
+        <button onclick="printAsset()">Save as PDF</button>
     </div>
        
     
@@ -80,6 +80,8 @@
         font-size: 1.3rem;
         font-weight: 600;
     }
+
+    
     
 
 </style>
@@ -88,8 +90,9 @@
 
     const printAsset = () => {
         const page = document.querySelector('.container')
-        const wn = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
-        wn.document.write(assetTable.innerHTML);
+        // const wn = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+        const wn = window.open('', '', 'fullscreen=yes,status=0');
+        wn.document.write(page.innerHTML);
         wn.document.close();
         wn.focus();
         wn.print();

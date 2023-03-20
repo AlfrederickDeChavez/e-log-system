@@ -77,7 +77,7 @@ def bulletin(request):
 
     yesterday = date.today() - timedelta(days=1)
     try:
-        disk = EveningTask.objects.get(date=yesterday)
+        disk = EveningTask.objects.get(date='2016-10-01')
         opera = disk.r_dsob[:10]
     except:
         opera = ''
@@ -445,14 +445,59 @@ def assets(request):
         Q(current_tracking_date=date.today())
     ).order_by('expiration')
 
-    renewed = RenewedAsset.objects.all()
+
+    """
+        Filter the renewed assets records.
+    """
+
+
+    if request.method == "GET" and 'query' in request.GET:
+        q = request.GET.get('search') if request.GET.get('search') != None else ''
+        renewed = RenewedAsset.objects.filter(
+            Q(name__icontains=q) |
+            Q(supplier__icontains=q) |
+            Q(schedule__icontains=q)
+        )
+
+    elif request.method == "GET" and 'refresh' in request.GET:
+        try:
+            start_date = request.GET.get('start_date')
+            end_date = request.GET.get('end_date')
+            renewed = RenewedAsset.objects.filter(
+                Q(tracking_date__gte=start_date, tracking_date__lte=end_date) 
+            )
+
+        except:
+            return redirect('not_found')
+
+    else: 
+        renewed = RenewedAsset.objects.all()
+
+    """
+        Set selected asset as done. The selected asset extends the expiration date based on schedule. 
+    """
 
     if request.method == "POST":
         remark_asset = Asset.objects.get(id=request.POST.get('id'))
-        remark_asset.expiration = renew_asset(remark_asset.expiration)
+
+        RenewedAsset.objects.create(
+            name = remark_asset.name,
+            description = remark_asset.description,
+            supplier = remark_asset.supplier,
+            purchase_date = remark_asset.purchase_date,
+            expiration = remark_asset.expiration,
+            schedule = remark_asset.schedule,
+            tracking_date = remark_asset.current_tracking_date,
+            remarks = request.POST.get('remark')
+        )
+
+
+        remark_asset.expiration = renew_asset(remark_asset)
         remark_asset.current_tracking_date = remark_asset.next_tracking_date
         remark_asset.remarks = request.POST.get('remark')
         remark_asset.save()
+
+        
 
         return redirect('assets')
 

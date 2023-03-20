@@ -89,7 +89,7 @@
                                 <a href="{% url 'delete-asset' asset.id %}" class="action delete"><i class='bx bxs-trash' style="margin-right: 5px;"></i> Delete</a>
                             </td>
                             <td>
-                                <button class="asset-done" onclick="markAsDone(this)" id="{{asset.id}}">Done</button>
+                                <button class="asset-done" onclick="markAsDone(this)" data-id="{{asset.id}}">Done</button>
                             </td>
                         </tr>
                         {% endfor %}
@@ -111,7 +111,7 @@
                             <th>Status</th>
                             <th>Schedule</th>
                             <th>Track Date</th>
-                            <th colspan="2">Actions</th>
+                            <th colspan="3">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -158,6 +158,9 @@
                             <!-- <td>
                                 <button class="asset-done">Done</button>
                             </td> -->
+                            <td>
+                                <button class="asset-done" onclick="markAsDone(this)" data-id="{{asset.id}}">Done</button>
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -166,33 +169,46 @@
         </div>
     </div>
 
-    <div class="asset-dialog-container">
-        
-            <form action="" class="asset-dialog-box" method="POST" id="remark-form">
-                {% csrf_token %}
-                <div class="exit"><i class='bx bxs-x-square' id="close"></i></div>
-                <label for="remark">Remarks:</label>
-                <input type="text" name="remark" autocomplete="off" placeholder="Add a remark...">
-                <div class="action">
-                    <button type="submit">Save</button>
-                </div>
-            </form>
-        
+    <div class="filter-container">
+        <form 
+            method="GET"
+            
+            class="search-container d-flex"
+        >
+            <input type="search" name="search" id="search" placeholder="Search database">
+            <button type="submit" name="query" class="d-flex"><i class='bx bx-search' ></i></button>
+        </form>
+        <form 
+            method="GET"
+            action=""
+            class="date-range-container d-flex"
+        >
+            <p style="font-size: 0.9rem; font-weight: 500;">From:</p>
+            <input type="date" name="start_date" id="from-date">
+            <p style="font-size: 0.9rem; font-weight: 500;">To:</p>
+            <input type="date" name="end_date" id="to-date">
+            <button type="submit" name="refresh" class="d-flex"><i class='bx bx-refresh' ></i></button>
+        </form>
+    </div>
+ 
+
+    <div class="done-asset-title">
+        <p>All Done Assets</p>
+        <button id="export-asset"><i class='bx bxs-file-export'></i> Export to Excel</button>
     </div>
 
     <div class="done-assets-container">
-        <p class="done-assets-title">All Done Assets</p>
         <div class="done-assets-table">
-            <table>
+            <table id="asset-data">
                 <thead>
                     <tr>
                         <th>Asset</th>
                         <th>Supplier</th>
                         <th>Purchase Date</th>
                         <th>Expiration</th>
-                        <th>Status</th>
                         <th>Schedule</th>
                         <th>Track Date</th>
+                        <th>Remarks</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -200,12 +216,12 @@
                     {% for asset in renewed %}
                     <tr>
                         <td>{{asset.name}}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{{asset.supplier}}</td>
+                        <td>{{asset.purchase_date}}</td>
+                        <td>{{asset.expiration}}</td>
+                        <td>{{asset.schedule}}</td>
+                        <td>{{asset.tracking_date}}</td>
+                        <td>{{asset.remarks}}</td>
                         <td>
                             <a href="{% url 'print-asset' asset.id %}">Print</a>
                         </td>
@@ -216,6 +232,20 @@
             </table>
         </div>
     </div>
+
+    <div class="asset-dialog-container">
+        
+        <form action="" class="asset-dialog-box" method="POST" id="remark-form">
+            {% csrf_token %}
+            <div class="exit"><i class='bx bxs-x-square' id="close"></i></div>
+            <label for="remark">Remarks:</label>
+            <input type="text" name="remark" autocomplete="off" placeholder="Add a remark...">
+            <div class="action">
+                <button type="submit">Save</button>
+            </div>
+        </form>
+    
+</div>
 </div>
 
 <style>
@@ -316,16 +346,25 @@
     }
 
     .add-asset-container a {
-        padding: 0.4rem 1rem;
-        background-color: rgb(19, 18, 18);
-        color: white;
-        font-family: 'Poppins', sans-serif;
+        display: flex;
         text-transform: uppercase;
-        border-radius: 3px;
-        cursor: pointer;
+        font-size: 0.8rem;
+        font-family: 'Poppins';
+        align-items: center;
+        justify-content: center;
+        color: #FFFFFF;
+        padding: 0.5rem 0.9rem;
         font-weight: 500;
-        font-size: 0.9rem;
-        max-height: fit-content;
+        border-radius: 3px;
+        border: none;
+        outline: none;
+        background-color: rgb(12, 12, 12);
+        cursor: pointer;
+        transition: all 0.1s ease;
+    }
+
+    .add-asset-container a:hover {
+        scale: 0.95;
     }
 
     .asset-tabs {
@@ -476,22 +515,110 @@
         overflow: scroll;
         width: 100%;
         max-height: 400px;
-        margin-top: 2rem;
         margin-bottom: 3rem;
     }
 
-    .done-assets-title {
+    .done-asset-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        margin: 1rem 0 0.5rem;
+    }
+
+    .done-asset-title p {
         font-size: 0.9rem;
         font-weight: 500;
-        margin-bottom: 0.5rem;
+
+    }
+
+    .done-asset-title button {
+        border: none;
+        outline: none;
+        font-size: 0.8rem;
+        font-weight: 600;
+        font-family: 'Poppins', sans-serif;
+        border-radius: 0.2rem;
+        padding: 0.5rem 0.9rem;
+        background-color: #228C20;
+        color: #FFF;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.1s ease-in;
+    }
+
+    .done-asset-title button:hover {
+        scale: 0.95;
+        background-color: var #115710;
     }
 
     .done-assets-table {
         position: relative;
     }
 
+    .filter-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 1rem 0;
+    }
 
-    
+    .search-container {
+        width: 50%;
+        height: 1rem;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    #search {
+        height: 2rem;
+        width: 85%;
+        border: none;
+        outline: none;
+        background-color: #D9D9D9;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        font-size: 0.7rem;
+        font-family: 'Poppins';
+        padding-left: 1rem;
+    }
+
+
+
+    .date-range-container input {
+        background-color: #BFBDBD;
+        border: none;
+        outline: none;
+        margin: 0 0.8rem;
+        border-radius: 0.2rem;
+        height: 2rem; 
+        cursor: pointer;
+        border: 1px solid var(--stroke);
+        font-family: 'Poppins';
+        font-size: 0.7rem;
+        padding: 0 1rem;
+    }
+
+    .date-range-container button, .search-container button {
+        border: none;
+        outline: none;
+        width: 2.5rem;
+        height: 2rem;
+        background-color: var(--darker);
+        cursor: pointer;
+        border-radius: 0.1rem;
+        transition: all 0.2s ease-in;
+    }
+
+    .date-range-container button:hover, .search-container button:hover {
+        scale: 1.05;
+        /* background-color: var(--dark-gold); */
+    }
+
+    .date-range-container button i , .search-container button i{
+        color: var(--white);
+        font-weight: 500;
+        font-size: 1.5rem;
+    }
 
 
 
@@ -539,7 +666,7 @@
         remarkForm.addEventListener('submit', (e) => {
             e.preventDefault()
 
-            const id = self.getAttribute('id')
+            const id = self.dataset.id
             const input_id = document.createElement('input')
             input_id.setAttribute('name', 'id')
             input_id.value = id
@@ -547,7 +674,6 @@
             remarkForm.appendChild(input_id)
             
             remarkForm.submit()
-
     })
 
 
@@ -559,6 +685,19 @@
         assetContainer.classList.remove('active')
         dialogBox.classList.remove('active')
     })
+
+
+    // EXPORT GUEST INCIDENT REPORT
+
+    const export_asset = document.getElementById('export-asset');
+    export_asset.addEventListener('click', () =>  {
+        let dtype = 'xlsx'
+        var data = document.getElementById('asset-data');
+        var file = XLSX.utils.table_to_book(data, {sheet: "sheet1"});
+        XLSX.write(file, { bookType: dtype, bookSST: true, type: 'base64' });
+        XLSX.writeFile(file, `assets.` + dtype);
+
+    });
 
     
 </script>
