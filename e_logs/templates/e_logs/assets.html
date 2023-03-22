@@ -17,7 +17,11 @@
                     <p>{{warnings | length}}</p>
                 </div>
             </div>
-            <a href="{% url 'create-asset' %}">+ Add New Asset</a>
+            <div class="links">
+                <a href="{% url 'audit-logs' %}"><i class='bx bx-time'></i> <p>History</p></a>
+                <a href="{% url 'create-asset' %}">+ Add New Asset</a>
+
+            </div>
         </div>
 
         <div class="asset-container active"  data-link-content id="all">
@@ -34,8 +38,7 @@
                             <!-- <th>Description</th> -->
                             <th>Status</th>
                             <th>Schedule</th>
-                            <th>Renewal</th>
-                            <th>Next Track Date</th>
+                            <th>Renewal Date</th>
                             <th colspan="3">Actions</th>
                         </tr>
                     </thead>
@@ -80,7 +83,6 @@
 
                             <td>{{asset.schedule}}</td>
                             <td>{{asset.current_tracking_date}}</td>
-                            <td>{{asset.next_tracking_date}}</td>
 
                             <td>
                                 <a href="{% url 'update-asset' asset.id %}" class="action edit"><i class='bx bxs-edit' style="margin-right: 5px;"></i> Edit</a>
@@ -175,7 +177,7 @@
             
             class="search-container d-flex"
         >
-            <input type="search" name="search" id="search" placeholder="Search database">
+            <input type="search" name="search" id="search" placeholder="Search assets">
             <button type="submit" name="query" class="d-flex"><i class='bx bx-search' ></i></button>
         </form>
         <form 
@@ -207,7 +209,7 @@
                         <th>Purchase Date</th>
                         <th>Expiration</th>
                         <th>Schedule</th>
-                        <th>Track Date</th>
+                        <th>Renewal Date</th>
                         <th>Remarks</th>
                         <th></th>
                     </tr>
@@ -345,7 +347,22 @@
         margin-bottom: 0.5rem;
     }
 
-    .add-asset-container a {
+    .links {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .links a:first-of-type {
+        display: flex;
+        align-items: center;
+    }
+
+    .links a:first-of-type p {
+        margin-left: 3px;
+    }
+
+    .add-asset-container .links a:last-of-type {
         display: flex;
         text-transform: uppercase;
         font-size: 0.8rem;
@@ -359,11 +376,12 @@
         border: none;
         outline: none;
         background-color: rgb(12, 12, 12);
+        margin-left: 1.2rem;
         cursor: pointer;
         transition: all 0.1s ease;
     }
 
-    .add-asset-container a:hover {
+    .add-asset-container a:last-of-type:hover {
         scale: 0.95;
     }
 

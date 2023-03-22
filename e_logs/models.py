@@ -127,19 +127,21 @@ class Asset(models.Model):
         return self.name + " -- " + self.supplier
 
 class Audit(models.Model):
+    asset_id = models.IntegerField(null=True, blank=True)
     name = models.CharField(max_length=200)
     description = models.TextField()
     supplier = models.CharField(max_length=200)
     purchase_date = models.DateField()
     schedule = models.CharField(max_length=150, null=True, blank=True)
     expiration = models.DateField()
+    status = models.CharField(max_length=50, null=True, blank=True)
 
     remarks = models.CharField(max_length=300, null=True, blank=True)
     current_tracking_date = models.DateField(null=True, blank=True)
     next_tracking_date = models.DateField(null=True, blank=True)
     
     action = models.CharField(max_length=200)
-    author = models.CharField(max_length=200, null=True, blank=True)
+    author = models.CharField(max_length=200, null=True, blank=True) 
     modified_date = models.DateField(auto_now_add=True, null=True, blank=True)
     modified_time = models.TimeField(auto_now_add=True, null=True, blank=True)
 

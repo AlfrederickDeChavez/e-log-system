@@ -559,20 +559,24 @@ def update_asset(request, pk):
 
     if request.method == "POST":
         
+        
         if asset.schedule == request.POST.get('schedule'):
+            Audit.objects.create(
+                asset_id=asset.id,
+                name=asset.name,
+                description=asset.description,
+                supplier=asset.supplier,
+                purchase_date=asset.purchase_date,
+                expiration=asset.expiration,
+                action="Updated",
+                author=request.user,
+                status=asset.status,
+                schedule=asset.schedule,
+                current_tracking_date=asset.current_tracking_date,
+                next_tracking_date=asset.next_tracking_date
+            )
             form = AssetForm(request.POST, instance=asset)
             if form.is_valid():
-
-                Audit.objects.create(
-                    name=asset.name,
-                    description=asset.description,
-                    supplier=asset.supplier,
-                    purchase_date=asset.purchase_date,
-                    expiration=asset.expiration,
-                    action="Updated",
-                    author=request.user
-                )
-
                 form.save()
                 return redirect('assets')
             else:
@@ -581,25 +585,24 @@ def update_asset(request, pk):
             return redirect('assets')
 
         else:
-            print(asset.schedule)
-            print(request.POST.get('schedule'))
+
+            Audit.objects.create(
+                name=asset.name,
+                description=asset.description,
+                supplier=asset.supplier,
+                purchase_date=asset.purchase_date,
+                expiration=asset.expiration,
+                schedule=asset.schedule,
+                action="Updated",
+                author=request.user
+            )
+            
             form = AssetForm(request.POST, instance=asset)
             if form.is_valid():
 
-                Audit.objects.create(
-                    name=asset.name,
-                    description=asset.description,
-                    supplier=asset.supplier,
-                    purchase_date=asset.purchase_date,
-                    expiration=asset.expiration,
-                    schedule=asset.schedule,
-                    action="Updated",
-                    author=request.user
-                )
-
                 form.save()
 
-                asset.current_tracking_date = date.today()
+                asset.next_tracking_date = recur_asset(asset.schedule)
                 asset.save()
                 return redirect('assets')
             else:
@@ -695,3 +698,25 @@ def password_reset_request(request):
                     return redirect ("password_reset_done")
 
     return render(request, 'e_logs/password/password_reset.html')
+
+
+
+
+def audit_logs(request):
+
+    audits = Audit.objects.all().order_by('-modified_time')
+
+    context = {
+        'audits': audits
+    }
+    return render(request, 'e_logs/audit_logs.html', context)
+
+
+def versions(request, pk):
+
+    version_list = Audit.objects.filter(asset_id=pk)
+
+    context = {
+        'versions': version_list
+    }
+    return render(request, 'e_logs/versions.html', context)

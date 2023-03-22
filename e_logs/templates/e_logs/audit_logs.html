@@ -1,0 +1,123 @@
+{% extends 'e_logs/main.html' %}
+
+{% block content %}
+
+<div id="utilities" data-tab-content class="active">
+
+    <h4>AUDIT LOGS</h4>
+    <hr>
+    <br>
+
+    <div class="audit-container">
+        <div class="audit-content">
+            {% for audit in audits %}
+                {% if audit.action == 'Updated' %}
+
+                <div class="audit updated">
+                   <div class="d-flex">
+                        <i class='bx bxs-edit-alt' ></i>
+                        <p><b>{{audit.author}}</b> edited {{audit.name}} from {{audit.supplier}}.</p>
+                   </div>
+                   <div class="d-flex">
+                    <div class="audit-date">
+                        <p style="font-size: 0.8rem;">{{audit.modified_date}}</p>
+                        <p style="font-size: 0.7rem;">{{audit.modified_time}}</p>
+                    </div>
+                    <div class="version"><a href="{% url 'versions' audit.asset_id %}">History</a></div>
+                   </div>
+                </div>
+
+                {% else %}
+
+                <div class="audit deleted">
+                    <div class="d-flex">
+                        <i class='bx bxs-trash-alt' ></i>
+                        <p><b>{{audit.author}}</b> deleted {{audit.name}} from {{audit.supplier}}.</p>
+                   </div>
+                   <div class="d-flex">
+                    <div class="audit-date">
+                        <p style="font-size: 0.8rem;">{{audit.modified_date}}</p>
+                        <p style="font-size: 0.7rem;">{{audit.modified_time}}</p>
+                    </div>
+                    <div class="version"><a href="{% url 'versions' audit.asset_id %}">History</a></div>
+                   </div>
+                </div>
+
+                {% endif%}
+
+            {% endfor %}
+
+        </div>
+    </div>
+
+    
+</div>
+
+<style>
+    .audit-container {
+        width: 100%;
+        max-height: calc(100vh - 10rem);
+        overflow: auto;
+    }
+
+   
+
+    .audit {
+        width: 100%;
+        margin-bottom: 2px;
+        background-color: #EEEEEE;
+        border-bottom: 0.5px solid rgb(189, 188, 188);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.5rem 1rem;
+    }
+
+    .updated {
+        border-left: 5px solid rgb(22, 124, 188);
+    }
+
+    .updated i {
+        color: rgb(22, 124, 188);
+        margin-right: 1rem;
+    }
+
+    .deleted {
+        border-left: 5px solid rgb(224, 52, 52);
+    }
+
+    .deleted i {
+        color: rgb(224, 52, 52);
+        margin-right: 1rem;
+    }
+
+    .audit i {
+        font-size: 1.3rem;
+    }
+
+    .d-flex {
+        display: flex;
+        align-items: center;
+    }
+
+    .audit p {
+        font-size: 0.9rem;
+    }
+
+    .audit-date {
+        display: flex;
+        flex-direction: column;
+        margin-right: 2rem;
+        align-items: flex-end;
+    }
+
+    .version a {
+        font-size: 0.9rem;
+    }
+
+
+
+    
+</style>
+
+{% endblock content%}

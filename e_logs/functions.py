@@ -147,23 +147,25 @@ def recur_asset(schedule):
 
     if schedule =="Yearly":
       if is_leap(date.today().year): 
-        next_tracking_date = date.today() + timedelta(days=366)
-        return next_tracking_date
+        return date.today() + timedelta(days=366)
       else:
-        next_tracking_date = date.today() + timedelta(days=365)
-        return next_tracking_date
-
+        return date.today() + timedelta(days=365)
     elif schedule == "Monthly":
-      next_tracking_date = date.today() + timedelta(days=30)
-      return next_tracking_date
+      if date.today().month == 1 or date.today().month == 3 or date.today().month == 5 or date.today().month == 7 or date.today().month == 8 or date.today().month == 10 or date.today().month == 12:
+        return date.today() + timedelta(days=31)
+      elif date.today().month == 2:
+        if is_leap(date.today().year): 
+          return date.today() + timedelta(days=29)
+        else:
+          return date.today() + timedelta(days=28)
+      else:
+        return date.today() + timedelta(days=30)
 
     elif schedule == "Weekly":
-      next_tracking_date = date.today() + timedelta(days=7)
-      return next_tracking_date
+      return date.today() + timedelta(days=7)
 
     elif schedule == "Daily":
-      next_tracking_date = date.today() + timedelta(days=1)
-      return next_tracking_date
+      return date.today() + timedelta(days=1)
 
     else:
       return date.today()
@@ -237,9 +239,9 @@ def renew_asset(asset):
   """
   if asset.schedule == "Yearly": 
     if is_leap(asset.expiration.year): 
-      return asset.expiration + timedelta(days=367)
-    else:
       return asset.expiration + timedelta(days=366)
+    else:
+      return asset.expiration + timedelta(days=365)
   elif asset.schedule == "Monthly":
     if asset.expiration.month == 1 or asset.expiration.month == 3 or asset.expiration.month == 5 or asset.expiration.month == 7 or asset.expiration.month == 8 or asset.expiration.month == 10 or asset.expiration.month == 12:
       return asset.expiration + timedelta(days=31)
