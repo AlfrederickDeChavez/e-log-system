@@ -704,7 +704,7 @@ def password_reset_request(request):
 
 def audit_logs(request):
 
-    audits = Audit.objects.all().order_by('-modified_time')
+    audits = Audit.objects.all().order_by('-modified_date')
 
     context = {
         'audits': audits
@@ -714,9 +714,11 @@ def audit_logs(request):
 
 def versions(request, pk):
 
-    version_list = Audit.objects.filter(asset_id=pk)
+    version_list = Audit.objects.filter(asset_id=pk).order_by('-modified_date')
+    
 
     context = {
-        'versions': version_list
+        'versions': version_list,
+        'name': version_list[0].name
     }
     return render(request, 'e_logs/versions.html', context)
