@@ -99,7 +99,7 @@
         <p class="no-result-text">No results found</p>
         <p class="msg-text">The data you are looking for cannot be found on the database.</p>
         <div class="navigate-back">
-            <a href="{{request.META.HTTP_REFERER}}"> <i class='bx bx-arrow-back'></i> Go Back</a>
+            <a href="{% url 'task' %}"> <i class='bx bx-arrow-back'></i> Go Back</a>
             <a href="{% url 'home' %}"> <i class='bx bx-home' ></i> Go To Home Page</a>
         </div>
     </div>

@@ -19,8 +19,8 @@
                     <label for="author">
                         Reported by:
                     </label>
-                    <select name="author">
-                        <option disable hidden selected>Select name</option>
+                    <select name="author" required>
+                        <option disable hidden selected value="">Select name</option>
                         <option value="Jeff">Jeff</option>
                         <option value="Mark">Mark</option>
                         <option value="Fernand">Fernand</option>
@@ -31,8 +31,8 @@
                     <label for="priority">
                         Priority:
                     </label>
-                    <select name="priority">
-                        <option disable hidden selected>Select type</option>
+                    <select name="priority" required>
+                        <option disable hidden selected value="">Select type</option>
                         <option value="High Importance">High Importance</option>
                         <option value="For Your Info">For Your Info</option>
                         <option value="For Follow-up">For Follow-up</option>
@@ -45,7 +45,7 @@
                 <label for="details">
                     Details:
                 </label>
-                <textarea rows="1" placeholder="Enter bulletin details..." name="details" id="details-input"></textarea>
+                <textarea rows="1" placeholder="Enter bulletin details..." name="details" id="details-input" required></textarea>
             </div>
             <div class="bulletin-btn">
                 <button type="submit" name="bulletin-form" class="post-bulletin">POST BULLETIN</button>

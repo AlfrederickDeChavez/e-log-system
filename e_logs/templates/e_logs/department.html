@@ -8,6 +8,15 @@
     <h4>DEPARTMENT</h4>
     <hr>
     <br>
+
+    
+    {% if messages %}
+        {% for message in messages %}
+    <div class="message"><i class='bx bx-error' ></i> <p>{{message}}</p></div>
+        {% endfor%}
+    {% endif%}
+
+
     <div class="department-form">
         <div class="form-header">
             <p>Department Service Report</p>
@@ -23,8 +32,8 @@
                         <label for="department">
                             Department:
                         </label>
-                        <select name="department">
-                            <option disabled hidden selected>Select department</option>
+                        <select name="department" required>
+                            <option disabled hidden selected value="">Select department</option>
                             <option value="MIS">MIS</option>
                             <option value="Finance">Finance</option>
                             <option value="Production">Production</option>
@@ -42,13 +51,13 @@
                         <label for="client">
                             Client's Name:
                         </label>
-                        <input type="text" name="client" placeholder="Enter client name">
+                        <input type="text" name="client" placeholder="Enter client name" required>
                     </div>
                 </div>
                 <div class="author-info">
                     <label for="system">Affected System:</label>
-                    <select name="system" id="system">
-                        <option disabled hidden selected>Select system</option>
+                    <select name="system" id="system" required>
+                        <option disabled hidden selected value="">Select system</option>
                         <option value="Internet">Internet</option>
                         <option value="Cable">Cable</option>
                         <option value="TV/DVD Player">TV/DVD Player</option>
@@ -56,8 +65,8 @@
                         <option value="Vingcard">Vingcard</option>
                     </select>
                     <label for="attendee">Attended by:</label>
-                    <select name="attendee" id="attendee">
-                        <option disabled hidden selected>Select name</option>
+                    <select name="attendee" id="attendee" required>
+                        <option disabled hidden selected value="">Select name</option>
                         <option value="Jeff">Jeff</option>
                         <option value="Mark">Mark</option>
                         <option value="Fernand">Fernand</option>
@@ -66,29 +75,29 @@
                 </div>
                 <div class="time-info">
                     <label for="time_reported">Time Reported:</label>
-                    <input type="time" name="time_reported">
+                    <input type="time" name="time_reported" required>
                     <label for="time_resolved">Time Resolved:</label>
-                    <input type="time" name="time_resolved">
+                    <input type="time" name="time_resolved" required>
                 </div>
             </div>
             <div class="dept-row">
                 <div class="problem">
                     <label for="problem">Problem:</label>
-                    <textarea name="problem" rows="2" placeholder="Type something..."></textarea>
+                    <textarea name="problem" rows="2" placeholder="Type something..." required></textarea>
                 </div>
                 <div class="status">
                     <label for="status">Status:</label>
-                    <textarea name="status" rows="2" placeholder="Type something..."></textarea>
+                    <textarea name="status" rows="2" placeholder="Type something..." required></textarea>
                 </div>
             </div>
             <div class="dept-row">
                 <div class="action">
                     <label for="action">Action:</label>
-                    <textarea name="action" rows="2" placeholder="Type something..."></textarea>
+                    <textarea name="action" rows="2" placeholder="Type something..." required></textarea>
                 </div>
                 <div class="recommendation">
                     <label for="recommendation">Recommendation:</label>
-                    <textarea name="recommendation" rows="2" placeholder="Type something..."></textarea>
+                    <textarea name="recommendation" rows="2" placeholder="Type something..." required></textarea>
                 </div>
             </div>
             <div class="bottom-row">
@@ -244,6 +253,32 @@ select > option {
 .bottom-row button:hover {
     scale: 0.95;
     background-color: var(--dark-green);
+}
+
+.message {
+    position: absolute;
+    padding: 10px 20px;
+    width: 25%;
+    border: 0.5px solid rgb(137, 16, 16);
+    background-color: rgb(234, 108, 108);
+    border-radius: 3px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: 50%;
+    top: 10px;
+    transform: translateX(-25%);
+}
+
+.message p {
+    color: rgb(137, 16, 16);
+    margin-left: 3px;
+}
+
+.message i {
+    color: rgb(137, 16, 16);
+    font-size: 1.2rem;
 }
 
 </style>

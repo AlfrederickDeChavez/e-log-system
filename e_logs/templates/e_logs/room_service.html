@@ -7,6 +7,13 @@
     <h4>ROOM</h4>
     <hr>
     <br>
+
+    {% if messages %}
+        {% for message in messages %}
+    <div class="message"><i class='bx bx-error' ></i> <p>{{message}}</p></div>
+        {% endfor%}
+    {% endif%}
+
     <div class="room-form">
         <div class="form-header">
             <p>Room Service Report</p>
@@ -22,8 +29,8 @@
                         <label for="tower">
                             Tower
                         </label>
-                        <select name="tower">
-                            <option disable hidden selected>Select location</option>
+                        <select name="tower" required>
+                            <option disable hidden selected value="">Select location</option>
                             <option value="TBM MW">TBM MW</option>
                             <option value="TBM TW">TBM TW</option>
                             <option value="BHOTEL">BHOTEL</option>
@@ -34,13 +41,13 @@
                         <label for="room">
                             Room
                         </label>
-                        <input type="number" name="room" placeholder="#">
+                        <input type="number" name="room" placeholder="#" required>
                     </div>
                 </div>
                 <div class="author-info">
                     <label for="system">Affected System:</label>
-                    <select name="system" id="system">
-                        <option disable hidden selected>Select system</option>
+                    <select name="system" id="system" required>
+                        <option disable hidden selected value="">Select system</option>
                         <option value="Internet">Internet</option>
                         <option value="Cable">Cable</option>
                         <option value="TV/DVD Player">TV/DVD Player</option>
@@ -48,8 +55,8 @@
                         <option value="Vingcard">Vingcard</option>
                     </select>
                     <label for="attendee">Attended by:</label>
-                    <select name="attendee" id="system">
-                        <option disable hidden selected>Select name</option>
+                    <select name="attendee" id="system" required>
+                        <option disable hidden selected value="">Select name</option>
                         <option value="Jeff">Jeff</option>
                         <option value="Mark">Mark</option>
                         <option value="Fernand">Fernand</option>
@@ -58,29 +65,29 @@
                 </div>
                 <div class="time-info">
                     <label for="time_reported">Time Reported:</label>
-                    <input type="time" name="time_reported" id="time_reported">
+                    <input type="time" name="time_reported" id="time_reported" required>
                     <label for="attendee">Time Resolved:</label>
-                    <input type="time" name="time_resolved" id="time_resolved">
+                    <input type="time" name="time_resolved" id="time_resolved" required>
                 </div>
             </div>
             <div class="row">
                 <div class="problem">
                     <label for="problem">Problem:</label>
-                    <textarea name="problem" rows="2" placeholder="Type something..."></textarea>
+                    <textarea name="problem" rows="2" placeholder="Type something..." required></textarea>
                 </div>
                 <div class="status">
                     <label for="status">Status:</label>
-                    <textarea name="status" rows="2" placeholder="Type something..."></textarea>
+                    <textarea name="status" rows="2" placeholder="Type something..." required></textarea>
                 </div>
             </div>
             <div class="row">
                 <div class="action">
                     <label for="action">Action:</label>
-                    <textarea name="action" rows="2" placeholder="Type something..."></textarea>
+                    <textarea name="action" rows="2" placeholder="Type something..." required></textarea>
                 </div>
                 <div class="recommendation">
                     <label for="recommendation">Recommendation:</label>
-                    <textarea name="recommendation" rows="2" placeholder="Type something..."></textarea>
+                    <textarea name="recommendation" rows="2" placeholder="Type something..." required></textarea>
                 </div>
             </div>
             <div class="bottom-row">
@@ -242,6 +249,33 @@
 .active-room {
     background-color: #201F1F;
 }
+
+.message {
+    position: absolute;
+    padding: 10px 20px;
+    width: 25%;
+    border: 0.5px solid rgb(137, 16, 16);
+    background-color: rgb(234, 108, 108);
+    border-radius: 3px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: 50%;
+    top: 10px;
+    transform: translateX(-25%);
+}
+
+.message p {
+    color: rgb(137, 16, 16);
+    margin-left: 3px;
+}
+
+.message i {
+    color: rgb(137, 16, 16);
+    font-size: 1.2rem;
+}
+
 
 
 </style>

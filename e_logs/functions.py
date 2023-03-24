@@ -147,9 +147,9 @@ def recur_asset(schedule):
 
     if schedule =="Yearly":
       if is_leap(date.today().year): 
-        return date.today() + timedelta(days=366)
+        return date.today() + timedelta(days=367)
       else:
-        return date.today() + timedelta(days=365)
+        return date.today() + timedelta(days=366)
     elif schedule == "Monthly":
       if date.today().month == 1 or date.today().month == 3 or date.today().month == 5 or date.today().month == 7 or date.today().month == 8 or date.today().month == 10 or date.today().month == 12:
         return date.today() + timedelta(days=31)
@@ -239,9 +239,9 @@ def renew_asset(asset):
   """
   if asset.schedule == "Yearly": 
     if is_leap(asset.expiration.year): 
-      return asset.expiration + timedelta(days=366)
+      return asset.expiration + timedelta(days=367)
     else:
-      return asset.expiration + timedelta(days=365)
+      return asset.expiration + timedelta(days=366)
   elif asset.schedule == "Monthly":
     if asset.expiration.month == 1 or asset.expiration.month == 3 or asset.expiration.month == 5 or asset.expiration.month == 7 or asset.expiration.month == 8 or asset.expiration.month == 10 or asset.expiration.month == 12:
       return asset.expiration + timedelta(days=31)

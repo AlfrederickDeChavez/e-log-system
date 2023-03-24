@@ -258,6 +258,8 @@ def task(request):
         except:
             return redirect('not_found')
 
+        
+
 
     # Updates evening records. 
     if request.method == "POST" and "update-evening" in request.POST:
@@ -309,30 +311,24 @@ def room_service(request):
     # POST ROOM INCIDENT REPORT 
     if request.method == "POST" and "save_room" in request.POST: 
         
-        tower = request.POST.get("tower")
-        room = request.POST.get("room")
-        attendee = request.POST.get("attendee")
-        affected_system = request.POST.get("system")
-        time_reported = convert_time(request.POST.get("time_reported"))
-        time_resolved = convert_time(request.POST.get("time_resolved"))
-        problem = request.POST.get("problem")
-        status = request.POST.get("status")
-        action = request.POST.get("action")
-        recommendation = request.POST.get("recommendation")
- 
-        room = Guest.objects.create(
-            tower=tower,
-            room=room,
-            attended_by=attendee,
-            affected_system=affected_system,
-            time_reported=time_reported,
-            time_resolved=time_resolved,
-            problem=problem,
-            status=status,
-            action=action,
-            recommendation=recommendation,
-            date=date.today()
-        )
+        try:
+            room = Guest.objects.create(
+                tower=request.POST.get("tower"),
+                room=request.POST.get("room"),
+                attended_by=request.POST.get("attendee"),
+                affected_system=request.POST.get("system"),
+                time_reported=convert_time(request.POST.get("time_reported")),
+                time_resolved=convert_time(request.POST.get("time_resolved")),
+                problem=request.POST.get("problem"),
+                status=request.POST.get("status"),
+                action=request.POST.get("action"),
+                recommendation=request.POST.get("recommendation"),
+                date=date.today()
+            )
+        except:
+            messages.error(request, 'An error occur while submitting the form.')
+            return redirect('room')
+            
 
         return redirect('bulletin')
 
@@ -357,29 +353,24 @@ def department_service(request):
 
     # POST DEPARTMENT INCIDENT REPORT
     if request.method == 'POST' and 'save_department' in request.POST:
-        department = request.POST.get("department")
-        client = request.POST.get("client")
-        attendee = request.POST.get("attendee")
-        affected_system = request.POST.get("system")
-        time_reported = request.POST.get("time_reported")
-        time_resolved = request.POST.get("time_resolved")
-        problem = request.POST.get("problem")
-        status = request.POST.get("status")
-        action = request.POST.get("action")
-        recommendation = request.POST.get("recommendation")
-
-        dept = Department.objects.create(
-            department=department,
-            client=client,
-            attended_by=attendee,
-            affected_system=affected_system,
-            time_reported=time_reported,
-            time_resolved=time_resolved,
-            problem=problem,
-            status=status,
-            action=action,
-            recommendation=recommendation
-        )
+        
+        try:
+            dept = Department.objects.create(
+                department=request.POST.get("department"),
+                client=request.POST.get("client"),
+                attended_by=request.POST.get("attendee"),
+                affected_system=request.POST.get("system"),
+                time_reported=convert_time(request.POST.get("time_reported")),
+                time_resolved=convert_time(request.POST.get("time_resolved")),
+                problem=request.POST.get("problem"),
+                status=request.POST.get("status"),
+                action=request.POST.get("action"),
+                recommendation=request.POST.get("recommendation"),
+                date=date.today()
+            )
+        except:
+            messages.error(request, 'An error occur while submitting the form.')
+            return redirect('department')
 
         return redirect('bulletin')
 
@@ -493,7 +484,7 @@ def assets(request):
 
 
         remark_asset.expiration = renew_asset(remark_asset)
-        remark_asset.current_tracking_date = remark_asset.next_tracking_date
+        remark_asset.next_tracking_date = recur_asset(remark_asset.schedule)
         remark_asset.remarks = request.POST.get('remark')
         remark_asset.save()
 
@@ -561,22 +552,23 @@ def update_asset(request, pk):
         
         
         if asset.schedule == request.POST.get('schedule'):
-            Audit.objects.create(
-                asset_id=asset.id,
-                name=asset.name,
-                description=asset.description,
-                supplier=asset.supplier,
-                purchase_date=asset.purchase_date,
-                expiration=asset.expiration,
-                action="Updated",
-                author=request.user,
-                status=asset.status,
-                schedule=asset.schedule,
-                current_tracking_date=asset.current_tracking_date,
-                next_tracking_date=asset.next_tracking_date
-            )
+            
             form = AssetForm(request.POST, instance=asset)
             if form.is_valid():
+                Audit.objects.create(
+                    asset_id=asset.id,
+                    name=asset.name,
+                    description=asset.description,
+                    supplier=asset.supplier,
+                    purchase_date=asset.purchase_date,
+                    expiration=asset.expiration,
+                    action="Updated",
+                    author=request.user,
+                    status=asset.status,
+                    schedule=asset.schedule,
+                    current_tracking_date=asset.current_tracking_date,
+                    next_tracking_date=asset.next_tracking_date
+                )
                 form.save()
                 return redirect('assets')
             else:
@@ -586,20 +578,24 @@ def update_asset(request, pk):
 
         else:
 
-            Audit.objects.create(
-                name=asset.name,
-                description=asset.description,
-                supplier=asset.supplier,
-                purchase_date=asset.purchase_date,
-                expiration=asset.expiration,
-                schedule=asset.schedule,
-                action="Updated",
-                author=request.user
-            )
+            
             
             form = AssetForm(request.POST, instance=asset)
             if form.is_valid():
-
+                Audit.objects.create(
+                    asset_id=asset.id,
+                    name=asset.name,
+                    description=asset.description,
+                    supplier=asset.supplier,
+                    purchase_date=asset.purchase_date,
+                    expiration=asset.expiration,
+                    action="Updated",
+                    author=request.user,
+                    status=asset.status,
+                    schedule=asset.schedule,
+                    current_tracking_date=asset.current_tracking_date,
+                    next_tracking_date=asset.next_tracking_date
+                )
                 form.save()
 
                 asset.next_tracking_date = recur_asset(asset.schedule)
@@ -609,7 +605,7 @@ def update_asset(request, pk):
                 print(form.errors)
 
             return redirect('assets')
-
+ 
     context = {
         'asset': asset,
         'form' : form,
@@ -630,13 +626,18 @@ def delete_asset(request, pk):
 
     if request.method == "POST":
         Audit.objects.create(
+            asset_id=asset.id,
             name=asset.name,
             description=asset.description,
             supplier=asset.supplier,
             purchase_date=asset.purchase_date,
             expiration=asset.expiration,
             action="Deleted",
-            author=request.user
+            author=request.user,
+            status=asset.status,
+            schedule=asset.schedule,
+            current_tracking_date=asset.current_tracking_date,
+            next_tracking_date=asset.next_tracking_date
         )
         asset.delete()
         return redirect('assets')
@@ -699,12 +700,10 @@ def password_reset_request(request):
 
     return render(request, 'e_logs/password/password_reset.html')
 
-
-
-
+@login_required(login_url='login')
 def audit_logs(request):
 
-    audits = Audit.objects.all().order_by('-modified_date')
+    audits = Audit.objects.all().order_by('-modified_datetime')
 
     context = {
         'audits': audits
@@ -712,13 +711,18 @@ def audit_logs(request):
     return render(request, 'e_logs/audit_logs.html', context)
 
 
+@login_required(login_url='login')
 def versions(request, pk):
-
-    version_list = Audit.objects.filter(asset_id=pk).order_by('-modified_date')
+    try:
+        version_list = Audit.objects.filter(asset_id=pk).order_by('-modified_datetime')
+        name = version_list[0].name
+    except:
+        version_list = []
+        name = 'Versions'
     
 
     context = {
         'versions': version_list,
-        'name': version_list[0].name
+        'name': name
     }
     return render(request, 'e_logs/versions.html', context)

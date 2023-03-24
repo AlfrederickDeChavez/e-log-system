@@ -46,8 +46,8 @@ class Department(models.Model):
         return self.department + ' - ' + self.problem[0:20]
 
 class MorningTask(models.Model):
-    date = models.DateField()
-    time = models.TimeField()
+    date = models.DateField(auto_now_add=True)
+    time = models.TimeField(auto_now_add=True)
     checked_by = models.CharField(max_length=200)
     t_lits = models.TimeField(null=True, blank=True)
     r_lits = models.CharField(max_length=500, null=True, blank=True)
@@ -81,8 +81,8 @@ class MorningTask(models.Model):
 
 
 class EveningTask(models.Model):
-    date = models.DateField()
-    time = models.TimeField()
+    date = models.DateField(auto_now_add=True)
+    time = models.TimeField(auto_now_add=True)
     checked_by = models.CharField(max_length=200)
     t_dsob = models.TimeField(null=True, blank=True)
     r_dsob = models.CharField(max_length=500, null=True, blank=True)
@@ -144,6 +144,7 @@ class Audit(models.Model):
     author = models.CharField(max_length=200, null=True, blank=True) 
     modified_date = models.DateField(auto_now_add=True, null=True, blank=True)
     modified_time = models.TimeField(auto_now_add=True, null=True, blank=True)
+    modified_datetime = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
         return f"{self.author} - {self.action} - {self.name}"
