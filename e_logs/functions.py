@@ -136,6 +136,39 @@ def is_leap(year):
   return False
 
 
+def renew_asset(asset):
+  """
+    This programs sets the expiration of an asset whenever it is click as done. Extension is based on schedule. Yearly --> 365,  Monthly --> 30, etc.
+  """
+  if asset.schedule == "Yearly": 
+    if (is_leap((asset.expiration.year + 1))and date.today().month > 2) or (is_leap(asset.expiration.year) and date.today().month == 2 or date.today().month == 1): 
+      return asset.expiration + timedelta(days=366)
+    else:
+      return asset.expiration + timedelta(days=365)
+  elif asset.schedule == "Monthly":
+    if asset.expiration.month == 1 or asset.expiration.month == 3 or asset.expiration.month == 5 or asset.expiration.month == 7 or asset.expiration.month == 8 or asset.expiration.month == 10 or asset.expiration.month == 12:
+      return asset.expiration + timedelta(days=31)
+    elif asset.expiration.month == 2:
+      if is_leap(asset.expiration.year): 
+        return asset.expiration + timedelta(days=29)
+      else:
+        return asset.expiration + timedelta(days=28)
+    else:
+      return asset.expiration + timedelta(days=30)
+      
+
+  elif asset.schedule == "Weekly":
+    return asset.expiration + timedelta(days=7)
+    
+
+  elif asset.schedule == "Daily":
+    return asset.expiration + timedelta(days=1)
+
+  else:
+    return asset.expiration
+
+
+
 def recur_asset(schedule):
   
     """
@@ -145,11 +178,12 @@ def recur_asset(schedule):
       OUTPUT: Date --> 2023-03-14
     """
 
-    if schedule =="Yearly":
-      if is_leap(date.today().year): 
-        return date.today() + timedelta(days=367)
-      else:
+    if schedule == "Yearly":
+      if (is_leap((date.today().year + 1)) and date.today().month > 2) or (is_leap(date.today().year) and date.today().month == 2 or date.today().month == 1): 
+      # if is_leap(date.today().year) and date.today().month == 2 or date.today().month == 1: 
         return date.today() + timedelta(days=366)
+      else:
+        return date.today() + timedelta(days=365)
     elif schedule == "Monthly":
       if date.today().month == 1 or date.today().month == 3 or date.today().month == 5 or date.today().month == 7 or date.today().month == 8 or date.today().month == 10 or date.today().month == 12:
         return date.today() + timedelta(days=31)
@@ -233,36 +267,6 @@ def track_asset(asset):
     asset.current_tracking_date = asset.next_tracking_date
     asset.save()
 
-def renew_asset(asset):
-  """
-    This programs sets the expiration of an asset whenever it is click as done. Extension is based on schedule. Yearly --> 365,  Monthly --> 30, etc.
-  """
-  if asset.schedule == "Yearly": 
-    if is_leap(asset.expiration.year): 
-      return asset.expiration + timedelta(days=367)
-    else:
-      return asset.expiration + timedelta(days=366)
-  elif asset.schedule == "Monthly":
-    if asset.expiration.month == 1 or asset.expiration.month == 3 or asset.expiration.month == 5 or asset.expiration.month == 7 or asset.expiration.month == 8 or asset.expiration.month == 10 or asset.expiration.month == 12:
-      return asset.expiration + timedelta(days=31)
-    elif asset.expiration.month == 2:
-      if is_leap(asset.expiration.year): 
-        return asset.expiration + timedelta(days=29)
-      else:
-        return asset.expiration + timedelta(days=28)
-    else:
-      return asset.expiration + timedelta(days=30)
-      
-
-  elif asset.schedule == "Weekly":
-    return asset.expiration + timedelta(days=7)
-    
-
-  elif asset.schedule == "Daily":
-    return asset.expiration + timedelta(days=1)
-
-  else:
-    return asset.expiration
 
 
 # Iterate on a dataframe to change the string object (mm/dd/yy) to date object

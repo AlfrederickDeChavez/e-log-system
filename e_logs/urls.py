@@ -21,6 +21,6 @@ urlpatterns = [
     path('404-record-not-found/', not_found, name='not_found'),
     path('audit-logs/', audit_logs, name="audit-logs"),
     path('versions/<int:pk>', versions, name='versions'),
-    # path("password-reset/", password_reset_request, name="password_reset")
-    path("accounts/password-reset/", auth_views.PasswordResetView.as_view(), name="password_reset")
+    path("accounts/password-reset/", password_reset_request, name="password_reset")
+    # path("accounts/password-reset/", auth_views.PasswordResetView.as_view(), name="password_reset")
 ]

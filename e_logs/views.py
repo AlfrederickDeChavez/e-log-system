@@ -154,14 +154,20 @@ def bulletin(request):
             return redirect('not_found')
         
     else:
-        bulletin = Bulletin.objects.all().order_by('-date')[:50]
+        bulletin = Bulletin.objects.filter(
+                Q(date=date.today()) 
+            ).order_by('-date')
+        # bulletin = Bulletin.objects.all()
         department = Department.objects.all().order_by('-date')[:50]
         guest = Guest.objects.all().order_by('-date')[:50]
         
     context = {
         'bulletin': bulletin, 
+        'bulletin_length': bulletin.count(),
         'guest': guest, 
+        'guest_length': guest.count(),
         'department': department, 
+        'department_length': department.count(),
         'warnings': warnings,
         'yesterday': yesterday,
         'opera': opera
@@ -426,7 +432,7 @@ def assets(request):
     asset = Asset.objects.all()
     for a in asset:
         a.status = asset_status(a)
-        a.save()
+        a.save() 
         track_asset(a)
 
     warnings = Asset.objects.filter(
@@ -482,11 +488,16 @@ def assets(request):
             remarks = request.POST.get('remark')
         )
 
+        if remark_asset.schedule == 'No Recurring':
+            remark_asset.delete() 
+        else:
+            remark_asset.expiration = renew_asset(remark_asset)
+            remark_asset.current_tracking_date = recur_asset(remark_asset.schedule)
+            remark_asset.next_tracking_date = recur_asset(remark_asset.schedule)
+            remark_asset.remarks = request.POST.get('remark')
+            remark_asset.save()
 
-        remark_asset.expiration = renew_asset(remark_asset)
-        remark_asset.next_tracking_date = recur_asset(remark_asset.schedule)
-        remark_asset.remarks = request.POST.get('remark')
-        remark_asset.save()
+        
 
         
 
@@ -709,7 +720,6 @@ def audit_logs(request):
         'audits': audits
     }
     return render(request, 'e_logs/audit_logs.html', context)
-
 
 @login_required(login_url='login')
 def versions(request, pk):
