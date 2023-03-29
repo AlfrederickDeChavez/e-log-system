@@ -21,8 +21,43 @@
             <img src="{% static 'images/logo.png' %}" alt="">
             <p>Management Information System</p>
         </div>
+        <p class="asset-name">{{asset.name}}</p>
+        <hr>
 
-        <p class="title">Renewal Schedule</p>
+        <div class="asset-control">
+            <p class="label">Description:</p>
+            <p class="value">{{asset.description}}</p>
+        </div>
+
+        <div class="asset-control">
+            <p class="label">Supplier: </p>
+            <p class="value">{{asset.supplier}}</p>
+        </div>
+
+        <div class="asset-control">
+            <p class="label">Purchase Date: </p>
+            <p class="value">{{asset.purchase_date}}</p>
+        </div>
+
+        <div class="asset-control">
+            <p class="label">Expiration Date: </p>
+            <p class="value">{{asset.expiration}}</p>
+        </div>
+
+        <div class="asset-control">
+            <p class="label">Renewal Schedule: </p>
+            <p class="value">{{asset.schedule}}</p>
+        </div>
+
+        <div class="asset-control">
+            <p class="label">Renewal Date: </p>
+            <p class="value">{{asset.tracking_date}}</p>
+        </div>
+
+        <div class="asset-control">
+            <p class="label">Remarks: </p>
+            <p class="value">{{asset.remarks}}</p>
+        </div>
         
     </div>
 
@@ -66,21 +101,82 @@
     }
 
     .container {
-        width: 50%;
+        width: 80%;
         padding: 1rem;
-        background-color: #fff;
-        box-shadow: 0 0 10px rgba(0,0,0,0.4);
         display: flex;
         justify-content: center;
+        align-items: center;
         flex-direction: column;
     }
 
-    .container .title {
-        text-align: center;
-        font-size: 1.3rem;
-        font-weight: 600;
+    .actions {
+        width: 80%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+    .actions a {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 1.rem;
+        color: gray;
+        text-decoration: none;
+        margin-right: 1rem;
     }
 
+    .actions a i {
+        margin-right: 3px;
+        font-size: 1.1rem;
+    }
+
+    .actions button {
+        border: none;
+        outline: none;
+        padding: 0.6rem 1.2rem;
+        color: #FFFFFF;
+        background-color: rgb(185, 49, 49);
+        border-radius: 3px;
+        cursor: pointer;
+        transition: 0.1s ease;
+    }
+
+    .actions button:hover {
+        scale: 0.97;
+    }
+
+    .asset-name {
+        font-size: 1.1rem;
+        font-weight: 500;
+    }
+
+    .asset-control {
+        width: 50%;
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        gap: 1rem;
+        margin-top: 0.7rem;
+    }
+
+    .label {
+        font-size: 0.9rem;
+        flex: 1;
+        font-weight: 500;
+
+    }
+
+    .desc {
+        font-size: 0.8rem;
+        width: 100%;
+        text-align: center;
+    }
+
+    .value {
+        flex: 3;
+        font-size: 0.8rem;
+    }
     
     
 
@@ -88,16 +184,18 @@
 
 <script>
 
+    
     const printAsset = () => {
-        const page = document.querySelector('.container')
-        // const wn = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
-        const wn = window.open('', '', 'fullscreen=yes,status=0');
-        wn.document.write(page.innerHTML);
-        wn.document.close();
-        wn.focus();
-        wn.print();
-        wn.close();
+        document.querySelector('.actions').style.display = 'none'
+        document.querySelectorAll('.asset-control').forEach(asset => {
+            asset.style.width = '100%'
+        })
+        window.print()
+        document.querySelector('.actions').style.display = 'flex'
+        document.querySelectorAll('.asset-control').forEach(asset => {
+            asset.style.width = '50%'
+        })
     }
-
+ 
 </script>
 </html>

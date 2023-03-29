@@ -45,8 +45,12 @@
                                 <thead>
                                     <tr>
                                         <th>Tasks</th>
+                                        {%if not show_morning_update%}
+                                        <th>Done</th>
+                                        {%endif%}
                                         <th>Time</th>
                                         <th>Remarks</th>
+
                                     </tr>
                                 </thead>
 
@@ -92,6 +96,9 @@
                                 <thead>
                                     <tr>
                                         <th>Tasks</th>
+                                        {% if not show_evening_update %}
+                                        <th>Done</th>
+                                        {% endif%}
                                         <th>Time</th>
                                         <th>Remarks</th>
                                     </tr>
@@ -297,6 +304,30 @@
         text-align: center;
     }
 
+    .done-btn {
+        padding: 0.3rem;
+        border: none;
+        outline: none;
+        display: flex;
+        align-items: center;justify-content: center;
+        color: #FFF;
+        background-color: rgb(148, 143, 143);
+        cursor: pointer;
+        border-radius: 3px;
+        transition: all 0.01s ease;
+    }
+
+    
+    .done-btn:hover {
+        scale: 0.97;
+        background-color: rgb(111, 107, 107);
+    }
+
+    .done-btn i {
+        font-size: 1.2rem;
+        font-weight: 500;
+    }
+
 </style>
 
 <script>
@@ -321,6 +352,24 @@
             target.classList.add('active-task-content')
         })
     })
+
+    const getCurrentTime = () => {
+        let date = new Date();
+        let hh = date.getHours();
+        let mm = date.getMinutes();
+        let ss = date.getSeconds();
+
+        if(hh === 0){
+            hh = 12;
+        }  
+       
+        hh = (hh < 10) ? "0" + hh : hh;
+        mm = (mm < 10) ? "0" + mm : mm;
+        ss = (ss < 10) ? "0" + ss : ss;
+            
+        let current_time = hh + ":" + mm + ":" + ss;
+        return current_time
+    }
 
 </script>
 

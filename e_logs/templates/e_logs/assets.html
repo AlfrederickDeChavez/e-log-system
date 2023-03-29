@@ -211,7 +211,7 @@
                         <th>Schedule</th>
                         <th>Renewal Date</th>
                         <th>Remarks</th>
-                        <th></th>
+                        <th>Save</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -225,7 +225,10 @@
                         <td>{{asset.tracking_date}}</td>
                         <td>{{asset.remarks}}</td>
                         <td>
-                            <a href="{% url 'print-asset' asset.id %}">Print</a>
+                            <a href="{% url 'print-asset' asset.id %}">
+                                <i class='bx bxs-save'></i>
+                                PDF
+                            </a>
                         </td>
                     </tr>
                     

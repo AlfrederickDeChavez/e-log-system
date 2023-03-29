@@ -35,6 +35,22 @@ class MorningTaskForm(forms.ModelForm):
             't_cvti': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
             't_cppc': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
             't_ccrgt': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
+
+            'r_lits': forms.TextInput(attrs={'autocomplete': 'off'}),
+            'r_ciss': forms.TextInput(attrs={'autocomplete': 'off'}),
+            'r_cass': forms.TextInput(attrs={'autocomplete': 'off'}),
+            'r_cebu': forms.TextInput(attrs={'autocomplete': 'off'}),
+            'r_boas': forms.TextInput(attrs={'autocomplete': 'off'}),
+            'r_cwrge': forms.TextInput(attrs={'autocomplete': 'off'}),
+            'r_utbeb': forms.TextInput(attrs={'autocomplete': 'off'}),
+            'r_alicbu': forms.TextInput(attrs={'autocomplete': 'off'}),
+            'r_ceu': forms.TextInput(attrs={'autocomplete': 'off'}),
+            'r_cdl': forms.TextInput(attrs={'autocomplete': 'off'}),
+            'r_cvti': forms.TextInput(attrs={'autocomplete': 'off'}),
+            'r_cppc': forms.TextInput(attrs={'autocomplete': 'off'}),
+            'r_ccrgt': forms.TextInput(attrs={'autocomplete': 'off'}),
+
+
         }
         
 class EveningTaskForm(forms.ModelForm):

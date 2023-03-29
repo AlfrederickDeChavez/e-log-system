@@ -6,7 +6,8 @@
         {% if show_morning_update %}
             <td style="width: 12%;">{{morning_form.t_lits}}</td>
         {% else %}
-            <td style="width: 12%;"><input type="time" step="1" name="t_lits"></td>
+            <td style="width: 4%;"><button type="button" id="lits_btn" class="done-btn"><i class='bx bx-check' ></i></button></td>
+            <td style="width: 12%;"><input type="time" step="1" name="t_lits" id="lits_val"></td>
         {% endif %}
         <td style="width: 40%;">{{morning_form.r_lits}}</td>
     </tr>
@@ -16,7 +17,8 @@
         {% if show_morning_update %}
             <td style="width: 12%;">{{morning_form.t_ciss}}</td>
         {% else %}
-            <td style="width: 12%;"><input type="time" step="1" name="t_ciss"></td>
+            <td><button type="button" id="ciss_btn" class="done-btn"><i class='bx bx-check' ></i></button></td>
+            <td style="width: 12%;"><input type="time" step="1" name="t_ciss" id="ciss_val"></td>
         {% endif %}
         <td style="width: 40%;">{{morning_form.r_ciss}}</td>
     </tr>
@@ -26,7 +28,8 @@
         {% if show_morning_update %}
             <td style="width: 12%;">{{morning_form.t_cass}}</td>
         {% else %}
-            <td style="width: 12%;"><input type="time" step="1" name="t_cass"></td>
+            <td><button type="button" id="cass_btn" class="done-btn"><i class='bx bx-check' ></i></button></td>
+            <td style="width: 12%;"><input type="time" step="1" name="t_cass" id="cass_val"></td>
         {% endif %}
         <td style="width: 40%;">{{morning_form.r_cass}}</td>
     </tr>
@@ -36,7 +39,8 @@
         {% if show_morning_update %}
             <td style="width: 12%;">{{morning_form.t_cebu}}</td>
         {% else %}
-            <td style="width: 12%;"><input type="time" step="1" name="t_cebu"></td>
+            <td><button type="button" id="cebu_btn" class="done-btn"><i class='bx bx-check' ></i></button></td>
+            <td style="width: 12%;"><input type="time" step="1" name="t_cebu" id="cebu_val"></td>
         {% endif %}
         <td style="width: 40%;">{{morning_form.r_cebu}}</td>
     </tr>
@@ -46,7 +50,8 @@
         {% if show_morning_update %}
             <td style="width: 12%;">{{morning_form.t_boas}}</td>
         {% else %}
-            <td style="width: 12%;"><input type="time" step="1" name="t_boas"></td>
+            <td><button type="button" id="boas_btn" class="done-btn"><i class='bx bx-check' ></i></button></td>
+            <td style="width: 12%;"><input type="time" step="1" name="t_boas" id="boas_val"></td>
         {% endif %}
         <td style="width: 40%;">{{morning_form.r_boas}}</td>
     </tr>
@@ -56,7 +61,8 @@
         {% if show_morning_update %}
             <td style="width: 12%;">{{morning_form.t_cwrge}}</td>
         {% else %}
-            <td style="width: 12%;"><input type="time" step="1" name="t_cwrge"></td>
+            <td><button type="button" id="cwrge_btn" class="done-btn"><i class='bx bx-check' ></i></button></td>
+            <td style="width: 12%;"><input type="time" step="1" name="t_cwrge" id="cwrge_val"></td>
         {% endif %}
         <td style="width: 40%;">{{morning_form.r_cwrge}}</td>
     </tr>
@@ -66,7 +72,8 @@
         {% if show_morning_update %}
             <td style="width: 12%;">{{morning_form.t_utbeb}}</td>
         {% else %}
-            <td style="width: 12%;"><input type="time" step="1" name="t_utbeb"></td>
+        <td><button type="button" id="utbeb_btn" class="done-btn"><i class='bx bx-check' ></i></button></td>
+            <td style="width: 12%;"><input type="time" step="1" name="t_utbeb" id="utbeb_val"></td>
         {% endif %}
         <td style="width: 40%;">{{morning_form.r_utbeb}}</td>
     </tr>
@@ -76,7 +83,9 @@
         {% if show_morning_update %}
             <td style="width: 12%;">{{morning_form.t_alicbu}}</td>
         {% else %}
-            <td style="width: 12%;"><input type="time" step="1" name="t_alicbu"></td>
+        <td><button type="button" id="alicbu_btn" class="done-btn"><i class='bx bx-check' ></i></button></td>
+
+            <td style="width: 12%;"><input type="time" step="1" name="t_alicbu" id="alicbu_val"></td>
         {% endif %}
         <td style="width: 40%;">{{morning_form.r_alicbu}}</td>
     </tr>
@@ -86,7 +95,9 @@
         {% if show_morning_update %}
             <td style="width: 12%;">{{morning_form.t_ceu}}</td>
         {% else %}
-            <td style="width: 12%;"><input type="time" step="1" name="t_ceu"></td>
+        <td><button type="button" id="ceu_btn" class="done-btn"><i class='bx bx-check' ></i></button></td>
+
+            <td style="width: 12%;"><input type="time" step="1" name="t_ceu" id="ceu_val"></td>
         {% endif %}
         <td style="width: 40%;">{{morning_form.r_ceu}}</td>
     </tr>
@@ -96,7 +107,9 @@
         {% if show_morning_update %}
             <td style="width: 12%;">{{morning_form.t_cdl}}</td>
         {% else %}
-            <td style="width: 12%;"><input type="time" step="1" name="t_cdl"></td>
+        <td><button type="button" id="cdl_btn" class="done-btn"><i class='bx bx-check' ></i></button></td>
+
+            <td style="width: 12%;"><input type="time" step="1" name="t_cdl" id="cdl_val"></td>
         {% endif %}
         <td style="width: 40%;">{{morning_form.r_cdl}}</td>
     </tr>
@@ -106,7 +119,9 @@
         {% if show_morning_update %}
             <td style="width: 12%;">{{morning_form.t_cvti}}</td>
         {% else %}
-            <td style="width: 12%;"><input type="time" step="1" name="t_cvti"></td>
+        <td><button type="button" id="cvti_btn" class="done-btn"><i class='bx bx-check' ></i></button></td>
+
+            <td style="width: 12%;"><input type="time" step="1" name="t_cvti" id="cvti_val"></td>
         {% endif %}
         <td style="width: 40%;">{{morning_form.r_cvti}}</td>
     </tr>
@@ -116,7 +131,9 @@
         {% if show_morning_update %}
             <td style="width: 12%;">{{morning_form.t_cppc}}</td>
         {% else %}
-            <td style="width: 12%;"><input type="time" step="1" name="t_cppc"></td>
+        <td><button type="button" id="cppc_btn" class="done-btn"><i class='bx bx-check' ></i></button></td>
+
+            <td style="width: 12%;"><input type="time" step="1" name="t_cppc" id="cppc_val"></td>
         {% endif %}
         <td style="width: 40%;">{{morning_form.r_cppc}}</td>
     </tr>
@@ -126,8 +143,108 @@
         {% if show_morning_update %}
             <td style="width: 12%;">{{morning_form.t_ccrgt}}</td>
         {% else %}
-            <td style="width: 12%;"><input type="time" step="1" name="t_ccrgt"></td>
+        <td><button type="button" id="ccrgt_btn" class="done-btn"><i class='bx bx-check' ></i></button></td>
+
+            <td style="width: 12%;"><input type="time" step="1" name="t_ccrgt" id="ccrgt_val"></td>
         {% endif %}
         <td style="width: 40%;">{{morning_form.r_ccrgt}}</td>
     </tr>
 </tbody> 
+
+
+<script>
+
+    const lits_btn = document.getElementById('lits_btn')
+    const ciss_btn = document.getElementById('ciss_btn')
+    const cass_btn = document.getElementById('cass_btn')
+    const cebu_btn = document.getElementById('cebu_btn')
+    const boas_btn = document.getElementById('boas_btn')
+    const cwrge_btn = document.getElementById('cwrge_btn')
+    const utbeb_btn = document.getElementById('utbeb_btn')
+    const alicbu_btn = document.getElementById('alicbu_btn')
+    const ceu_btn = document.getElementById('ceu_btn')
+    const cdl_btn = document.getElementById('cdl_btn')
+    const cvti_btn = document.getElementById('cvti_btn')
+    const cppc_btn = document.getElementById('cppc_btn')
+    const ccrgt_btn = document.getElementById('ccrgt_btn')
+
+    lits_btn.addEventListener('click', (e) => {
+        lits_btn.style.backgroundColor = 'green'
+        const lits = document.getElementById('lits_val')
+        lits.value = getCurrentTime()
+    })
+
+    ciss_btn.addEventListener('click', (e) => {
+        ciss_btn.style.backgroundColor = 'green'
+        const ciss = document.getElementById('ciss_val')
+        ciss.value = getCurrentTime()
+    })
+
+    cass_btn.addEventListener('click', (e) => {
+        cass_btn.style.backgroundColor = 'green'
+        const cass = document.getElementById('cass_val')
+        cass.value = getCurrentTime()
+    })
+
+    cebu_btn.addEventListener('click', (e) => {
+        cebu_btn.style.backgroundColor = 'green'
+        const cebu = document.getElementById('cebu_val')
+        cebu.value = getCurrentTime()
+    })
+
+    boas_btn.addEventListener('click', (e) => {
+        boas_btn.style.backgroundColor = 'green'
+        const boas = document.getElementById('boas_val')
+        boas.value = getCurrentTime()
+    })
+
+
+    cwrge_btn.addEventListener('click', (e) => {
+        cwrge_btn.style.backgroundColor = 'green'
+        const cwrge = document.getElementById('cwrge_val')
+        cwrge.value = getCurrentTime()
+    })
+
+    utbeb_btn.addEventListener('click', (e) => {
+        utbeb_btn.style.backgroundColor = 'green'
+        const utbeb = document.getElementById('utbeb_val')
+        utbeb.value = getCurrentTime()
+    })
+
+    alicbu_btn.addEventListener('click', (e) => {
+        alicbu_btn.style.backgroundColor = 'green'
+        const alicbu = document.getElementById('alicbu_val')
+        alicbu.value = getCurrentTime()
+    })
+    
+    ceu_btn.addEventListener('click', (e) => {
+        ceu_btn.style.backgroundColor = 'green'
+        const ceu = document.getElementById('ceu_val')
+        ceu.value = getCurrentTime()
+    })
+
+    cdl_btn.addEventListener('click', (e) => {
+        cdl_btn.style.backgroundColor = 'green'
+        const cdl = document.getElementById('cdl_val')
+        cdl.value = getCurrentTime()
+    })
+
+    cvti_btn.addEventListener('click', (e) => {
+        cvti_btn.style.backgroundColor = 'green'
+        const cvti = document.getElementById('cvti_val')
+        cvti.value = getCurrentTime()
+    })
+
+    cppc_btn.addEventListener('click', (e) => {
+        cppc_btn.style.backgroundColor = 'green'
+        const cppc = document.getElementById('cppc_val')
+        cppc.value = getCurrentTime()
+    })
+
+    ccrgt_btn.addEventListener('click', (e) => {
+        ccrgt_btn.style.backgroundColor = 'green'
+        const ccrgt = document.getElementById('ccrgt_val')
+        ccrgt.value = getCurrentTime()
+    })
+       
+</script>

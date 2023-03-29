@@ -672,7 +672,13 @@ def asset_details(request, pk):
 
 @login_required(login_url='login')
 def print_asset(request, pk):
-    return render(request, 'e_logs/print_asset.html')
+    asset = RenewedAsset.objects.get(id=pk)
+
+    context = {
+        'asset': asset
+    }
+    
+    return render(request, 'e_logs/print_asset.html', context)
 
 @login_required(login_url='login')
 def not_found(request):
