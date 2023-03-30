@@ -105,12 +105,14 @@
                     </li>
                 </a>
 
-                <a href="http://127.0.0.1:8000/admin">
+                {% if request.user.is_superuser %}
+                <a href="/admin">
                     <li data-tab-target="#utilities" class="active-utilities">
                         <i class='bx bxs-user-rectangle'></i>
                         <p>Admin</p>
                     </li>
                 </a>
+                {% endif %}
                 
             </ul>
         </div>

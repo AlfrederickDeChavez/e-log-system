@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.conf import settings
 
 #Importing Python Modules
 import time
@@ -700,20 +701,25 @@ def password_reset_request(request):
                     email_template_name = "e_logs/password/password_email_reset.txt"
                     c = {
                         "email":user.email,
-                        'domain':'127.0.0.1:8000',
+                        'domain': request.get_host(),
                         'site_name': 'Website',
                         "uid": urlsafe_base64_encode(force_bytes(user.pk)),
                         "user": user,
                         'token': default_token_generator.make_token(user),
                         'protocol': 'http',
                     }
-                    email = render_to_string(email_template_name, c)
+                    email = '{}://{}/reset/{}/{}/'.format(c['protocol'], c['domain'], c['uid'], c['token'])
+                
                     try:
-                        send_mail(subject, email, 'admin@gmail.com' , [user.email], fail_silently=False)
+                        # send_mail(subject, email, settings.EMAIL_HOST_USER , [user.email], fail_silently=False)
+                        return redirect('{}://{}/reset/{}/{}/'.format(c['protocol'], c['domain'], c['uid'], c['token']))
                     except BadHeaderError:
                         return HttpResponse('Invalid header found.')
                     
                     return redirect ("password_reset_done")
+                
+            else: 
+                messages.error(request, 'Email is not associated with a user.')
 
     return render(request, 'e_logs/password/password_reset.html')
 
