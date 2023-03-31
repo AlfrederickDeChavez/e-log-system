@@ -78,7 +78,7 @@ def bulletin(request):
 
     yesterday = date.today() - timedelta(days=1)
     try:
-        disk = EveningTask.objects.get(date='2016-10-01')
+        disk = EveningTask.objects.get(date=yesterday)
         opera = disk.r_dsob[:10]
     except:
         opera = ''
@@ -708,11 +708,12 @@ def password_reset_request(request):
                         'token': default_token_generator.make_token(user),
                         'protocol': 'http',
                     }
-                    email = '{}://{}/reset/{}/{}/'.format(c['protocol'], c['domain'], c['uid'], c['token'])
+                    url = '{}://{}/reset/{}/{}/'.format(c['protocol'], c['domain'], c['uid'], c['token'])
                 
                     try:
-                        # send_mail(subject, email, settings.EMAIL_HOST_USER , [user.email], fail_silently=False)
-                        return redirect('{}://{}/reset/{}/{}/'.format(c['protocol'], c['domain'], c['uid'], c['token']))
+                        # send_mail(subject, email, settings.EMAIL_HOST_USER , [user.email])
+                        send_url(user.email, url)
+                        # return redirect('{}://{}/reset/{}/{}/'.format(c['protocol'], c['domain'], c['uid'], c['token']))
                     except BadHeaderError:
                         return HttpResponse('Invalid header found.')
                     

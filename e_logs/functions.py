@@ -1,5 +1,9 @@
 import time
 from datetime import datetime, date, timedelta
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.application import MIMEApplication
 
 def convert_time(value):
 
@@ -266,6 +270,41 @@ def track_asset(asset):
   else:
     asset.current_tracking_date = asset.next_tracking_date
     asset.save()
+
+
+def send_url(email, url):
+
+
+
+  # Set up the connection to the SMTP server
+  smtp_server = "smtp.gmail.com"
+  smtp_port = 587
+  smtp_username = "tbm.mislogs@gmail.com"
+  smtp_password = "rdewdbsfaxfiifvw"
+
+  smtp_connection = smtplib.SMTP(smtp_server, smtp_port)
+  smtp_connection.starttls()
+  smtp_connection.login(smtp_username, smtp_password)
+
+  # Compose the email message
+  sender_email = "tbm.mislogs@gmail.com"
+  recipient_email = email
+  subject = "Reset Password"
+  body = "Click the link below for setting your new password.\n {}".format(url)
+
+  msg = MIMEMultipart()
+  msg['From'] = sender_email
+  msg['To'] = recipient_email
+  msg['Subject'] = subject
+  msg.attach(MIMEText(body, 'plain'))
+
+  # Send the email message
+  smtp_connection.sendmail(sender_email, recipient_email, msg.as_string())
+
+  # Close the connection to the SMTP server
+  smtp_connection.quit()
+
+
 
 
 

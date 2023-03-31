@@ -10,10 +10,10 @@ class MorningTaskForm(forms.ModelForm):
 
     AUTHORS = [
         ('', 'Select a name'),
-        ('Jeff', 'Jeff'),
-        ('Roy', 'Roy'),
-        ('Mark', 'Mark'),
-        ('Fernand', 'Fernand')
+        ('Jeff Gaspar', 'Jeff Gaspar'),
+        ('Roy Tulipat', 'Roy Tulipat'),
+        ('Mark Ruaya', 'Mark Ruaya'),
+        ('Fernand Alpapara', 'Fernand Alpapara')
     ]
 
     checked_by = forms.ChoiceField(choices=AUTHORS)
@@ -57,10 +57,10 @@ class EveningTaskForm(forms.ModelForm):
 
     AUTHORS = [
         ('', 'Select a name'),
-        ('Jeff', 'Jeff'),
-        ('Roy', 'Roy'),
-        ('Mark', 'Mark'),
-        ('Fernand', 'Fernand')
+        ('Jeff Gaspar', 'Jeff Gaspar'),
+        ('Roy Tulipat', 'Roy Tulipat'),
+        ('Mark Ruaya', 'Mark Ruaya'),
+        ('Fernand Alpapara', 'Fernand Alpapara')
     ]
 
     checked_by = forms.ChoiceField(choices=AUTHORS)
