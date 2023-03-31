@@ -57,7 +57,7 @@
         <div class="table-title">
             <div style="display: flex; align-items: center; justify-content: space-between;">
                 <p>Bulletin Board</p>
-                <p class="record-length d-flex">{{ bulletin_length}}</p>
+                <p class="record-length d-flex">{{ bulletin | length}}</p>
             </div>
             <!-- <i class='bx bx-fullscreen'></i> -->
             <button id="export-bulletin"> <i class='bx bxs-file-export'></i> Export to Excel</button>
@@ -92,6 +92,29 @@
                 </tbody>
             </table>
         </div>
+
+        {% if show_pagination %}
+
+        <div class="pagination">
+            <span class="step-links">
+                {% if bulletin.has_previous %}
+                    <a href="?page=1"><i class='bx bxs-chevrons-left' ></i></a>
+                    <a href="?page={{ bulletin.previous_page_number }}"><i class='bx bxs-left-arrow'></i></a>
+                {% endif %}
+        
+                <span class="current-page">
+                    Page {{ bulletin.number }} of {{ bulletin.paginator.num_pages }}.
+                </span>
+        
+                {% if bulletin.has_next %}
+                    <a href="?page={{ bulletin.next_page_number }}"><i class='bx bxs-right-arrow' ></i></a>
+                    <a href="?page={{ bulletin.paginator.num_pages }}"><i class='bx bxs-chevrons-right' ></i></a>
+                {% endif %}
+
+            </span>
+        </div>
+
+        {% endif %}
     </div>
 
     <!-- MIS INCIDENT REPORT -->
@@ -335,6 +358,30 @@
         margin-left: 1rem;
         font-size: 0.9rem;
         border-radius: 3px;
+    }
+
+    .pagination {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin: 1rem 0;
+    }
+
+    .pagination .current-page {
+        font-size: 1rem;
+        font-weight: 500;
+        color: rgb(23, 108, 199);
+        margin: 0 1rem;
+    }
+
+    .step-links a {
+        padding: 0.3rem 0.5rem;
+        border: 0.5px solid rgb(60, 146, 238);
+    }
+
+    .step-links a i {
+        font-size: 1.2rem;
+        color: rgb(23, 108, 199);
     }
 
 </style>

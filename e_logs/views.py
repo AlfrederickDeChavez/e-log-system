@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.conf import settings
+from django.core.paginator import Paginator
 
 #Importing Python Modules
 import time
@@ -77,6 +78,8 @@ def bulletin(request):
     """
 
     yesterday = date.today() - timedelta(days=1)
+    showPagination = False
+
     try:
         disk = EveningTask.objects.get(date=yesterday)
         opera = disk.r_dsob[:10]
@@ -107,7 +110,7 @@ def bulletin(request):
             Q(author__icontains=q) |
             Q(priority__icontains=q) |
             Q(details__icontains=q)
-        ).order_by('-date')[:50]
+        ).order_by('-date')
 
         guest = Guest.objects.filter(
             Q(tower__icontains=q) |
@@ -118,7 +121,7 @@ def bulletin(request):
             Q(action__icontains=q) |
             Q(recommendation__icontains=q) |
             Q(status__icontains=q) 
-        ).order_by('-date')[:50]
+        ).order_by('-date')
 
         department = Department.objects.filter(
             Q(department__icontains=q) |
@@ -139,11 +142,11 @@ def bulletin(request):
             end_date = request.GET.get('end_date')
             bulletin = Bulletin.objects.filter(
                 Q(date__gte=start_date, date__lte=end_date) 
-            ).order_by('-date')[:50]
+            ).order_by('-date')
 
             guest = Guest.objects.filter(
                 Q(date__gte=start_date, date__lte=end_date) 
-            ).order_by('-date')[:50]
+            ).order_by('-date')
 
             department = Department.objects.filter(
                 Q(date__gte=start_date, date__lte=end_date) 
@@ -155,23 +158,29 @@ def bulletin(request):
             return redirect('not_found')
         
     else:
-        bulletin = Bulletin.objects.filter(
-                Q(date=date.today()) 
-            ).order_by('-date')
+        showPagination = True
+        items_per_page = 100
+        queryset = Bulletin.objects.all().order_by('-date')
+        paginator = Paginator(queryset, items_per_page)
+        page = request.GET.get('page')
+        bulletin = paginator.get_page(page)
+        # bulletin = Bulletin.objects.filter(
+        #         Q(date=date.today()) 
+        #     ).order_by('-date')
         # bulletin = Bulletin.objects.all()
-        department = Department.objects.all().order_by('-date')[:50]
-        guest = Guest.objects.all().order_by('-date')[:50]
+        department = Department.objects.all().order_by('-date')[:1000]
+        guest = Guest.objects.all().order_by('-date')[:100]
         
     context = {
         'bulletin': bulletin, 
-        'bulletin_length': bulletin.count(),
         'guest': guest, 
         'guest_length': guest.count(),
         'department': department, 
         'department_length': department.count(),
         'warnings': warnings,
         'yesterday': yesterday,
-        'opera': opera
+        'opera': opera,
+        'show_pagination': showPagination
     }
 
     return render(request, 'e_logs/bulletin.html', context)

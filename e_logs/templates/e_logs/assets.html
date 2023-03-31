@@ -44,6 +44,8 @@
                     </thead>
                     <tbody>
 
+                        {% if assets %}
+
                         {% for asset in assets %}
                         <tr>
                             <td><a href="{% url 'asset-details' asset.id %}">{{asset.name}}</a></td>
@@ -95,6 +97,12 @@
                             </td>
                         </tr>
                         {% endfor %}
+
+                        {% else %}
+                        <tr>
+                            <td colspan="10" style="height: 100px;">No records</td>
+                        </tr>
+                        {% endif %}
                     </tbody>
                 </table>
             </div>
@@ -117,7 +125,7 @@
                         </tr>
                     </thead>
                     <tbody>
-
+                        {% if warnings %}
                         {% for asset in warnings %}
                         <tr>
                             <td><a href="{% url 'asset-details' asset.id %}">{{asset.name}}</a></td>
@@ -165,6 +173,11 @@
                             </td>
                         </tr>
                         {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="10" style="height: 100px;">No warnings</td>
+                        </tr>
+                        {% endif %}
                     </tbody>
                 </table>
             </div>
@@ -215,6 +228,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% if renewed %}
                     {% for asset in renewed %}
                     <tr>
                         <td>{{asset.name}}</td>
@@ -233,6 +247,12 @@
                     </tr>
                     
                     {% endfor %}
+
+                    {% else %}
+                    <tr>
+                        <td colspan="8" style="height: 100px;">No records</td>
+                    </tr>
+                    {% endif %}
                 </tbody>
             </table>
         </div>
