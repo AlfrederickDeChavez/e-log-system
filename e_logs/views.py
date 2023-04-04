@@ -737,9 +737,16 @@ def password_reset_request(request):
 def audit_logs(request):
 
     audits = Audit.objects.all().order_by('-modified_datetime')
+    warnings = Asset.objects.filter(
+        Q(status="initial") |
+        Q(status="warning") | 
+        Q(status="danger") | 
+        Q(current_tracking_date=date.today())
+    ).order_by('expiration')
 
     context = {
-        'audits': audits
+        'audits': audits,
+        'warnings': warnings
     }
     return render(request, 'e_logs/audit_logs.html', context)
 
@@ -751,10 +758,18 @@ def versions(request, pk):
     except:
         version_list = []
         name = 'Versions'
+
+    warnings = Asset.objects.filter(
+        Q(status="initial") |
+        Q(status="warning") | 
+        Q(status="danger") | 
+        Q(current_tracking_date=date.today())
+    ).order_by('expiration')
     
 
     context = {
         'versions': version_list,
-        'name': name
+        'name': name,
+        'warnings': warnings
     }
     return render(request, 'e_logs/versions.html', context)
