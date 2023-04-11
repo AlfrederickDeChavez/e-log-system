@@ -7,6 +7,7 @@ urlpatterns = [
     path('', bulletin, name='home'),
     path('bulletin/', bulletin, name='bulletin'),
     path('tasks/', task, name='task'),
+    path('bhtl-tasks/', bhtl_task, name='bhtl-tasks'),
     path('room-service/', room_service, name='room'),
     path('department-service/', department_service, name='department'),
     path('mis-utilities/', utilities, name='utilities'),

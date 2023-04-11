@@ -1,0 +1,201 @@
+<tbody class="task-body">
+    <tr>
+        <td style="width: 40%;">Disk Size of Opera Backup Drive D:</td>
+        {% if show_evening_update %}
+            <td style="width: 12%;">{{evening_form.t_dsob}}</td>
+        {% else %}
+            <td style="width: 4%;"><button type="button" id="edsob_btn" class="done-btn"><i class='bx bx-check' ></i></button></td>
+            <td style="width: 12%;"><input type="time" step="1" name="t_dsob" id="edsob_val"></td>
+        {% endif %}
+        <td style="width: 40%;">{{evening_form.r_dsob}}</td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%;">Check Email for Updates</td>
+        {% if show_evening_update %}
+            <td style="width: 12%;">{{evening_form.t_ceu}}</td>
+        {% else %}
+        <td style="width: 4%;"><button type="button" id="eceu_btn" class="done-btn"><i class='bx bx-check' ></i></button></td>
+
+            <td style="width: 12%;"><input type="time" step="1" name="t_ceu" id="eceu_val"></td>
+        {% endif %}
+        <td style="width: 40%;">{{evening_form.r_ceu}}</td>
+    </tr>
+ 
+    <tr>
+        <td style="width: 40%;">Check All Server Status</td>
+        {% if show_evening_update %}
+            <td style="width: 12%;">{{evening_form.t_cass}}</td>
+        {% else %}
+        <td style="width: 4%;"><button type="button" id="ecass_btn" class="done-btn"><i class='bx bx-check' ></i></button></td>
+
+            <td style="width: 12%;"><input type="time" step="1" name="t_cass" id="ecass_val"></td>
+        {% endif %}
+        <td style="width: 40%;">{{evening_form.r_cass}}</td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%;">Update Event Board Updates</td>
+
+        {% if show_evening_update %}
+            <td style="width: 12%;">{{evening_form.t_uebu}}</td>
+        {% else %}
+        <td style="width: 4%;"><button type="button" id="euebu_btn" class="done-btn" ><i class='bx bx-check' ></i></button></td>
+
+            <td style="width: 12%;"><input type="time" step="1" name="t_uebu" id="euebu_val"></td>
+        {% endif %}
+
+        <td style="width: 40%;">{{evening_form.r_uebu}}</td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%;">X Possible and Logged In Count with Bandwidth Usage</td>
+        {% if show_evening_update %}
+            <td style="width: 12%;">{{evening_form.t_alicbu}}</td>
+        {% else %}
+        <td style="width: 4%;"><button type="button" id="ealicbu_btn" class="done-btn"><i class='bx bx-check' ></i></button></td>
+
+            <td style="width: 12%;"><input type="time" step="1" name="t_alicbu" id="ealicbu_val"></td>
+        {% endif %}
+        <td style="width: 40%;">{{evening_form.r_alicbu}}</td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%;">Check Interface Server Status</td>
+        {% if show_evening_update %}
+            <td style="width: 12%;">{{evening_form.t_ciss}}</td>
+        {% else %}
+        <td style="width: 4%;"><button type="button" id="eciss_btn" class="done-btn"><i class='bx bx-check' ></i></button></td>
+
+            <td style="width: 12%;"><input type="time" step="1" name="t_ciss" id="eciss_val"></td>
+        {% endif %}
+        <td style="width: 40%;">{{evening_form.r_ciss}}</td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%;">Check PMS Server Status</td>
+        {% if show_evening_update %}
+            <td style="width: 12%;">{{evening_form.t_cpss}}</td>
+        {% else %}
+        <td style="width: 4%;"><button type="button" id="ecpss_btn" class="done-btn"><i class='bx bx-check' ></i></button></td>
+
+            <td style="width: 12%;"><input type="time" step="1" name="t_cpss" id="ecpss_val"></td>
+        {% endif %}
+        <td style="width: 40%;">{{evening_form.r_cpss}}</td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%;">Check Cable Reception on Guest TV</td>
+        {% if show_evening_update %}
+            <td style="width: 12%;">{{evening_form.t_ccrgt}}</td>
+        {% else %}
+        <td style="width: 4%;"><button type="button" id="eccrgt_btn" class="done-btn"><i class='bx bx-check' ></i></button></td>
+
+            <td style="width: 12%;"><input type="time" step="1" name="t_ccrgt" id="eccrgt_val"></td>
+        {% endif %}
+        <td style="width: 40%;">{{evening_form.r_ccrgt}}</td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%;">Check VOIP Test for IDD</td>
+        {% if show_evening_update %}
+            <td style="width: 12%;">{{evening_form.t_cvti}}</td>
+        {% else %}
+        <td style="width: 4%;"><button type="button" id="ecvti_btn" class="done-btn"><i class='bx bx-check' ></i></button></td>
+
+            <td style="width: 12%;"><input type="time" step="1" name="t_cvti" id="ecvti_val"></td>
+        {% endif %}
+        <td style="width: 40%;">{{evening_form.r_cvti}}</td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%;">Log Time Out Schedule</td>
+        {% if show_evening_update %}
+            <td style="width: 12%;">{{evening_form.t_ltos}}</td>
+        {% else %}
+        <td style="width: 4%;"><button type="button" id="eltos_btn" class="done-btn"><i class='bx bx-check' ></i></button></td>
+
+            <td style="width: 12%;"><input type="time" step="1" name="t_ltos" id="eltos_val"></td>
+        {% endif %}
+        <td style="width: 40%;">{{evening_form.r_ltos}}</td>
+    </tr>
+
+</tbody>
+
+
+<script>
+
+    const edsob_btn = document.getElementById('edsob_btn')
+    const eceu_btn = document.getElementById('eceu_btn')
+    const ecass_btn = document.getElementById('ecass_btn')
+    const euebu_btn = document.getElementById('euebu_btn')
+    const ealicbu_btn = document.getElementById('ealicbu_btn')
+    const eciss_btn = document.getElementById('eciss_btn')
+    const ecpss_btn = document.getElementById('ecpss_btn')
+    const eccrgt_btn = document.getElementById('eccrgt_btn')
+    const ecvti_btn = document.getElementById('ecvti_btn')
+    const eltos_btn = document.getElementById('eltos_btn')
+
+
+
+    edsob_btn.addEventListener('click', (e) => {
+        edsob_btn.style.backgroundColor = 'green'
+        const dsob = document.getElementById('edsob_val')
+        dsob.value = getCurrentTime()
+    })
+
+    eceu_btn.addEventListener('click', (e) => {
+        eceu_btn.style.backgroundColor = 'green'
+        const ceu = document.getElementById('eceu_val')
+        ceu.value = getCurrentTime()
+    })
+
+    ecass_btn.addEventListener('click', (e) => {
+        ecass_btn.style.backgroundColor = 'green'
+        const cass = document.getElementById('ecass_val')
+        cass.value = getCurrentTime()
+    })
+
+    euebu_btn.addEventListener('click', (e) => {
+        euebu_btn.style.backgroundColor = 'green'
+        const uebu = document.getElementById('euebu_val')
+        uebu.value = getCurrentTime()
+    })
+
+    ealicbu_btn.addEventListener('click', (e) => {
+        ealicbu_btn.style.backgroundColor = 'green'
+        const alicbu = document.getElementById('ealicbu_val')
+        alicbu.value = getCurrentTime()
+    })
+
+    eciss_btn.addEventListener('click', (e) => {
+        eciss_btn.style.backgroundColor = 'green'
+        const ciss = document.getElementById('eciss_val')
+        ciss.value = getCurrentTime()
+    })
+
+
+    ecpss_btn.addEventListener('click', (e) => {
+        ecpss_btn.style.backgroundColor = 'green'
+        const cpss = document.getElementById('ecpss_val')
+        cpss.value = getCurrentTime()
+    })
+
+    eccrgt_btn.addEventListener('click', (e) => {
+        eccrgt_btn.style.backgroundColor = 'green'
+        const ccrgt = document.getElementById('eccrgt_val')
+        ccrgt.value = getCurrentTime()
+    })
+
+    ecvti_btn.addEventListener('click', (e) => {
+        ecvti_btn.style.backgroundColor = 'green'
+        const cvti = document.getElementById('ecvti_val')
+        cvti.value = getCurrentTime()
+    })
+
+    eltos_btn.addEventListener('click', (e) => {
+        eltos_btn.style.backgroundColor = 'green'
+        const ltos = document.getElementById('eltos_val')
+        ltos.value = getCurrentTime()
+    })
+</script>

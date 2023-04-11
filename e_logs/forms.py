@@ -1,5 +1,5 @@
 from django import forms
-from .models import Bulletin, MorningTask, EveningTask, Asset
+from .models import Bulletin, MorningTask, EveningTask, Asset, BHTLMorningTask, BHTLEveningTask
 
 class BulletinForm(forms.ModelForm):
     class Meta:
@@ -20,6 +20,54 @@ class MorningTaskForm(forms.ModelForm):
 
     class Meta:
         model = MorningTask
+        fields = '__all__'
+        widgets = {
+            't_lits': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
+            't_ciss': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
+            't_cass': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
+            't_cebu': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
+            't_boas': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
+            't_cwrge': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
+            't_utbeb': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
+            't_alicbu': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
+            't_ceu': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
+            't_cdl': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
+            't_cvti': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
+            't_cppc': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
+            't_ccrgt': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
+
+            'r_lits': forms.TextInput(attrs={'autocomplete': 'off'}),
+            'r_ciss': forms.TextInput(attrs={'autocomplete': 'off'}),
+            'r_cass': forms.TextInput(attrs={'autocomplete': 'off'}),
+            'r_cebu': forms.TextInput(attrs={'autocomplete': 'off'}),
+            'r_boas': forms.TextInput(attrs={'autocomplete': 'off'}),
+            'r_cwrge': forms.TextInput(attrs={'autocomplete': 'off'}),
+            'r_utbeb': forms.TextInput(attrs={'autocomplete': 'off'}),
+            'r_alicbu': forms.TextInput(attrs={'autocomplete': 'off'}),
+            'r_ceu': forms.TextInput(attrs={'autocomplete': 'off'}),
+            'r_cdl': forms.TextInput(attrs={'autocomplete': 'off'}),
+            'r_cvti': forms.TextInput(attrs={'autocomplete': 'off'}),
+            'r_cppc': forms.TextInput(attrs={'autocomplete': 'off'}),
+            'r_ccrgt': forms.TextInput(attrs={'autocomplete': 'off'}),
+
+
+        }
+
+
+class BHTLMorningTaskForm(forms.ModelForm):
+
+    AUTHORS = [
+        ('', 'Select a name'),
+        ('Jeff Gaspar', 'Jeff Gaspar'),
+        ('Roy Tulipat', 'Roy Tulipat'),
+        ('Mark Ruaya', 'Mark Ruaya'),
+        ('Fernand Alpapara', 'Fernand Alpapara')
+    ]
+
+    checked_by = forms.ChoiceField(choices=AUTHORS)
+
+    class Meta:
+        model = BHTLMorningTask
         fields = '__all__'
         widgets = {
             't_lits': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
@@ -80,6 +128,37 @@ class EveningTaskForm(forms.ModelForm):
             't_cvti': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
             't_ltos': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
         }
+
+
+
+class BHTLEveningTaskForm(forms.ModelForm):
+
+    AUTHORS = [
+        ('', 'Select a name'),
+        ('Jeff Gaspar', 'Jeff Gaspar'),
+        ('Roy Tulipat', 'Roy Tulipat'),
+        ('Mark Ruaya', 'Mark Ruaya'),
+        ('Fernand Alpapara', 'Fernand Alpapara')
+    ]
+
+    checked_by = forms.ChoiceField(choices=AUTHORS)
+
+    class Meta: 
+        model = BHTLEveningTask
+        fields = '__all__'
+        widgets = {
+            't_dsob': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
+            't_ceu': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
+            't_cass': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
+            't_uebu': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
+            't_alicbu': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
+            't_ciss': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
+            't_cpss': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
+            't_ccrgt': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
+            't_cvti': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
+            't_ltos': forms.TimeInput(attrs={'class': 'tac', 'type': 'time'}),
+        }
+
 
 class AssetForm(forms.ModelForm):
 

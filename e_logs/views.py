@@ -15,8 +15,8 @@ from datetime import date
 import datetime
 
 #Importing App Modules
-from .models import Bulletin, Guest, Department, EveningTask, MorningTask, Asset, Audit, RenewedAsset
-from .forms import MorningTaskForm, EveningTaskForm, AssetForm
+from .models import Bulletin, Guest, Department, EveningTask, MorningTask, Asset, Audit, RenewedAsset, BHTLMorningTask, BHTLEveningTask
+from .forms import MorningTaskForm, EveningTaskForm, AssetForm, BHTLMorningTaskForm, BHTLEveningTaskForm
 from .tasks import *
 from .functions import *
 
@@ -306,6 +306,128 @@ def task(request):
     }
 
     return render(request, 'e_logs/task.html', context)
+
+@login_required(login_url='login')
+def bhtl_task(request):
+    """
+        The task view shows the checklist of task of the MIS personnel. User can navigate between morning shift and evening shift.
+        Past data can be retrieve using the data chosen. The displayed data can be updated.
+    """
+    warnings = Asset.objects.filter(
+        Q(status="initial") |
+        Q(status="warning") | 
+        Q(status="danger") | 
+        Q(current_tracking_date=date.today())
+    ).order_by('expiration')
+
+    #Initializing the forms
+    morning_form = BHTLMorningTaskForm()
+    evening_form = BHTLEveningTaskForm()
+
+    #Use for conditional rendering: components are rendered based on active tabs (morning / evening)
+    update_morning_data = False
+    update_evening_data = False
+    retrieved_task = None
+
+    #Adding new record for the morning
+    if request.method == "POST" and "save-am-shift" in request.POST:
+
+        form = BHTLMorningTaskForm(request.POST)
+        if form.is_valid():
+            form.save()
+        else: 
+            print(form.errors)
+        return redirect('task')
+
+    #Retrieving morning records based on date input. If no records were returned, users will be navigated to not found page.
+    if request.method == "GET" and "retrieve-am" in request.GET:
+        
+        try:
+            task = BHTLMorningTask.objects.filter(
+                Q(date=request.GET.get('morning_shift_date'))
+            )[0]
+            morning_form = MorningTaskForm(instance=task)
+            update_morning_data = True
+            retrieved_task = task
+        except:
+            return redirect('not_found')
+
+
+    # Updating task record for morning. 
+    if request.method == "POST" and "update-morning" in request.POST:
+        date_filter = request.get_full_path().split('?')[1].split('&')[0].split('=')[1]
+        task = BHTLMorningTask.objects.filter(
+            Q(date=date_filter)
+        )[0]
+
+        form = BHTLMorningTaskForm(request.POST, instance=task)
+
+        if form.is_valid():
+            form.save()
+        else:
+            print(form.errors)
+
+        return redirect('task')
+
+    # Adding new records for evening tasks
+    if request.method == "POST" and "save-pm-shift" in request.POST:
+
+        form = BHTLEveningTaskForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+        else:
+            print(form.errors)
+        
+        return redirect('task')
+
+    
+    # Retrieving past records based on date input. If no records were returned, user navigated to not found page.
+    if request.method == "GET" and 'retrieve-pm' in request.GET:
+        try:
+            task = BHTLEveningTask.objects.filter(
+                Q(date=request.GET.get('evening_shift_date'))
+            )[0]
+
+            evening_form = BHTLEveningTaskForm(instance=task)
+            update_evening_data = True
+            retrieved_task = task
+        except:
+            return redirect('not_found')
+
+        
+
+
+    # Updates evening records. 
+    if request.method == "POST" and "update-evening" in request.POST:
+        date_filter = request.get_full_path().split('?')[1].split('&')[0].split('=')[1]
+        task = BHTLEveningTask.objects.filter(
+            Q(date=date_filter)
+        )[0]
+
+        form = BHTLEveningTaskForm(request.POST, instance=task)
+
+        if form.is_valid():
+            form.save()
+            print('Form Save')
+        else:
+            print(form.errors)
+
+        return redirect('task')
+
+    context = {
+        'morning_tasks': morning_tasks, 
+        'evening_tasks': evening_tasks, 
+        'morning_form': morning_form,
+        'evening_form': evening_form,
+        'show_morning_update': update_morning_data,
+        'show_evening_update': update_evening_data,
+        'task': retrieved_task,
+        'warnings': warnings
+    }
+
+    return render(request, 'e_logs/bhtl_task.html', context)
+
 
 @login_required(login_url='login')
 def room_service(request):

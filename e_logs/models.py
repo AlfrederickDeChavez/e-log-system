@@ -79,6 +79,40 @@ class MorningTask(models.Model):
     def __str__(self):
         return 'Morning Shift' + ' - ' + str(self.date) + ' - ' + self.checked_by
 
+class BHTLMorningTask(models.Model):
+    date = models.DateField(auto_now_add=True)
+    time = models.TimeField(auto_now_add=True)
+    checked_by = models.CharField(max_length=200)
+    t_lits = models.TimeField(null=True, blank=True)
+    r_lits = models.CharField(max_length=500, null=True, blank=True)
+    t_ciss = models.TimeField(null=True, blank=True)
+    r_ciss = models.CharField(max_length=500, null=True, blank=True)
+    t_cass = models.TimeField(null=True, blank=True)
+    r_cass = models.CharField(max_length=500, null=True, blank=True)
+    t_cebu = models.TimeField(null=True, blank=True)
+    r_cebu = models.CharField(max_length=500, null=True, blank=True)
+    t_boas = models.TimeField(null=True, blank=True)
+    r_boas = models.CharField(max_length=500, null=True, blank=True)
+    t_cwrge = models.TimeField(null=True, blank=True)
+    r_cwrge = models.CharField(max_length=500, null=True, blank=True)
+    t_utbeb = models.TimeField(null=True, blank=True)
+    r_utbeb = models.CharField(max_length=500, null=True, blank=True)
+    t_alicbu = models.TimeField(null=True, blank=True)
+    r_alicbu = models.CharField(max_length=500, null=True, blank=True)
+    t_ceu = models.TimeField(null=True, blank=True)
+    r_ceu = models.CharField(max_length=500, null=True, blank=True)
+    t_cdl = models.TimeField(null=True, blank=True)
+    r_cdl = models.CharField(max_length=500, null=True, blank=True)
+    t_cvti = models.TimeField( null=True, blank=True)
+    r_cvti = models.CharField(max_length=500, null=True, blank=True)
+    t_cppc = models.TimeField(null=True, blank=True)
+    r_cppc = models.CharField(max_length=500, null=True, blank=True)
+    t_ccrgt = models.TimeField(null=True, blank=True)
+    r_ccrgt = models.CharField(max_length=500, null=True, blank=True)
+
+    def __str__(self):
+        return 'Morning Shift' + ' - ' + str(self.date) + ' - ' + self.checked_by
+    
 
 class EveningTask(models.Model):
     date = models.DateField(auto_now_add=True)
@@ -107,6 +141,37 @@ class EveningTask(models.Model):
 
     def __str__(self):
         return 'Evening Shift' + ' - ' + str(self.date) + ' - ' + self.checked_by
+
+
+
+class BHTLEveningTask(models.Model):
+    date = models.DateField(auto_now_add=True)
+    time = models.TimeField(auto_now_add=True)
+    checked_by = models.CharField(max_length=200)
+    t_dsob = models.TimeField(null=True, blank=True)
+    r_dsob = models.CharField(max_length=500, null=True, blank=True)
+    t_ceu = models.TimeField(null=True, blank=True)
+    r_ceu = models.CharField(max_length=500, null=True, blank=True)
+    t_cass = models.TimeField(null=True, blank=True)
+    r_cass = models.CharField(max_length=500, null=True, blank=True)
+    t_uebu = models.TimeField(null=True, blank=True)
+    r_uebu = models.CharField(max_length=500, null=True, blank=True)
+    t_alicbu = models.TimeField(null=True, blank=True)
+    r_alicbu = models.CharField(max_length=500, null=True, blank=True)
+    t_ciss = models.TimeField(null=True, blank=True)
+    r_ciss = models.CharField(max_length=500, null=True, blank=True)
+    t_cpss = models.TimeField(null=True, blank=True)
+    r_cpss = models.CharField(max_length=500, null=True, blank=True)
+    t_ccrgt = models.TimeField(null=True, blank=True)
+    r_ccrgt = models.CharField(max_length=500, null=True, blank=True)
+    t_cvti = models.TimeField(null=True, blank=True)
+    r_cvti = models.CharField(max_length=500, null=True, blank=True)
+    t_ltos = models.TimeField(null=True, blank=True)
+    r_ltos = models.CharField(max_length=500, null=True, blank=True)
+
+    def __str__(self):
+        return 'Evening Shift' + ' - ' + str(self.date) + ' - ' + self.checked_by
+
 
 
 class Asset(models.Model):

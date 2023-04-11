@@ -1,0 +1,376 @@
+{% extends 'e_logs/main.html' %}
+
+{% block content %}
+
+
+<div id="task" data-tab-content class="active">
+    
+    <h4>BTHL</h4> 
+    <hr>
+    <br>
+
+    <div class="page">
+
+        <!-- Navigation for Morning Shift Task Checklist and Evening Shift Task Checklist -->
+        <div class="task-tabs">
+            <div class="task-tab active-task" data-link-task="#morning"> <i class='bx bx-sun' ></i> Morning Shift</div>
+            <div class="task-tab" data-link-task="#evening"><i class='bx bx-moon' ></i> Evening Shift</div>
+        </div>
+
+        <!-- Task Contents -->
+        <div class="task-contents">
+
+
+            <!-- Morning Task Checklist Tab -->
+            <div class="active-task-content" data-link-content id="morning">
+
+                <div class="retrieve">
+                   
+                    <form action="" method="GET" class="retrieve-form">
+                        {%if show_morning_update%}
+                            <h5 style="font-size: 0.9rem; font-weight: 600; color: rgba(0, 0, 0, 0.7); margin-right: 5rem;">{{task.date}} - {{task.checked_by}}</h5>
+                        {%endif%}
+                        <input type="date" name="morning_shift_date">
+                        <button type="submit" name="retrieve-am">Retrieve AM data</button>
+                    </form>
+                    <div class="task-table-container">
+                        <form 
+                            action=""
+                            method="POST"
+                        >
+
+                            {% csrf_token%}
+
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Tasks</th>
+                                        {%if not show_morning_update%}
+                                        <th>Done</th>
+                                        {%endif%}
+                                        <th>Time</th>
+                                        <th>Remarks</th>
+
+                                    </tr>
+                                </thead>
+
+                                {% include 'e_logs/bhtl_morningtask.html' %}
+                                
+                            </table>
+
+                            <div class="task-form-submit">
+                                <div class="task-form-group">
+                                    <label for="checked_by">Checked by: </label>
+                                    {{morning_form.checked_by}}
+                                </div>
+
+                                {% if show_morning_update %}
+                                    <button type="submit" name="update-morning">Update Record</button>
+                                {% else %}
+                                    <button type="submit" name="save-am-shift">Save AM Shift</button>
+                                {% endif %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Evening Task Checklist Tab -->
+            <div class="evening" data-link-content id="evening">
+                <div class="retrieve">
+                    <form action="" method="GET" class="retrieve-form">
+                        {%if show_evening_update%}
+                            <h5 style="font-size: 0.9rem; font-weight: 600; color: rgba(0, 0, 0, 0.7); margin-right: 5rem;">{{task.date}} - {{task.checked_by}}</h5>
+                        {%endif%}
+                        <input type="date" name="evening_shift_date">
+                        <button type="submit" name="retrieve-pm">Retrieve PM data</button>
+                    </form>
+                    <div class="task-table-container">
+                        <form action=""
+                            method="POST"
+                        >
+                            {% csrf_token %}
+
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Tasks</th>
+                                        {% if not show_evening_update %}
+                                        <th>Done</th>
+                                        {% endif%}
+                                        <th>Time</th>
+                                        <th>Remarks</th>
+                                    </tr>
+                                </thead>
+
+                                {% include 'e_logs/bhtl_eveningtask.html' %}
+                               
+                            </table>
+
+                            <div class="task-form-submit">
+                                <div class="task-form-group">
+                                    <label for="task-attendee">Checked by: </label>
+                                    {{ evening_form.checked_by}}
+                                </div>
+                                {% if show_evening_update %}
+                                    <button type="submit" name="update-evening">Update Record</button>
+                                {% else %}
+                                    <button type="submit" name="save-pm-shift">Save PM shift</button>
+                                {% endif %}
+                            </div>  
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- STYLES -->
+
+<style>
+
+    .page {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    #task {
+        height: auto;
+       
+    }
+   
+    [data-link-content] {
+        display: none;
+    }
+
+    .active-task-content[data-link-content] {
+        display: block;
+    }
+
+    .task-tabs {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        top: 1px;
+        position: absolute;
+    }
+
+    .task-tab {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.4rem 1rem;
+        height: 2.5rem;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.01s ease;
+        z-index: 1;
+    }
+
+    .task-tab i {
+        margin-right: 0.5rem;
+    }
+
+    .active-task[data-link-task] {
+        background-color: #FFFFFF;
+        border-bottom: 3px solid white;
+        font-weight: 600;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .task-contents {
+        margin-bottom: 3rem;
+    }
+
+    .task-contents [data-link-content]{
+        background-color: #FFFFFF;
+        transition: all 0.01s ease;
+        position: relative;
+        top: calc(2.5rem - 1px);
+        padding: 1rem;
+        margin-bottom: 5rem;
+        box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .task-body input[type="text"]:focus {
+        border: none;
+        outline: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+    }
+
+    .retrieve-form {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        height: 2rem;
+        margin-bottom: 1rem;
+
+    }
+
+    .retrieve-form input {
+        height: 2rem;
+        font-size: 0.8rem;
+        cursor: pointer;
+        padding: 0 10px;
+    }
+
+    .retrieve-form button, .task-form-submit button {
+        height: 2rem;
+        color: white;
+        background-color: #228C20;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-left: 0.5rem;
+        padding: 0 0.8rem;
+        font-family: 'Poppins', sans-serif;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        border-radius: 2px;
+        transition: all 0.1s ease;
+    }
+
+    .retrieve-form button:hover, .task-form-submit button:hover {
+        background-color: #115710;
+        scale: 0.95;
+    }
+
+    .task-body input {
+        height: 1.5rem;
+    }
+
+    .task-body input[type="time"] {
+        width: 90%;
+        font-size: 0.7rem;
+        padding: 0 3px;
+    }
+
+    input[type="text"] {
+        width: 95%;
+        font-size: 0.8rem;
+        border: none;
+        background: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        padding: 0;
+    }
+
+    .task-body input[type="checkbox"] {
+        height: 1.2rem;
+        width: 1.2rem;
+        cursor: pointer;
+    }
+
+    .task-body input[type="checkbox"]:checked {
+        background-color: green;
+    }
+
+    .task-form-submit {
+        width: 100%;
+        display: flex;
+        align-items: flex-end;
+        flex-direction: column;
+    }
+
+    .task-form-group {
+        margin: 1rem 0;
+        width: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .task-form-group label {
+        font-weight: 500;
+        font-size: 0.9rem;
+    }
+
+    .task-form-group select {
+        height: 1.8rem;
+        font-size: 0.8rem;
+        margin-left: 1rem;
+        width: 60%;
+    }
+
+    thead {
+        position: relative !important;
+    }
+
+    .tac {
+        text-align: center;
+    }
+
+    .done-btn {
+        padding: 0.3rem;
+        border: none;
+        outline: none;
+        display: flex;
+        align-items: center;justify-content: center;
+        color: #FFF;
+        background-color: rgb(148, 143, 143);
+        cursor: pointer;
+        border-radius: 3px;
+        transition: all 0.01s ease;
+    }
+
+    
+    .done-btn:hover {
+        scale: 0.97;
+        background-color: rgb(111, 107, 107);
+    }
+
+    .done-btn i {
+        font-size: 1.2rem;
+        font-weight: 500;
+    }
+
+</style>
+
+<script>
+
+    // TASK PAGE NAVIGATION - MORNING & EVENING
+
+    const taskTabs = document.querySelectorAll('[data-link-task')
+    const taskTabContents = document.querySelectorAll('[data-link-content')
+
+    taskTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const target = document.querySelector(tab.dataset.linkTask)
+            taskTabContents.forEach(tabContent => {
+                tabContent.classList.remove('active-task-content')
+            })
+
+            taskTabs.forEach(tabli => {
+                tabli.classList.remove('active-task')
+            })
+
+            tab.classList.add('active-task')
+            target.classList.add('active-task-content')
+        })
+    })
+
+    const getCurrentTime = () => {
+        let date = new Date();
+        let hh = date.getHours();
+        let mm = date.getMinutes();
+        let ss = date.getSeconds();
+
+        if(hh === 0){
+            hh = 12;
+        }  
+       
+        hh = (hh < 10) ? "0" + hh : hh;
+        mm = (mm < 10) ? "0" + mm : mm;
+        ss = (ss < 10) ? "0" + ss : ss;
+            
+        let current_time = hh + ":" + mm + ":" + ss;
+        return current_time
+    }
+
+</script>
+
+{% endblock content %}
